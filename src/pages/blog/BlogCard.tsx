@@ -13,13 +13,14 @@ interface BlogCardProps {
   showTopic?: boolean
 }
 
-/** Tarjeta de artículo: foto del servicio; fecha y minutos de lectura arriba, título y extracto; al pie, logo y tema. */
+/** Tarjeta de artículo: foto del servicio; fecha y minutos de lectura arriba, título y extracto; al pie, logo y tema.
+ * Con el cursor encima solo cambia el degradado de la foto (blog.css). */
 export function BlogCard({ article, excerpt, level = 3, showTopic = true }: BlogCardProps) {
   const ui = UI[useLang()].blog
   const key = keyOf(article)
   const Title = level === 3 ? 'h3' : 'h4'
   return (
-    <a className="blog-card siri" href={article.route}>
+    <a className="blog-card" href={article.route}>
       <div className="blog-card__frame">
         <div className="blog-card__media">
           <img
@@ -33,12 +34,6 @@ export function BlogCard({ article, excerpt, level = 3, showTopic = true }: Blog
             loading="lazy"
           />
           <div className="blog-card__shade" />
-          <div className="blog-card__cta" aria-hidden="true">
-            <span className="blog-card__button">
-              <Icon name="book" size={16} />
-              {ui.readArticle}
-            </span>
-          </div>
         </div>
         <div className="blog-card__body">
           <p className="blog-card__stamp">

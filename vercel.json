@@ -1,21 +1,44 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build:prod",
   "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://*.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src https://www.facebook.com https://www.instagram.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=()"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://*.googleusercontent.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src https://www.facebook.com https://www.instagram.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        }
       ]
     },
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -26,13 +49,13 @@
     },
     {
       "source": "/servicios/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/servicios/",
+      "statusCode": 301
     },
     {
       "source": "/beneficios/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/beneficios/",
+      "statusCode": 301
     },
     {
       "source": "/nuestras-promociones/",
@@ -41,113 +64,113 @@
     },
     {
       "source": "/convenios/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/convenios/",
+      "statusCode": 301
     },
     {
       "source": "/insurance/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/insurance/",
+      "statusCode": 301
     },
     {
       "source": "/implantes-dentales-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/implantes-dentales-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/all-in-4-implants-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/all-in-4-implants-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/all-in-6-implants-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/all-in-6-implants-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/coronas-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/coronas-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/carillasdentalesentijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/carillasdentalesentijuana/",
+      "statusCode": 301
     },
     {
       "source": "/blanqueamiento-dental-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blanqueamiento-dental-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/limpieza-dental-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/limpieza-dental-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/endodoncias-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/endodoncias-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/ortodoncia-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/ortodoncia-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/invisalign-in-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/invisalign-in-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/odontologia-pediatrica-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/odontologia-pediatrica-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/dentaduras-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/dentaduras-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/periodoncia-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/periodoncia-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/extracciones-dentales-en-tijuana/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/extracciones-dentales-en-tijuana/",
+      "statusCode": 301
     },
     {
       "source": "/contacto/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/contacto/",
+      "statusCode": 301
     },
     {
       "source": "/nosotros/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/nosotros/",
+      "statusCode": 301
     },
     {
       "source": "/blog/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/",
+      "statusCode": 301
     },
     {
       "source": "/aviso-de-privacidad/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/aviso-de-privacidad/",
+      "statusCode": 301
     },
     {
       "source": "/terminos-y-condiciones/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/terminos-y-condiciones/",
+      "statusCode": 301
     },
     {
       "source": "/preguntas-frecuentes/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/preguntas-frecuentes/",
+      "statusCode": 301
     },
     {
       "source": "/odontologia-general-en-tijuana/",
@@ -206,98 +229,98 @@
     },
     {
       "source": "/blog/implantes-y-rehabilitacion/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/implantes-y-rehabilitacion/",
+      "statusCode": 301
     },
     {
       "source": "/blog/estetica-y-restauracion/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/estetica-y-restauracion/",
+      "statusCode": 301
     },
     {
       "source": "/blog/ortodoncia-y-odontopediatria/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/ortodoncia-y-odontopediatria/",
+      "statusCode": 301
     },
     {
       "source": "/blog/limpieza-y-salud-de-encias/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/limpieza-y-salud-de-encias/",
+      "statusCode": 301
     },
     {
       "source": "/blog/endodoncia-y-extracciones/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/endodoncia-y-extracciones/",
+      "statusCode": 301
     },
     {
       "source": "/blog/implantes-dentales-que-son/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/implantes-dentales-que-son/",
+      "statusCode": 301
     },
     {
       "source": "/blog/all-on-4-implants/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/all-on-4-implants/",
+      "statusCode": 301
     },
     {
       "source": "/blog/all-on-6-implants/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/all-on-6-implants/",
+      "statusCode": 301
     },
     {
       "source": "/blog/dentaduras-parciales-completas/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/dentaduras-parciales-completas/",
+      "statusCode": 301
     },
     {
       "source": "/blog/coronas-dentales/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/coronas-dentales/",
+      "statusCode": 301
     },
     {
       "source": "/blog/carillas-dentales/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/carillas-dentales/",
+      "statusCode": 301
     },
     {
       "source": "/blog/blanqueamiento-dental/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/blanqueamiento-dental/",
+      "statusCode": 301
     },
     {
       "source": "/blog/ortodoncia-mordida-alineacion/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/ortodoncia-mordida-alineacion/",
+      "statusCode": 301
     },
     {
       "source": "/blog/alineadores-transparentes/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/alineadores-transparentes/",
+      "statusCode": 301
     },
     {
       "source": "/blog/primera-visita-odontopediatria/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/primera-visita-odontopediatria/",
+      "statusCode": 301
     },
     {
       "source": "/blog/limpieza-dental-profesional/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/limpieza-dental-profesional/",
+      "statusCode": 301
     },
     {
       "source": "/blog/periodoncia-encias-que-sangran/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/periodoncia-encias-que-sangran/",
+      "statusCode": 301
     },
     {
       "source": "/blog/endodoncia-conservar-diente/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/endodoncia-conservar-diente/",
+      "statusCode": 301
     },
     {
       "source": "/blog/extracciones-muelas-del-juicio/",
-      "destination": "/es/",
-      "statusCode": 302
+      "destination": "/es/blog/extracciones-muelas-del-juicio/",
+      "statusCode": 301
     },
     {
       "source": "/cuidado-dental/",

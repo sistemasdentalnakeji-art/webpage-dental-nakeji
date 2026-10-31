@@ -37,11 +37,6 @@
   overflow: hidden;
 }
 
-/* Los anillos de Contacto en celular salen por arriba de la banda: sin recorte, sus arcos se ven completos. */
-.band:has(> .container .decor-rings--contact-mobile) {
-  overflow: visible;
-}
-
 /* Aseguranzas: fondo claro con borde; Convenios: fondo blanco con borde punteado, para distinguirlas de un vistazo. */
 .rail--convenios {
   border-style: dashed;

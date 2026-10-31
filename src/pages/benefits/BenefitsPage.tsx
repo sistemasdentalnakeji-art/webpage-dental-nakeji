@@ -13,6 +13,7 @@ import { PARTNERS_CTA } from '@/data/partners'
 import { Band } from '@/components/decor/Band'
 import { PlasmaBackground } from '@/components/decor/PlasmaBackground'
 import { Icon } from '@/components/ui/Icon'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 function BenefitCardView({ card }: { card: BenefitCard }) {
   const ctaLabel = BENEFIT_CARDS_CTA[useLang()]
@@ -77,8 +78,8 @@ export function BenefitsPage() {
           <div className="benefits-hero__text">
             <p className="benefits-hero__eyebrow pill-label">{hero.eyebrow}</p>
             <h1 id="beneficios-titulo" className="benefits-hero__title shiny-text">
-              <span className="benefits-hero__lead-line">{hero.titleLead}</span>{' '}
-              <span className="benefits-hero__accent">{hero.titleAccent}</span>
+              <span className="benefits-hero__lead-line"><TextBlurReveal text={hero.titleLead} /></span>{' '}
+              <span className="benefits-hero__accent"><TextBlurReveal text={hero.titleAccent} start={hero.titleLead.split(' ').length} /></span>
             </h1>
             <p className="benefits-hero__lead">{hero.lead}</p>
             <ul className="benefits-hero__features">

@@ -5,6 +5,7 @@ import { UI } from '@/data/ui'
 import { BlogCard } from '@/pages/blog/BlogCard'
 import { BlogCrumbs } from '@/pages/blog/BlogCrumbs'
 import { articlesIn, BLOG, excerptOf, type Category } from '@/pages/blog/blogData'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 /** Categoría del blog: cabecera (migas, título e introducción), sus tarjetas y una tira con los otros temas. */
 export function BlogCategoryPage({ route, category }: { route: RouteDef; category: Category }) {
@@ -19,7 +20,7 @@ export function BlogCategoryPage({ route, category }: { route: RouteDef; categor
           <div>
             <BlogCrumbs trail={[{ label: 'Blog', href: routeOf('blog', lang).path }, { label: category.name }]} />
             <h1 id="blog-categoria" className="blog-hero__title shiny-text">
-              {category.name}
+              <TextBlurReveal text={category.name} />
             </h1>
             <p className="blog-hero__intro">{category.intro}</p>
           </div>

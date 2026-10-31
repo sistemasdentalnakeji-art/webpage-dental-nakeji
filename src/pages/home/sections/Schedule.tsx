@@ -14,6 +14,7 @@ import { SCHEDULE } from '@/data/home'
 import { UI } from '@/data/ui'
 import { BookingForm } from '@/features/booking/BookingForm'
 import { Band } from '@/components/decor/Band'
+import { ParticlesBackground } from '@/components/decor/ParticlesBackground'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { SectionIntro } from '@/components/ui/SectionIntro'
@@ -21,7 +22,7 @@ import { SectionIntro } from '@/components/ui/SectionIntro'
 interface ScheduleProps {
   /** Servicio preseleccionado en el formulario (se usa en las páginas de servicio). */
   service?: string
-  /** Curvas animadas de fondo. Las páginas de servicio las apagan (fondo sin animación). */
+  /** Fondo de partículas. Las páginas de servicio lo apagan (fondo sin animación). */
   flow?: boolean
 }
 
@@ -30,7 +31,14 @@ export function Schedule({ service, flow = true }: ScheduleProps) {
   const lang = useLang()
   const schedule = SCHEDULE[lang]
   return (
-    <Band id={SCHEDULE_ANCHOR} tone="white" labelledBy="agendar-titulo" waveTop="plain" flow={flow ? 'schedule' : undefined}>
+    <Band
+      id={SCHEDULE_ANCHOR}
+      tone="white"
+      className="band--schedule"
+      labelledBy="agendar-titulo"
+      waveTop="plain"
+      decor={flow && <ParticlesBackground density={130} max={360} avoid=".story__tip" />}
+    >
       <div className="container">
         <div className="schedule">
           <div className="schedule__intro">

@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Entrada de los H1 (componente TextBlurReveal): cada palabra aparece desenfocada y sube a su sitio.
+   .shiny-text recorta su degradado al texto (background-clip: text), que ignora el blur/opacidad de los hijos en línea
+   y no pinta los inline-block. Por eso, solo mientras dura la entrada, cada palabra es inline-block con su propio color
+   base (--shiny-base); al terminar (fill-mode backwards) vuelve a ser texto en línea y el brillo del H1 la retoma.
+   ========================================================================== */
+.text-blur-reveal {
+  animation: text-blur-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--word) * 90ms + 80ms);
+}
+
+@keyframes text-blur-reveal {
+  from {
+    display: inline-block;
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(0.35em);
+    -webkit-text-fill-color: var(--shiny-base, currentColor);
+  }
+
+  to {
+    display: inline-block;
+    -webkit-text-fill-color: var(--shiny-base, currentColor);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-blur-reveal {
+    animation: none;
+  }
+}
+
+html[data-motion='paused'] .text-blur-reveal {
+  animation: none;
+}

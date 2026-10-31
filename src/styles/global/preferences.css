@@ -30,8 +30,7 @@
     animation: none !important;
   }
 
-  .decor-line__light,
-  .decor-ring__light {
+  .decor-line__light {
     display: none;
   }
 }

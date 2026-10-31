@@ -1,11 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// SECCIÓN ANIMADA DEBAJO DEL HERO: tres mensajes que entran al hacer scroll ("un hilo de sonrisa")
+// SECCIÓN DEBAJO DEL HERO: tres mensajes ("un hilo de sonrisa") sobre el fondo de partículas
 //
-//   1. Deseo cotidiano → entra desde la izquierda.
-//   2. Lo importante del cuidado (h2) → sube desde abajo y queda centrado.
-//   3. Comprender para decidir → entra desde la derecha.
-// • Cada línea entra enfocándose (de borrosa a nítida); sus palabras se encienden una tras otra; las frases en azul se
-//   subrayan con una línea fina; y un hilo de tramos rectos con vueltas en semicírculo (con el estilo de las líneas de
+//   1. Deseo cotidiano → a la izquierda.
+//   2. Lo importante del cuidado (h2) → centrado.
+//   3. Comprender para decidir → a la derecha.
+// • Sus palabras aparecen una tras otra pasando de borrosas a nítidas (text blur reveal); las frases en azul se subrayan
+//   con una línea fina amarilla al hacer scroll; y un hilo de tramos rectos con vueltas en semicírculo (con el estilo de las líneas de
 //   Agendar, recorrido por una luz) se va cargando con el scroll de un mensaje al siguiente.
 // • Textos → src/data/story.ts.
 // • Movimiento y estilos → src/styles/pages/home/story.css (animaciones CSS ligadas al scroll). Navegadores sin
@@ -165,7 +165,7 @@ function useStoryLayout(text: unknown) {
   return [ref, layout] as const
 }
 
-/** Cada palabra lleva su número (--i, contando desde la primera del mensaje) para encenderse en cascada. */
+/** Cada palabra lleva su número (--i, contando desde la primera del mensaje) para aparecer en cascada. */
 function StoryText({ lines }: { lines: StoryLines }) {
   let index = 0
   const words = (text: string) =>
@@ -273,7 +273,7 @@ export function CareStory() {
   const scrub = useScrollScrub(areaRef, layout ? d : undefined)
 
   return (
-    <Band tone="tint" className="story" labelledBy="historia-titulo" decor={<ParticlesBackground variant="story" />}>
+    <Band tone="tint" className="story" labelledBy="historia-titulo" decor={<ParticlesBackground avoid=".story__tip" />}>
       <div ref={areaRef} className={scrub ? 'container story__inner story--scrub' : 'container story__inner'}>
         {/* Hilo decorativo: curva animada como las de Agendar, que se va dibujando con el scroll (máscara .decor-reveal)
             con el diente en la punta. */}

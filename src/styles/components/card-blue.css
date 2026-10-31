@@ -1,0 +1,312 @@
+/* ==========================================================================
+   Tarjetas azules (vidrio azul de /nosotros/, tokens --card-blue* en global/tokens.css)
+   Sustituyen a las tarjetas blancas para que todo el sitio tenga la misma armonía. Va al final de index.css: a igual
+   especificidad gana sobre las reglas de cada página.
+   Siguen blancas a propósito: los artículos del blog (styles/pages/blog.css) y las fichas de logotipos (aseguranzas,
+   convenios y el riel del homepage), donde los logos oscuros no se leerían sobre azul. Los campos del formulario también
+   quedan blancos: es el patrón de campo que el usuario reconoce.
+   ========================================================================== */
+
+/* ---------- Base común ---------- */
+.card,
+.catalog-card,
+.benefit-card__top,
+.benefit-card__footer,
+.contact-card,
+.legal-card,
+.home-canvas .contact__map,
+.schedule__form {
+  border-color: var(--card-blue-border);
+  background: var(--card-blue);
+  box-shadow: var(--card-blue-shadow);
+  color: var(--card-blue-text);
+}
+
+/* Iconos en pastilla blanca → vidrio claro (como los valores de /nosotros/). */
+.catalog-card__icon,
+.benefit-card__icon,
+.service-card__icon,
+.contact-group__icon,
+.booking-form__badge {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+}
+
+/* ---------- Homepage: servicios destacados ---------- */
+.service-card__title {
+  color: var(--card-blue-title);
+}
+
+.service-card__text {
+  color: var(--card-blue-text);
+}
+
+.service-card__list li {
+  color: var(--card-blue-text);
+}
+
+.service-card__cta {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.service-card__cta:hover {
+  background: var(--color-sky);
+}
+
+/* ---------- /servicios/: catálogo ---------- */
+.catalog-group {
+  border-top-color: var(--card-blue-line);
+}
+
+.catalog-group__title {
+  color: var(--card-blue-title);
+}
+
+.catalog-group__intro {
+  color: var(--card-blue-text);
+}
+
+.catalog-card__title {
+  color: var(--card-blue-title);
+}
+
+.catalog-card__highlights,
+.catalog-card:hover .catalog-card__highlights,
+.catalog-card:focus-within .catalog-card__highlights {
+  color: var(--card-blue-text);
+}
+
+/* El degradado claro del hover, más tenue: sobre la tarjeta azul el texto claro debe seguir leyéndose. */
+.catalog-card:hover .catalog-card__glow,
+.catalog-card:focus-within .catalog-card__glow {
+  opacity: 0.35;
+}
+
+@media (width < 960px) {
+  /* Los 4 beneficios del hero (tarjetas chicas 2x2 en celular; en escritorio son pastillas y siguen blancas). */
+  .catalog-hero__features li {
+    border-color: var(--card-blue-border);
+    background: var(--card-blue);
+    box-shadow: var(--card-blue-shadow);
+    color: var(--card-blue-title);
+  }
+
+  .catalog-hero__features svg {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-brand-light);
+  }
+
+  /* Acordeón de categorías: el contenedor blanco también pasa a azul. */
+  .catalog-groups {
+    border-color: var(--card-blue-border);
+    background: var(--card-blue);
+    box-shadow: var(--card-blue-shadow);
+  }
+
+  .catalog-group + .catalog-group {
+    border-top-color: var(--card-blue-line);
+  }
+
+  .catalog-group__title::before {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-brand-light);
+  }
+
+  .catalog-group__title::after {
+    border-color: var(--color-brand-light);
+  }
+
+  /* Dentro del contenedor azul, cada servicio va sin tarjeta propia (solo el contenedor). */
+  .catalog-card {
+    border-color: transparent;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: none;
+  }
+}
+
+/* Pantallas grandes: cartas apiladas (cada categoría es una carta, opaca para tapar la de atrás). */
+@media (width >= 1600px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  .catalog-split .catalog-group {
+    border-color: var(--card-blue-border);
+    background: linear-gradient(145deg, rgb(24, 49, 84), rgb(9, 24, 46));
+  }
+
+  .catalog-split .catalog-card {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ---------- /beneficios/: boletos ---------- */
+.benefit-card__top::before {
+  color: var(--card-blue-text);
+}
+
+.benefit-card__title {
+  color: var(--card-blue-title);
+}
+
+.benefit-card__text {
+  color: var(--card-blue-text);
+}
+
+.benefit-card__footer::before,
+.benefit-card__footer::after {
+  border-top-color: var(--card-blue-line);
+}
+
+.benefit-card__cta {
+  color: var(--card-blue-title);
+}
+
+/* ---------- /contacto/ ---------- */
+.contact-group + .contact-group {
+  border-top-color: var(--card-blue-line);
+}
+
+.contact-group__title,
+.bento__value,
+.bento__text {
+  color: var(--card-blue-title);
+}
+
+.bento__value:hover {
+  color: var(--color-brand-light);
+}
+
+.bento__label,
+.bento__note,
+.bento__hours {
+  color: var(--card-blue-text);
+}
+
+.copy-btn {
+  border-color: var(--card-blue-line);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-brand-light);
+}
+
+.copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.bento__map {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Botón principal (azul marino) sobre la tarjeta azul: pasa a blanco para destacar. */
+.contact-card .btn--primary {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.contact-card .btn--primary:hover {
+  background: var(--color-sky);
+}
+
+/* ---------- Aviso de privacidad y términos ---------- */
+.legal-card__head {
+  border-bottom-color: var(--card-blue-line);
+}
+
+.legal-card__title,
+.legal-card__sub {
+  color: var(--card-blue-title);
+}
+
+.legal-card .legal-text,
+.legal-card .legal-list {
+  color: var(--card-blue-text);
+}
+
+.legal-card .legal-link {
+  color: var(--color-brand-light);
+}
+
+@media (width < 960px) {
+  /* Acordeón del aviso en celular: el contenedor blanco también pasa a azul; cada sección, sin tarjeta propia. */
+  .legal-deck {
+    border-color: var(--card-blue-border);
+    background: var(--card-blue);
+    box-shadow: var(--card-blue-shadow);
+  }
+
+  .legal-card {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .legal-card + .legal-card {
+    border-top-color: var(--card-blue-line);
+  }
+
+  .legal-card__head::after {
+    border-color: var(--color-brand-light);
+  }
+}
+
+/* ---------- Formulario de citas (homepage y página de cada servicio) ---------- */
+.schedule__form::before {
+  opacity: 0.5;
+}
+
+.booking-form__eyebrow {
+  color: var(--color-brand-light);
+}
+
+.booking-form__title,
+.booking-group__title,
+.field__label,
+.booking-success__title {
+  color: var(--card-blue-title);
+}
+
+.booking-form__lead,
+.booking-form__note,
+.field__optional,
+.field__hint,
+.booking-form__fine,
+.booking-success__text {
+  color: var(--card-blue-text);
+}
+
+.booking-form__fine svg {
+  color: var(--color-brand-light);
+}
+
+.booking-group__title::after {
+  background: linear-gradient(90deg, var(--card-blue-line), transparent);
+}
+
+.booking-group__num {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--color-gold);
+}
+
+/* Rojo claro: el rojo de error normal no alcanza contraste sobre azul oscuro. */
+.field__error,
+.field.has-error .field__label {
+  color: #ffb4aa;
+}
+
+.field--consent {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.field--consent .choice {
+  color: var(--card-blue-text);
+}
+
+.field--consent .text-link {
+  color: var(--color-white);
+}
+
+.field--consent.has-error {
+  background: rgba(255, 180, 170, 0.14);
+}
+
+.booking-form__submit {
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+}

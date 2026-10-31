@@ -4,15 +4,10 @@ import { Rings, type RingsPlacement } from './rings/Rings'
 import { EASE_IN_OUT, useSmilMotion } from './useSmilMotion'
 
 // Decoraciones curvas para el fondo de las bandas (solo visuales, de un solo color).
-// - flow: curvas de esquina a esquina que pasan por debajo del contenido, con movimiento lento.
-//         En escritorio cruzan la banda; en móvil y tableta forman una franja al pie de la sección.
 // - rings: círculo con siluetas (ver ./rings/Rings.tsx).
 // - wave: ola a todo lo ancho; une una banda con la siguiente.
 
-export type FlowLayout = 'schedule'
-
 type SectionDecorProps =
-  | { variant: 'flow'; layout: FlowLayout }
   | { variant: 'rings'; placement: RingsPlacement }
   /** inverse: rellena por encima de la curva (sin voltear); lo usa el footer para que sus hilos lleguen a la ola. */
   | { variant: 'wave'; position: 'top' | 'bottom'; flip?: boolean; inverse?: boolean }
@@ -22,29 +17,6 @@ export interface Line {
   a: string
   b: string
 }
-
-/** Curva en S: plana al inicio (izquierda) y al final (derecha). */
-const sCurve = (y0: number, y1: number, c1: number, c2: number, width: number) => ({
-  a: `M-40 ${y0}C${c1} ${y0} ${c2} ${y1} ${width + 40} ${y1}`,
-  b: `M-40 ${y0}C${c1 + width * 0.055} ${y0 - 50} ${c2 - width * 0.05} ${y1 + 40} ${width + 40} ${y1}`,
-})
-
-// Escritorio: lienzo de 1440×900 que se estira a toda la banda.
-// Agendar: planas al pie del texto de la izquierda; suben por debajo del formulario.
-const DESKTOP_FLOWS: Record<FlowLayout, Line[]> = {
-  schedule: Array.from({ length: 6 }, (_, i) => sCurve(780 + i * 22, 40 + i * 52, 640 + i * 26, 860 + i * 26, 1440)),
-}
-
-// Móvil y tableta: franja de 400×150 al pie de la sección (no cruza el texto).
-const MOBILE_FLOW: Line[] = Array.from({ length: 5 }, (_, i) => {
-  // Paralelas (no se cruzan): suben de abajo-izquierda a la derecha.
-  const y0 = 108 + i * 9
-  const y1 = 22 + i * 13
-  return {
-    a: `M-10 ${y0}C150 ${y0} 230 ${y1} 410 ${y1}`,
-    b: `M-10 ${y0}C170 ${y0 - 14} 210 ${y1 + 12} 410 ${y1}`,
-  }
-})
 
 interface AnimatedLinesProps {
   lines: Line[]
@@ -104,18 +76,6 @@ export function AnimatedLines({ lines, className, viewBox, revealId }: AnimatedL
 
 export function SectionDecor(props: SectionDecorProps) {
   switch (props.variant) {
-    case 'flow':
-      return (
-        <>
-          <AnimatedLines
-            lines={DESKTOP_FLOWS[props.layout]}
-            className="decor decor--flow decor--flow-desktop"
-            viewBox="0 0 1440 900"
-          />
-          <AnimatedLines lines={MOBILE_FLOW} className="decor decor--flow decor--flow-mobile" viewBox="0 0 400 150" />
-        </>
-      )
-
     case 'rings':
       return <Rings placement={props.placement} />
 

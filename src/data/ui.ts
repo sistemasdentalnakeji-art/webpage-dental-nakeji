@@ -39,7 +39,6 @@ interface UiText {
     explore: string
     allServices: string
     book: string
-    readArticle: string
     minutes: (n: number) => string
     answer: string
     sources: string
@@ -116,7 +115,6 @@ export const UI: Record<Lang, UiText> = {
       explore: 'Browse articles',
       allServices: 'See all services',
       book: 'Schedule a visit',
-      readArticle: 'Read article',
       minutes: (n) => `${n} min read`,
       answer: 'Short answer.',
       sources: 'Sources:',
@@ -196,7 +194,6 @@ export const UI: Record<Lang, UiText> = {
       explore: 'Explorar artículos',
       allServices: 'Ver todos los servicios',
       book: 'Agendar visita',
-      readArticle: 'Leer artículo',
       minutes: (n) => `${n} min de lectura`,
       answer: 'Respuesta breve.',
       sources: 'Fuentes:',

@@ -16,6 +16,7 @@ import { Band } from '@/components/decor/Band'
 import { PlasmaBackground } from '@/components/decor/PlasmaBackground'
 import { Icon } from '@/components/ui/Icon'
 import { SpinShutter } from '@/components/ui/SpinShutter'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 // Un solo enlace por tarjeta: el botón del pie (texto + flecha).
 function CatalogCard({ service }: { service: CatalogService }) {
@@ -116,7 +117,7 @@ export function ServicesPage() {
           <div className="catalog-hero__text">
             <p className="catalog-hero__eyebrow pill-label">{hero.eyebrow}</p>
             <h1 id="servicios-titulo" className="catalog-hero__title shiny-text">
-              {hero.titleLead} <span className="catalog-hero__accent">{hero.titleAccent}</span>
+              <TextBlurReveal text={hero.titleLead} /> <span className="catalog-hero__accent"><TextBlurReveal text={hero.titleAccent} start={hero.titleLead.split(' ').length} /></span>
             </h1>
             <p className="catalog-hero__lead">{hero.lead}</p>
             <ul className="catalog-hero__features">

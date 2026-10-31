@@ -28,6 +28,7 @@
 @import './components/ghost-fibers.css';
 @import './components/particles-bg.css';
 @import './components/shiny-text.css';
+@import './components/text-blur-reveal.css';
 @import './components/spin-shutter.css';
 @import './components/social-orbit.css';
 @import './layout/sections.css';
@@ -56,5 +57,6 @@
 @import './pages/blog.css';
 @import './pages/empty.css';
 @import './components/animated-buttons.css';
+@import './components/card-blue.css';
 @import './global/typography.css';
 @import './global/preferences.css';

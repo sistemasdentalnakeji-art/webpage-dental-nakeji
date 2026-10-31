@@ -20,6 +20,7 @@ import { Icon } from '@/components/ui/Icon'
 import { motionOff } from '@/lib/motion'
 import { SoftBlurIn } from '@/pages/about/SoftBlurIn'
 import { TeamSection } from '@/pages/about/TeamSection'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 function HistoryCarousel({ photos }: { photos: HistoryPhoto[] }) {
   const lang = useLang()
@@ -117,7 +118,7 @@ export function AboutPage() {
         <header>
           <p className="page-eyebrow">{intro.eyebrow}</p>
           <h1 id="nosotros-titulo" className="page-title shiny-text">
-            {intro.title}
+            <TextBlurReveal text={intro.title} />
           </h1>
           <p className="page-lead">{intro.lead}</p>
         </header>

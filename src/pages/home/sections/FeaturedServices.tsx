@@ -83,7 +83,7 @@ export function FeaturedServices() {
   const lang = useLang()
   const section = SERVICES_SECTION[lang]
   return (
-    <Band tone="tint" labelledBy="servicios-titulo" waveTop="flip" decor={<ParticlesBackground variant="services" />}>
+    <Band tone="tint" className="band--services" labelledBy="servicios-titulo" waveTop="flip" decor={<ParticlesBackground />}>
       <div className="container">
         <header className="section-head">
           <h2 id="servicios-titulo" className="section-title">

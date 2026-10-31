@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // SECCIÓN "RESEÑAS DE GOOGLE": resumen de calificación + carrusel de reseñas.
 //
-// • Reseñas y calificación → src/data/reviews.ts (hoy son marcadores de diseño).
+// • Reseñas reales → api/reviews.ts (Google Places) vía src/lib/useGoogleReviews.ts; tipos en src/data/reviews.ts.
 // • Título y texto → src/data/home.ts (REVIEWS_SECTION).
 // • Estilos → src/styles/pages/home/reviews.css.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -9,7 +9,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { useLang } from '@/app/lang'
-import { REVIEWS, REVIEWS_SUMMARY, type Review } from '@/data/reviews'
+import { REVIEWS_SUMMARY, type Review } from '@/data/reviews'
 import { SITE } from '@/config/site'
 import { UI } from '@/data/ui'
 import { REVIEWS_SECTION } from '@/data/home'
@@ -116,8 +116,9 @@ export function Reviews() {
   const live = useGoogleReviews(lang)
   const { profileUrl } = REVIEWS_SUMMARY
   const domain = new URL(SITE.origin).host.replace(/^www\./, '')
-  // Cuatro tarjetas: con seis la sección se vuelve pesada en celular.
-  const cards = (live?.reviews ?? REVIEWS[lang]).slice(0, 4).map((review, index) => (
+  // Cuatro tarjetas: con seis la sección se vuelve pesada en celular. Sin reseñas reales (HTML prerenderizado, desarrollo)
+  // no hay carrusel: así Google nunca indexa tarjetas de ejemplo.
+  const cards = (live?.reviews ?? []).slice(0, 4).map((review, index) => (
     <ReviewCard review={review} more={ui.more} index={index} />
   ))
   // La segunda fila arranca por otra tarjeta para que, con pocas reseñas, las dos filas no se vean iguales.
@@ -178,11 +179,13 @@ export function Reviews() {
         </div>
       </div>
 
-      <div className="reviews-rows">
-        {/* Despacio, para alcanzar a leer cada reseña antes de que salga. */}
-        <Marquee label={ui.carousel} items={cards} direction="ltr" secondsPerCard={22} />
-        <Marquee label={ui.carousel} items={cardsBottom} direction="rtl" secondsPerCard={26} />
-      </div>
+      {cards.length > 0 && (
+        <div className="reviews-rows">
+          {/* Despacio, para alcanzar a leer cada reseña antes de que salga. */}
+          <Marquee label={ui.carousel} items={cards} direction="ltr" secondsPerCard={22} />
+          <Marquee label={ui.carousel} items={cardsBottom} direction="rtl" secondsPerCard={26} />
+        </div>
+      )}
     </Band>
   )
 }

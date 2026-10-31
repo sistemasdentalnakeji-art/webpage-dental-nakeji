@@ -7,6 +7,7 @@
 import { routeOf, type RouteDef } from '@/config/routes'
 import { UI } from '@/data/ui'
 import { Band } from '@/components/decor/Band'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 interface EmptyPageProps {
   route: RouteDef
@@ -20,7 +21,7 @@ export function EmptyPage({ route, message }: EmptyPageProps) {
     <Band className="empty-page" tone="white" labelledBy="pagina-titulo">
       <div className="container empty-page__inner">
         <h1 id="pagina-titulo" className="empty-page__title shiny-text shiny-text--ink">
-          {route.label}
+          <TextBlurReveal text={route.label} />
         </h1>
         <p className="section-text">{message ?? (route.key === 'notFound' ? ui.notFound : ui.soon)}</p>
         <a className="text-link" href={routeOf('home', route.lang).path}>

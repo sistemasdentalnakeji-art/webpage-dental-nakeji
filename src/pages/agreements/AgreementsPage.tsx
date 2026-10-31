@@ -17,6 +17,7 @@ import { Band } from '@/components/decor/Band'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { BrandWall } from '@/pages/agreements/BrandWall'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 export function AgreementsPage() {
   const lang = useLang()
@@ -31,7 +32,7 @@ export function AgreementsPage() {
         <header className="agreements__head">
           <p className="page-eyebrow pill-label">{AGREEMENTS_INTRO[lang].eyebrow}</p>
           <h1 id="convenios-titulo" className="page-title shiny-text">
-            {AGREEMENTS_INTRO[lang].title}
+            <TextBlurReveal text={AGREEMENTS_INTRO[lang].title} />
           </h1>
         </header>
 

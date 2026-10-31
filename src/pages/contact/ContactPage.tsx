@@ -33,6 +33,7 @@ import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { LocationMap } from '@/components/ui/LocationMap'
 import { cx } from '@/lib/cx'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 // Bloque de la ficha: icono + título y su contenido.
 function Group({ icon, title, children }: { icon: IconName; title: string; children: ReactNode }) {
@@ -154,7 +155,7 @@ export function ContactPage() {
         <header>
           <p className="page-eyebrow pill-label">{intro.eyebrow}</p>
           <h1 id="contacto-titulo" className="page-title shiny-text">
-            {intro.title}
+            <TextBlurReveal text={intro.title} />
           </h1>
           <p className="page-lead">{intro.tagline}</p>
         </header>

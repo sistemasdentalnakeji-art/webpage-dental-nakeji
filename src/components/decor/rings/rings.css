@@ -1,7 +1,7 @@
 /* ==========================================================================
    CÍRCULO CON SILUETAS (components/decor/rings/Rings.tsx)
-   Círculo azul con arcos concéntricos que respiran y llevan un destello. En el inicio hay dos: Reseñas de Google (escritorio)
-   y Contacto (escritorio y celular). Va por encima del fondo de la banda y por debajo de su contenido (z-index negativo).
+   Círculo con anillos concéntricos que respiran, en versión red de prismas (lienzo). En el inicio hay dos, solo en escritorio:
+   Reseñas de Google y Contacto. Va por encima del fondo de la banda y por debajo de su contenido (z-index negativo).
    ========================================================================== */
 /* Círculo con siluetas (Reseñas de Google, Contacto). Se colocan por su centro (--cx, --cy). */
 .decor-rings {
@@ -12,81 +12,21 @@
   width: var(--rings-size);
   max-width: none;
   height: var(--rings-size);
-  color: var(--color-brand-light);
   pointer-events: none;
 }
 
-.decor-ring {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  opacity: calc(0.5 - var(--i) * 0.08);
-}
-
-.decor-ring__light {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-dasharray: 45 955;
-  opacity: 0.9;
-  animation: decor-ring-light 20s linear infinite;
-  animation-delay: calc(var(--i) * -3.3s);
-}
-
-@keyframes decor-ring-light {
-  to {
-    stroke-dashoffset: -1000;
-  }
-}
-
-.decor-rings__dot {
-  fill: currentColor;
-  fill-opacity: 0.3;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-opacity: 0.7;
-}
-
-/* Reseñas de Google, escritorio (≥960 px): arriba a la izquierda; los arcos van de la ola al borde izquierdo */
+/* Reseñas de Google, escritorio (≥960 px): arriba a la izquierda; los anillos completos, cortados solo por el borde izquierdo */
 .decor-rings--reviews {
   display: none;
-  --cx: 72px;
-  --cy: 150px;
+  /* 4 anillos (Rings.tsx): el exterior toca el borde de arriba y pasa a la izquierda de la palabra "Google". */
+  --cx: 30px;
+  --cy: 246px;
   top: calc(var(--cy) - var(--rings-size) / 2);
   left: calc(var(--cx) - var(--rings-size) / 2);
 }
 
-/* Contacto (móvil y tableta): arriba a la derecha de la fila de redes, entre el correo y "Síguenos" (detrás del contenido) */
-.decor-rings.decor-rings--contact-mobile {
-  /* Chico y con 3 anillos: así se ve completo dentro de la banda y no llega a las líneas del footer. */
-  --rings-scale: 0.27;
-  --cx: 24px;
-  top: calc(50% - var(--rings-size) / 2 - 44px);
-  right: calc(var(--cx) - var(--rings-size) / 2);
-}
-
-.decor-rings--contact-mobile g:nth-of-type(n + 4) {
-  display: none;
-}
-
-.decor-rings--contact-mobile .decor-ring {
-  opacity: calc(0.75 - var(--i) * 0.15);
-}
-
-.decor-rings--contact-mobile .decor-ring__light {
-  animation-duration: 8s;
-  animation-delay: calc(var(--i) * -2.7s);
-}
-
 .decor-rings--contact {
   display: none;
-}
-
-@media (width >= 600px) {
-  .decor-rings {
-    --rings-scale: 0.7;
-  }
 }
 
 @media (width >= 960px) {
@@ -98,21 +38,12 @@
     display: block;
   }
 
-  /* Contacto (escritorio): arriba a la derecha; los arcos van de la ola al borde derecho */
+  /* Contacto (escritorio): arriba a la derecha; los anillos completos, cortados solo por el borde derecho */
   .decor-rings--contact {
     --cx: 72px;
-    --cy: 150px;
+    --cy: 296px; /* el anillo exterior (con su respiración y nodos) completo, tocando el borde de arriba */
     display: block;
     top: calc(var(--cy) - var(--rings-size) / 2);
     right: calc(var(--cx) - var(--rings-size) / 2);
   }
-
-  .decor-rings--contact-mobile {
-    display: none;
-  }
-}
-
-/* SVG fuera de pantalla o con "Pausar animaciones": las animaciones CSS también se detienen. */
-.decor-rings.is-paused * {
-  animation-play-state: paused;
 }

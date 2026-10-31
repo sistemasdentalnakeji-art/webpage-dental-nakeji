@@ -4,6 +4,7 @@ import { routeOf, scheduleHref, type RouteDef } from '@/config/routes'
 import { UI } from '@/data/ui'
 import { BlogCard } from '@/pages/blog/BlogCard'
 import { articlesIn, BLOG, excerptOf, keyOf } from '@/pages/blog/blogData'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 /**
  * Portada del blog: cabecera con el índice de temas, la biblioteca de artículos agrupada por tema (con una barra de temas
@@ -21,7 +22,7 @@ export function BlogPage({ route }: { route: RouteDef }) {
           <div>
             <p className="blog-kicker">{hub.label}</p>
             <h1 id="blog-titulo" className="blog-hero__title shiny-text">
-              {hub.h1}
+              <TextBlurReveal text={hub.h1} />
             </h1>
             <p className="blog-hero__intro">{hub.intro}</p>
             <div className="blog-hero__actions">

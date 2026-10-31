@@ -15,6 +15,7 @@ import { Band } from '@/components/decor/Band'
 import { Carousel } from '@/components/ui/Carousel'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 function Poster({ promo, index }: { promo: PromoPoster; index: number }) {
   return (
@@ -48,7 +49,7 @@ export function PromotionsPage() {
         <header className="promotions__head">
           <p className="page-eyebrow pill-label">{PROMOTIONS_INTRO[lang].eyebrow}</p>
           <h1 id="promociones-titulo" className="page-title shiny-text shiny-text--ink">
-            {PROMOTIONS_INTRO[lang].title}
+            <TextBlurReveal text={PROMOTIONS_INTRO[lang].title} />
           </h1>
           <p className="page-lead">{PROMOTIONS_INTRO[lang].lead}</p>
         </header>

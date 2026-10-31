@@ -51,57 +51,6 @@
   transform: scaleX(-1);
 }
 
-/* Curvas de esquina a esquina: por debajo del contenido. Altura fija y anclada arriba (no 100 %): así no se
-   estiran ni se mueven cuando la sección crece (p. ej. al ampliar el cuadro de comentarios del formulario). */
-.decor--flow-desktop {
-  top: 0;
-  left: 0;
-  width: 100%;
-  /* Depende del ancho de la ventana, no del contenido. */
-  height: clamp(1000px, 115vw, 1700px);
-}
-
-/* Móvil y tableta: franja al pie de la sección, sin cruzar el texto */
-.decor--flow-mobile {
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 150px;
-}
-
-.decor--flow-mobile .decor-line__light {
-  stroke-dasharray: 90 1100;
-  animation-name: decor-light-short;
-  animation-duration: 9s;
-}
-
-@keyframes decor-light-short {
-  from {
-    stroke-dashoffset: 90;
-  }
-
-  to {
-    stroke-dashoffset: -1100;
-  }
-}
-
-@media (width < 960px) {
-  .decor--flow-desktop {
-    display: none;
-  }
-
-  .band--has-flow {
-    padding-bottom: calc(var(--band-padding) + 96px);
-  }
-}
-
-@media (width >= 960px) {
-  .decor--flow-mobile {
-    display: none;
-  }
-}
-
 /* SVG fuera de pantalla o con "Pausar animaciones": las animaciones CSS también se detienen. */
 .decor.is-paused * {
   animation-play-state: paused;

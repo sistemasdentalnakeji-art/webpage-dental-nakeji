@@ -1,8 +1,7 @@
 /* ==========================================================================
    Sección animada debajo del hero (CareStory) — "un hilo de sonrisa"
    Todo va ligado al scroll con animaciones CSS (animation-timeline: view()), sin JavaScript:
-   • cada línea entra por su lado enfocándose (de borrosa a nítida);
-   • las palabras se encienden una tras otra (--i es el número de la palabra dentro del mensaje);
+   • las palabras aparecen una tras otra de borrosas a nítidas (--i es el número de la palabra dentro del mensaje);
    • las frases en azul se subrayan con un trazo de marcador que se dibuja;
    • un hilo curvo se dibuja de un mensaje al siguiente.
    Si el navegador no lo soporta, o con "reducir movimiento", todo se ve completo y en su lugar final
@@ -106,6 +105,17 @@
     white-space: pre;
     visibility: hidden;
   }
+}
+
+/* Fondo de partículas (ParticlesBackground) solo en la esquina inferior izquierda, junto al diente: arriba no pasa por
+   detrás de los textos. Sus orillas se desvanecen para que no se vea el corte. */
+.story .particles-bg {
+  inset: auto auto 0 0;
+  width: 60%;
+  height: clamp(280px, 34%, 440px);
+  /* La mitad de arriba (a la altura del diente y del tercer mensaje) queda casi vacía; abajo se unen con las de Agendar. */
+  mask-image: linear-gradient(to top, #000 30%, rgba(0, 0, 0, 0.15) 60%, transparent 85%), linear-gradient(to left, transparent, #000 25%);
+  mask-composite: intersect;
 }
 
 /* Hilo detrás de los mensajes (se estira al alto de la sección): tramos rectos con vueltas de 90° (CareStory.tsx), con las
@@ -270,33 +280,18 @@ path.story__tooth-gloss {
 }
 
 /* --- Movimiento ligado al scroll ----------------------------------------- */
-@keyframes story-in {
+/* Text blur reveal: cada palabra pasa de transparente y borrosa a nítida, subiendo un poco. */
+@keyframes story-blur {
   from {
     opacity: 0;
-    transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(var(--from-scale, 1));
-    filter: blur(12px);
-  }
-
-  55% {
-    opacity: 1;
+    transform: translateY(0.25em);
+    filter: blur(10px);
   }
 
   to {
     opacity: 1;
     transform: none;
     filter: blur(0);
-  }
-}
-
-@keyframes story-word {
-  from {
-    opacity: 0.14;
-    transform: translateY(0.42em);
-  }
-
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 
@@ -350,26 +345,17 @@ path.story__tooth-gloss {
 
 @supports (animation-timeline: view()) {
   /* Cada mensaje tiene su propia línea de tiempo (la comparten sus palabras y su subrayado). El 30 % inferior de la
-     pantalla no cuenta: el texto sigue invisible mientras esté ahí (también en pantallas grandes, donde ya se verían al
-     abrir la página) y empieza a moverse solo cuando el visitante llega a esa zona. */
+     pantalla no cuenta: el texto sigue invisible mientras esté ahí y aparece cuando el visitante llega a esa zona. */
   .story__item {
     view-timeline: --beat block;
     view-timeline-inset: 0px 30%;
   }
 
-  /* Entrada de cada línea: llega desde su lado y se enfoca. Más rápida que antes (primer tercio del recorrido):
-     el resto del recorrido lo ocupan las palabras y el subrayado. */
-  .story__line {
-    animation: story-in cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-timeline: --beat;
-    animation-range: cover 0% cover 40%;
-  }
-
-  /* Palabras: se encienden en cascada mientras el mensaje sube por la pantalla. */
+  /* Palabras: aparecen en cascada mientras el mensaje sube por la pantalla. */
   .story__word {
-    animation: story-word linear both;
+    animation: story-blur ease-out both;
     animation-timeline: --beat;
-    animation-range: cover calc(8% + var(--i) * 3.2%) cover calc(38% + var(--i) * 3.2%);
+    animation-range: cover calc(4% + var(--i) * 3%) cover calc(22% + var(--i) * 3%);
   }
 
   /* Línea inferior: se dibuja cuando el mensaje ya está legible. */
@@ -379,38 +365,18 @@ path.story__tooth-gloss {
     animation-range: cover 48% cover 90%;
   }
 
-  /* Izquierda y derecha: cada línea arranca justo fuera de la pantalla (110 % de su propio ancho)
-     y entra hacia su lugar; el mismo valor a cada lado para que vayan a la par. */
-  .story__item--left {
-    --from-x: -110%;
-  }
-
   /* Los dos laterales con el mismo ritmo: terminan de entrar antes de media pantalla (con el ritmo general, en pantallas
      bajas como 1024×768 el de la derecha seguía cortado por el borde a media pantalla). */
   :is(.story__item--left, .story__item--right) {
     view-timeline-inset: 0px 12%;
   }
 
-  :is(.story__item--left, .story__item--right) .story__line {
-    animation-range: cover 0% cover 25%;
-  }
-
   :is(.story__item--left, .story__item--right) .story__word {
-    animation-range: cover calc(2% + var(--i) * 1.4%) cover calc(20% + var(--i) * 1.4%);
+    animation-range: cover calc(2% + var(--i) * 1.6%) cover calc(14% + var(--i) * 1.6%);
   }
 
   :is(.story__item--left, .story__item--right) .story__accent {
     animation-range: cover 40% cover 70%;
-  }
-
-  .story__item--right {
-    --from-x: 110%;
-  }
-
-  /* Centro: sube desde bastante más abajo y crece un poco al llegar. */
-  .story__item--up {
-    --from-y: 320px;
-    --from-scale: 0.92;
   }
 
   /* Hilo: se va revelando a lo largo de toda la sección. Su línea de tiempo (--thread) la comparte el diente, que es su
@@ -445,12 +411,6 @@ path.story__tooth-gloss {
     animation-timeline: --thread;
     animation-range: cover 12% cover 80%;
   }
-
-  @media (width < 768px) {
-    .story__item--up {
-      --from-y: 200px;
-    }
-  }
 }
 
 /* Respaldo para navegadores sin `animation-timeline` (Safari anterior a 26): CareStory.tsx mide el scroll y deja el avance
@@ -480,7 +440,6 @@ path.story__tooth-gloss {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .story__line,
   .story__word,
   .story__accent,
   .story__thread .decor-reveal,

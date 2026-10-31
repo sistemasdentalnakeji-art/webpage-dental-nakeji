@@ -83,7 +83,7 @@ interface PageDef {
 
 /**
  * Página en ambos idiomas. `text` puede ser un solo Text (el mismo en los dos idiomas: provisional en /en/ hasta traducirla)
- * o { en, es }. Por defecto 'empty' (noindex).
+ * o { en, es }. Por defecto 'ready' (indexable y en el sitemap); una página con textos de ejemplo va con { status: 'empty' }.
  */
 const page = (
   key: RouteKey,
@@ -94,7 +94,7 @@ const page = (
   key,
   paths,
   text: 'label' in text ? { en: text, es: text } : text,
-  status: 'empty',
+  status: 'ready',
   ...extra,
 })
 
@@ -188,7 +188,7 @@ const withTitle = (label: string, seo: Partial<Text> = {}): Text => ({ label, ti
 
 /**
  * Página de servicio con la plantilla (hero + información + agenda).
- * Sigue en 'empty' (noindex) hasta publicar: cambia su status a 'ready' para que se indexe y entre al sitemap.
+ * Indexable ('ready', el valor por defecto de page) y en el sitemap.
  * El slug en español es el del sitio actual; el de inglés es nuevo.
  */
 const service = (key: ServiceKey, es: string, en: string, label: string, seo: { title: string; description: string }): PageDef =>
@@ -239,7 +239,7 @@ function blogPairEn<T extends { key: string }>(list: T[], key: string): T {
 
 /**
  * Categorías (5) y artículos (14) del blog, con los textos de src/data/blog-content.json y su traducción en blog-content.en.json.
- * La clave (`blog:<slug en español>`) es la misma en los dos idiomas. Empiezan en 'empty' (noindex).
+ * La clave (`blog:<slug en español>`) es la misma en los dos idiomas. Son 'ready' (indexables).
  */
 const BLOG_PAGES: PageDef[] = [
   ...blogContent.categories.map((c) => {
@@ -302,11 +302,44 @@ const PAGES: PageDef[] = [
     }),
   }),
   // Página /beneficios/: promociones, convenios y aseguranzas en una sola página (pages/benefits/BenefitsPage.tsx).
-  page('benefits', { en: '/en/benefits/', es: '/es/beneficios/' }, { en: withTitle('Benefits'), es: withTitle('Beneficios') }),
+  page('benefits', { en: '/en/benefits/', es: '/es/beneficios/' }, {
+    en: withTitle('Benefits', {
+      description:
+        'Promotions, partner-company agreements and US dental insurance at Dental Nakeji, Tijuana. Clear options to care for your teeth without overspending.',
+    }),
+    es: withTitle('Beneficios', {
+      description:
+        'Promociones, convenios con empresas y aseguranzas americanas en Dental Nakeji, Tijuana. Te explicamos tus opciones para que cuides tu salud dental sin gastar de más.',
+    }),
+  }),
   // Submenú de Beneficios. /convenios/ es nueva; las otras dos ya existen.
-  page('promotions', { en: '/en/promotions/', es: '/es/nuestras-promociones/' }, { en: withTitle('Promotions'), es: withTitle('Promociones') }),
-  page('agreements', { en: '/en/agreements/', es: '/es/convenios/' }, { en: withTitle('Partner companies'), es: withTitle('Convenios') }),
-  page('insurance', { en: '/en/insurance/', es: '/es/insurance/' }, { en: withTitle('Insurance'), es: withTitle('Aseguranzas') }),
+  // Promociones sigue en 'empty' mientras sus tarjetas sean de ejemplo ("Promoción 1", "Vigencia por definir").
+  page(
+    'promotions',
+    { en: '/en/promotions/', es: '/es/nuestras-promociones/' },
+    { en: withTitle('Promotions'), es: withTitle('Promociones') },
+    { status: 'empty' },
+  ),
+  page('agreements', { en: '/en/agreements/', es: '/es/convenios/' }, {
+    en: withTitle('Partner companies', {
+      description:
+        'Dental agreements for companies in Tijuana. Does your company have one with Dental Nakeji, or want one? Message us and we will go over the options together.',
+    }),
+    es: withTitle('Convenios', {
+      description:
+        'Convenios dentales para empresas en Tijuana. ¿Tu empresa tiene o quiere un convenio con Dental Nakeji? Escríbenos y revisamos juntos las opciones.',
+    }),
+  }),
+  page('insurance', { en: '/en/insurance/', es: '/es/insurance/' }, {
+    en: withTitle('Insurance', {
+      description:
+        'Dental Nakeji in Tijuana accepts US dental insurance plans. See the plans we accept and contact us before your appointment to answer your questions.',
+    }),
+    es: withTitle('Aseguranzas', {
+      description:
+        'Dental Nakeji en Tijuana acepta aseguranzas dentales americanas. Consulta las aseguranzas que aceptamos y escríbenos antes de tu cita para resolver tus dudas.',
+    }),
+  }),
 
   service('implants', 'implantes-dentales-en-tijuana', 'dental-implants-in-tijuana', 'Implantes dentales', {
     title: 'Implantes dentales en Tijuana | Dental Nakeji',
@@ -411,7 +444,23 @@ const PAGES: PageDef[] = [
       }),
     },
   ),
-  page('blog', { en: '/en/blog/', es: '/es/blog/' }, withTitle('Blog'), { template: 'blog' }),
+  page(
+    'blog',
+    { en: '/en/blog/', es: '/es/blog/' },
+    {
+      en: withTitle('Blog', {
+        title: 'Dental health blog | Dental Nakeji, Tijuana',
+        description:
+          'Clear answers about caring for your teeth and gums and about the treatments at Dental Nakeji in Tijuana: implants, crowns, orthodontics, cleaning and more.',
+      }),
+      es: withTitle('Blog', {
+        title: 'Blog de salud dental | Dental Nakeji, Tijuana',
+        description:
+          'Respuestas claras sobre el cuidado de dientes y encías y sobre los tratamientos de Dental Nakeji en Tijuana: implantes, coronas, ortodoncia, limpieza y más.',
+      }),
+    },
+    { template: 'blog' },
+  ),
   ...BLOG_PAGES,
   // Requerido por el formulario de citas (LFPDPPP). Textos en src/data/legal.ts.
   page(

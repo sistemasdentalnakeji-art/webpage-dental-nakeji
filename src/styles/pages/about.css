@@ -8,11 +8,11 @@
 .about-page {
   --text-on-dark: rgba(255, 255, 255, 0.78);
   --line-on-dark: rgba(255, 255, 255, 0.16);
-  --about-card: linear-gradient(145deg, rgba(24, 49, 84, 0.92), rgba(9, 24, 46, 0.88));
+  --about-card: var(--card-blue);
   --about-card-soft: linear-gradient(145deg, rgba(29, 61, 101, 0.9), rgba(12, 30, 55, 0.88));
-  --about-card-border: rgba(123, 195, 235, 0.32);
-  --about-card-text: rgba(239, 247, 255, 0.8);
-  --about-card-shadow: 0 22px 56px -28px rgba(0, 8, 24, 0.82), inset 0 1px rgba(255, 255, 255, 0.06);
+  --about-card-border: var(--card-blue-border);
+  --about-card-text: var(--card-blue-text);
+  --about-card-shadow: var(--card-blue-shadow);
 }
 
 /* Las fibras terminan al pie de Administración (--fibers-end lo mide AboutPage.tsx) y se desvanecen, para no encimarse con

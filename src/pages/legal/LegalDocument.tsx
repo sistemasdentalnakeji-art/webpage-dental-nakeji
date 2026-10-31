@@ -16,6 +16,7 @@ import { PagePlasma } from '@/components/decor/PagePlasma'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { atLeast, BP } from '@/config/breakpoints'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 function Block({ block }: { block: LegalBlock }) {
   if (typeof block === 'string') return <p className="legal-text">{block}</p>
@@ -155,7 +156,7 @@ export function LegalDocument({ doc, titleId, compact = false }: { doc: LegalDoc
         <header className="legal-head legal-head--doc">
           <p className="legal-head__eyebrow pill-label">{doc.eyebrow}</p>
           <h1 id={titleId} className="legal-head__title shiny-text">
-            {doc.title}
+            <TextBlurReveal text={doc.title} />
           </h1>
           <p className="legal-head__lead">{doc.lead}</p>
           {doc.updated && (

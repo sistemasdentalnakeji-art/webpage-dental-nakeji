@@ -21,6 +21,7 @@ import {
   readingMinutes,
   type Article,
 } from '@/pages/blog/blogData'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 /** Enlaces de una línea del .md ("[texto](url); [texto](url)"), separados por punto y coma. */
 function Links({ text }: { text: string }) {
@@ -73,7 +74,7 @@ export function BlogArticlePage({ route, article }: { route: RouteDef; article: 
             <BlogCrumbs trail={trail} />
             <p className="blog-kicker">{article.category}</p>
             <h1 id="articulo-titulo" className="blog-article__title shiny-text">
-              {article.title}
+              <TextBlurReveal text={article.title} />
             </h1>
             <p className="blog-article__lead">{article.lead}</p>
             <p className="blog-article__stamp">

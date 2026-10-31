@@ -20,6 +20,7 @@ import { BrandOrb } from '@/components/ui/BrandOrb'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { SectionDecor } from '@/components/decor/SectionDecor'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 /** Servicio al que lleva cada burbuja, en el mismo orden que hero.ambientLabels (data/home.ts). */
 const AMBIENT_SERVICES: ServiceKey[] = ['implants', 'crowns', 'veneers', 'whitening', 'cleaning', 'orthodontics']
@@ -49,11 +50,13 @@ export function Hero() {
           <BrandOrb />
 
           <h1 id="hero-titulo" className="hero__title">
-            <span className="hero__title-lead shiny-text">{hero.titleLead}</span>{' '}
-            <span className="hero__title-muted shiny-text">{hero.titleMuted}</span>
+            <span className="hero__title-lead shiny-text"><TextBlurReveal text={hero.titleLead} /></span>{' '}
+            <span className="hero__title-muted shiny-text">
+              <TextBlurReveal text={hero.titleMuted} start={hero.titleLead.split(' ').length} />
+            </span>
           </h1>
 
-          <p className="hero__lead">{hero.lead}</p>
+          <p className="hero__lead"><TextBlurReveal text={hero.lead} /></p>
 
           <div className="hero__actions">
             <a className="btn btn--lg hero__cta interactive-hover" href={`#${SCHEDULE_ANCHOR}`}>

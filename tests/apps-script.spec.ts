@@ -178,8 +178,11 @@ test.describe('Code.gs (Apps Script)', () => {
 
   test('el mismo teléfono escrito con y sin código de país cuenta como uno solo', () => {
     const { send } = loadScript()
+    // Límite: 3 por teléfono por hora (MAX_REQUESTS_PER_PHONE_PER_HOUR); la cuarta, en otro formato, ya cuenta como el mismo número.
     expect(send(request({ phone: '6641234567', time: '10:00' }))).toEqual({ ok: true })
-    expect(send(request({ phone: '+526641234567', time: '11:00' }))).toMatchObject({ ok: false, error: 'limit' })
+    expect(send(request({ phone: '+526641234567', time: '11:00' }))).toEqual({ ok: true })
+    expect(send(request({ phone: '6641234567', time: '12:00' }))).toEqual({ ok: true })
+    expect(send(request({ phone: '+526641234567', time: '13:00' }))).toMatchObject({ ok: false, error: 'limit' })
   })
 
   test('el límite global por hora corta a la solicitud 31', () => {

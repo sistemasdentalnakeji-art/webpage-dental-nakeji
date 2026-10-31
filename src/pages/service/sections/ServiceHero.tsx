@@ -16,6 +16,7 @@ import type { ServiceContent } from '@/data/services'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
 import { SectionDecor } from '@/components/decor/SectionDecor'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 interface ServiceHeroProps {
   /** Nombre corto del servicio (migas de pan). */
@@ -63,7 +64,7 @@ export function ServiceHero({ label, content }: ServiceHeroProps) {
           </nav>
 
           <h1 id="servicio-titulo" className="service-hero__title shiny-text">
-            {content.title}
+            <TextBlurReveal text={content.title} />
           </h1>
 
           <p className="service-hero__subtitle">{content.subtitle}</p>

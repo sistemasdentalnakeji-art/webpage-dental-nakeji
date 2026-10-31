@@ -76,7 +76,6 @@ export function ContactLocation() {
             </address>
 
             <div className="contact__social">
-              <SectionDecor variant="rings" placement="contact-mobile" />
               <span className="contact-item__label">{ui.contact.follow}</span>
               <SocialLinks iconSize={40} />
             </div>

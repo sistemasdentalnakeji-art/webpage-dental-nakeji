@@ -97,6 +97,19 @@
   line-height: 1.6;
 }
 
+/* Entrada del hero: título → pausa 0.2s → párrafo.
+   Título (5 palabras): 100ms + 4 × 200ms + 1.6s = 2.5s, pero la curva frena al final y se ve completo hacia 1.5s;
+   el párrafo arranca 0.2s después de eso (1.7s) y dura ~2.5s (48 × 29ms + 1.1s). */
+.hero__title .text-blur-reveal {
+  animation-duration: 1.6s;
+  animation-delay: calc(var(--word) * 200ms + 100ms);
+}
+
+.hero__lead .text-blur-reveal {
+  animation-duration: 1.1s;
+  animation-delay: calc(var(--word) * 29ms + 1.7s);
+}
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;

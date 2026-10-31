@@ -16,6 +16,7 @@ import { PagePlasma } from '@/components/decor/PagePlasma'
 import { Band } from '@/components/decor/Band'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
+import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 export function InsurancePage() {
   const lang = useLang()
@@ -32,7 +33,7 @@ export function InsurancePage() {
           <div>
             <p className="page-eyebrow pill-label">{INSURANCE_INTRO[lang].eyebrow}</p>
             <h1 id="aseguranzas-pagina-titulo" className="page-title shiny-text">
-              {INSURANCE_INTRO[lang].title}
+              <TextBlurReveal text={INSURANCE_INTRO[lang].title} />
             </h1>
             <p className="page-lead">{INSURANCE_INTRO[lang].lead}</p>
           </div>
