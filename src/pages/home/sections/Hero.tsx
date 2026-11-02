@@ -60,7 +60,7 @@ export function Hero() {
 
           <div className="hero__actions">
             <a className="btn btn--lg hero__cta interactive-hover" href={`#${SCHEDULE_ANCHOR}`}>
-              <InteractiveHoverContent>{hero.primaryCta}</InteractiveHoverContent>
+              <InteractiveHoverContent bell>{hero.primaryCta}</InteractiveHoverContent>
             </a>
             <ExternalLink className="btn btn--lg hero__cta-alt" href={SITE.social.whatsapp}>
               <Icon name="whatsapp" size={20} />

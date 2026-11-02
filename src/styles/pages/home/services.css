@@ -63,13 +63,20 @@
   --siri-width: 2.5px;
   --siri-blur: 9px;
   position: absolute;
-  bottom: -28px;
+  bottom: -40px; /* casi todo sobre el azul: solo asoma un borde sobre la foto */
   left: 24px;
   width: 56px;
   height: 56px;
   border-radius: 18px;
   background: var(--color-white);
   color: var(--color-brand);
+}
+
+/* La parte que sigue sobre la foto se ve como vidrio esmerilado: el icono se lee y la foto no lo tapa. */
+.service-card .service-card__icon {
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
 }
 
 .service-card__icon.siri::before,
@@ -90,7 +97,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  padding: 40px 24px 24px;
+  padding: 52px 24px 24px;
 }
 
 .service-card__title {

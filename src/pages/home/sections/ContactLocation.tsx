@@ -16,7 +16,6 @@ import { ContactItem } from '@/components/ui/ContactItem'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { InteractiveHoverContent } from '@/components/ui/AnimatedButtons'
 import { LocationMap } from '@/components/ui/LocationMap'
-import { SectionDecor } from '@/components/decor/SectionDecor'
 import { SectionIntro } from '@/components/ui/SectionIntro'
 import { SocialLinks } from '@/components/ui/SocialLinks'
 
@@ -32,7 +31,6 @@ export function ContactLocation() {
       tone="white"
       labelledBy="contacto-titulo"
       waveTop="flip"
-      decor={<SectionDecor variant="rings" placement="contact" />}
     >
       <div className="container">
         <div className="contact">

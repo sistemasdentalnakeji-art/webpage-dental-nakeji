@@ -1,15 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // TARJETA DE UBICACIÓN EXPANDIBLE (inspirada en "Location Map" de 21st.dev; código propio, sin dependencias)
 //
-// • Reemplaza al mapa de Google. En reposo es una tarjeta azul oscuro centrada en su recuadro (icono, etiqueta, nombre);
-//   con el cursor se inclina en 3D siguiendo el puntero. SE ABRE SOLA: al llegar a la sección (≥ 35 % visible) espera
+// • Reemplaza al mapa de Google. En reposo es una tarjeta azul oscuro centrada en su recuadro (icono, etiqueta, nombre)
+//   que se mece de lado a lado (~2 s). SE ABRE SOLA: al llegar a la sección (≥ 35 % visible) espera
 //   2 s y se abre; al salir de la zona (< 35 %) se cierra, y se repite al volver. También con clic o Enter/Espacio
 //   (Escape o un nuevo clic la contraen); si la persona la usa a mano, no se automatiza hasta que salga de la zona.
 // • Al expandirse llena todo el recuadro y se dibuja el plano de las calles de alrededor, con el pin de la clínica como
 //   protagonista (rojo, con su nombre; ilustración propia en src/data/locationMap.ts, no es un mapa real). Sin texto encima:
 //   la dirección y el botón "Cómo llegar" viven en el panel de contacto de la izquierda.
 // • Un solo <button> cubre la tarjeta y la alterna (aria-expanded).
-// • Sin window/document en el render (el prerender corre en Node): el puntero y el observador solo se usan en eventos y efectos.
+// • Sin window/document en el render (el prerender corre en Node): el observador solo se usan en eventos y efectos.
 // • Estilos → src/styles/components/location-map.css. Uso: sections/ContactLocation.tsx.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -19,7 +19,6 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent,
-  type PointerEvent,
 } from 'react'
 import { BLOCKS, LABELS, MAP_VIEW, PARK, PIN, RIVER, ROADS, TERRAIN } from '@/data/locationMap'
 import { useLang } from '@/app/lang'
@@ -42,7 +41,6 @@ export function LocationMap({ name, tag }: LocationMapProps) {
   const ui = UI[useLang()].map
   const [expanded, setExpanded] = useState(false)
   const stageRef = useRef<HTMLDivElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
   const timerRef = useRef<number | undefined>(undefined)
   const manualRef = useRef(false) // la persona la abrió o cerró a mano: no se automatiza hasta que salga de la zona
@@ -60,7 +58,8 @@ export function LocationMap({ name, tag }: LocationMapProps) {
           timerRef.current = window.setTimeout(() => {
             // Si la persona ya está con el foco dentro, no se le mueve nada.
             // Solo el foco de teclado lo frena: tras un clic con el mouse el botón queda enfocado y nunca volvería a abrirse solo.
-            if (!stage.querySelector(':focus-visible')) setExpanded(true)
+            if (stage.querySelector(':focus-visible')) return
+            setExpanded(true)
           }, OPEN_DELAY)
         } else {
           manualRef.current = false
@@ -76,35 +75,15 @@ export function LocationMap({ name, tag }: LocationMapProps) {
     }
   }, [])
 
-  const resetTilt = () => {
-    cardRef.current?.style.removeProperty('--rx')
-    cardRef.current?.style.removeProperty('--ry')
-  }
-
-  // Inclinación 3D (±8°) según la distancia del puntero al centro; solo con mouse y con la tarjeta contraída.
-  const tilt = (event: PointerEvent<HTMLDivElement>) => {
-    const stage = stageRef.current
-    const card = cardRef.current
-    if (!stage || !card || expanded || event.pointerType !== 'mouse') return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const rect = stage.getBoundingClientRect()
-    const dx = Math.max(-120, Math.min(120, event.clientX - (rect.left + rect.width / 2)))
-    const dy = Math.max(-70, Math.min(70, event.clientY - (rect.top + rect.height / 2)))
-    card.style.setProperty('--ry', `${((dx / 120) * 8).toFixed(2)}deg`)
-    card.style.setProperty('--rx', `${((-dy / 70) * 8).toFixed(2)}deg`)
-  }
-
   const toggle = () => {
     manualRef.current = true
     window.clearTimeout(timerRef.current)
-    resetTilt()
     setExpanded((value) => !value)
   }
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== 'Escape' || !expanded) return
     manualRef.current = true
-    resetTilt()
     setExpanded(false)
     toggleRef.current?.focus() // el foco no se pierde: la capa de información queda inerte
   }
@@ -114,17 +93,15 @@ export function LocationMap({ name, tag }: LocationMapProps) {
       ref={stageRef}
       className="loc"
       data-expanded={expanded || undefined}
-      onPointerMove={tilt}
-      onPointerLeave={resetTilt}
       onKeyDown={onKeyDown}
     >
-      <div ref={cardRef} className="loc__card">
+      <div className="loc__card">
         {/* Cuadrícula tenue (solo contraída). */}
         <span className="loc__grid" aria-hidden="true" />
 
         {/* Plano (decorativo): terreno, bloques, calles que se trazan, nombres y el pin de la clínica. */}
         <div className="loc__map" aria-hidden="true">
-          <svg className="loc__svg" viewBox={MAP_VIEW} preserveAspectRatio="xMidYMid slice">
+          <svg className="loc__svg" viewBox={MAP_VIEW} preserveAspectRatio="xMaxYMin slice">
             <polygon className="loc__terrain" points={TERRAIN} />
             <polygon className="loc__park" points={PARK} />
             <path className="loc__river" d={RIVER} />

@@ -40,6 +40,29 @@
 .interactive-hover:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) .interactive-hover__dot { clip-path: circle(150% at 15px 50%); }
 .interactive-hover:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) .interactive-hover__label { transform: translateX(24px); opacity: 0; }
 .interactive-hover:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) .interactive-hover__over { transform: none; opacity: 1; }
+.interactive-hover__bell {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  display: grid;
+  translate: 0 -50%;
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+.interactive-hover__bell svg { transform-origin: 50% 8%; animation: bell-ring 5s ease-in-out infinite; }
+/* Con campanita no hay punto en reposo (queda solo el relleno dorado al pasar el cursor) y el texto deja sitio a la campana. */
+.interactive-hover:has(.interactive-hover__bell) .interactive-hover__dot { clip-path: circle(0 at 15px 50%); }
+.interactive-hover:has(.interactive-hover__bell) .interactive-hover__label { padding-left: 32px; }
+.interactive-hover:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) .interactive-hover__bell { opacity: 0; }
+/* Quieta casi todo el ciclo; al final se mece sutil (unos 0.5 s) y se asienta. */
+@keyframes bell-ring {
+  0%, 82%, 100% { transform: rotate(0); }
+  85% { transform: rotate(12deg); }
+  88% { transform: rotate(-10deg); }
+  91% { transform: rotate(7deg); }
+  94% { transform: rotate(-4deg); }
+  97% { transform: rotate(2deg); }
+}
 .interactive-hover:active:not(:disabled, [aria-disabled='true']) { transform: translateY(1px); }
 .interactive-hover:is(:disabled, [aria-disabled='true']) { cursor: wait; opacity: 0.7; }
 
@@ -113,6 +136,7 @@
 html[data-motion='paused'] :is(.interactive-hover, .liquid-glass, .liquid-metal),
 html[data-motion='paused'] .interactive-hover > span { transition: none; transform: none; }
 html[data-motion='paused'] .interactive-hover__over { display: none; }
+html[data-motion='paused'] .interactive-hover__bell svg { animation: none; }
 html[data-motion='paused'] .interactive-hover .interactive-hover__label { opacity: 1; transform: none; }
 html[data-motion='paused'] .interactive-hover .interactive-hover__dot { clip-path: circle(3px at 15px 50%); transition: none; }
 @media (prefers-reduced-motion: reduce) {

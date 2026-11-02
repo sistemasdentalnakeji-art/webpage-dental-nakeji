@@ -123,6 +123,19 @@
   gap: var(--space-4) var(--space-5);
 }
 
+/* Teléfonos: nunca en dos renglones. La letra se ajusta al ancho de su celda (≈ 11 em de número + botón de copiar y su hueco). */
+.bento__phone {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.bento__phones .bento__value {
+  min-width: 0;
+  font-size: clamp(0.875rem, (100cqi - var(--tap-min) - var(--space-3)) / 11, 1.75rem);
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
 .bento__note {
   margin-top: var(--space-2);
   color: var(--color-text);

@@ -10,10 +10,25 @@
 import { StrictMode } from 'react'
 import { createRoot, hydrateRoot } from 'react-dom/client'
 import { App } from '@/app/App'
-import { findRoute, routeOf } from '@/config/routes'
+import { SCHEDULE_ANCHOR, findRoute, routeOf } from '@/config/routes'
 import { applyHead } from '@/seo/head'
-import { pauseOffscreen } from '@/lib/motion'
+import { motionOff, pauseOffscreen } from '@/lib/motion'
 import '@/styles/index.css'
+
+// "Agendar" desde otra página llega a /…/#agendar: primero se ve el inicio y luego baja suave al formulario. El ancla no existe
+// al cargar (la sección llega diferida o se hidrata), por eso se espera a que aparezca en lugar de confiar en el salto del navegador.
+const scheduleId = window.location.hash.slice(1)
+if (scheduleId === SCHEDULE_ANCHOR) {
+  history.scrollRestoration = 'manual'
+  window.scrollTo(0, 0)
+  let tries = 0
+  const wait = window.setInterval(() => {
+    const target = document.getElementById(scheduleId)
+    if (!target && ++tries < 50) return
+    window.clearInterval(wait)
+    if (target) window.setTimeout(() => target.scrollIntoView({ behavior: motionOff() ? 'auto' : 'smooth' }), 700)
+  }, 100)
+}
 
 const container = document.getElementById('root')!
 const path = window.location.pathname

@@ -84,7 +84,7 @@ export function ServiceHero({ label, content }: ServiceHeroProps) {
               {ui.whatsapp}
             </ExternalLink>
             <a className="btn btn--lg service-hero__cta interactive-hover" href={`#${SCHEDULE_ANCHOR}`}>
-              <InteractiveHoverContent>{ui.book}</InteractiveHoverContent>
+              <InteractiveHoverContent bell>{ui.book}</InteractiveHoverContent>
             </a>
           </div>
         </div>

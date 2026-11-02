@@ -8,16 +8,17 @@ import { paletteAt, rgba } from '../palette'
 // • Nodos que orbitan cada anillo (unos en un sentido y otros al revés) dejando una estela de luz sobre su anillo.
 // • Cada pocos segundos sale una onda del centro: los anillos y los nodos que toca se encienden (crecen y alargan su
 //   estela), como una recomendación que se contagia de una persona a otra.
-// En el inicio hay dos: Reseñas de Google (escritorio) y Contacto (escritorio y celular). No agregar más sin avisar.
+// En el inicio hay uno: Reseñas de Google (escritorio). No agregar más sin avisar.
 // Estilos y posiciones → ./rings.css. Va dentro del `decor` de una Band: por encima del fondo, por debajo del contenido.
 // Respeta "Pausar animaciones" / "reducir movimiento" (queda quieto) y se detiene fuera de pantalla.
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** reviews: escritorio (arriba a la izquierda de Reseñas); contact: escritorio (arriba a la derecha). */
-export type RingsPlacement = 'reviews' | 'contact'
+/** reviews: escritorio (arriba a la izquierda de Reseñas). */
+export type RingsPlacement = 'reviews'
 
-/** Radios en un lienzo de 600×600 con el centro en medio (se escala al tamaño del elemento). */
-const RING_RADII = [72, 122, 172, 222, 272]
+/** Radios en un lienzo de 600×600 con el centro en medio (se escala al tamaño del elemento). Sin los dos exteriores:
+ *  el de 222 pasaba por detrás de la "G" de Google. */
+const RING_RADII = [72, 122, 172]
 const CENTER = 30
 /** Nodos del primer anillo; cada anillo hacia afuera lleva 3 más. */
 const NODES = 5
@@ -43,8 +44,7 @@ export function Rings({ placement }: { placement: RingsPlacement }) {
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
-    // Reseñas: sin el anillo exterior, que cruzaba la palabra "Google".
-    const radii = RING_RADII.slice(0, { reviews: 4, contact: 5 }[placement])
+    const radii = RING_RADII
     const nodes: Node[] = radii.flatMap((_, ring) =>
       Array.from({ length: NODES + ring * 3 }, (_, k) => ({
         ring,

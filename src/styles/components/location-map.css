@@ -1,11 +1,29 @@
 /* ==========================================================================
    Tarjeta de ubicación expandible (components/ui/LocationMap.tsx)
    Reemplaza al mapa de Google. Azul oscuro de la marca (--color-ink → --color-night) con trazos celestes.
-   Contraída: tarjeta centrada que se inclina con el puntero. Expandida: llena todo el recuadro (.contact__map).
-   Movimiento con transform/opacity y el tamaño de la tarjeta; "reducir movimiento" lo resume global/preferences.css.
+   Contraída: tarjeta centrada que se mece de lado a lado. Expandida: llena todo el recuadro.
+   La tarjeta SIEMPRE mide todo el recuadro y lo que se ve es un recorte (clip-path) del tamaño contraído que se abre:
+   antes se animaban width/height y cada cuadro recalculaba el diseño y reescalaba el plano (se veía trabado, y el rebote
+   del resorte chocaba con max-width: 100%). "Reducir movimiento" lo resume global/preferences.css.
    ========================================================================== */
+/* Registradas para poder interpolarlas: la inclinación (la pone LocationMap.tsx), el vaivén y su intensidad. */
+@property --loc-sway {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --loc-amp {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
 .loc {
-  --loc-spring: cubic-bezier(0.22, 1.1, 0.36, 1);
+  --loc-w: min(340px, 100% - 32px); /* tamaño contraído (los % se resuelven contra el recuadro donde se usan) */
+  --loc-h: min(200px, 100% - 64px);
+  --loc-radius: 24px;
+  --loc-open: 0.8s cubic-bezier(0.32, 0.72, 0, 1); /* sin rebote: se abre y se asienta */
   --loc-line: 123, 195, 235; /* celeste de la marca (--color-brand-light) en RGB */
   --loc-pin: #ea4335; /* rojo del pin de ubicación */
   --loc-pin-dot: #8f1d14;
@@ -14,36 +32,71 @@
   perspective: 1000px;
 }
 
-.loc__card {
-  /* Centrado con inset + margin auto (no translate en %): en iOS Safari el translate no se recalculaba al crecer y la
-     tarjeta se abría desde una esquina. Así crece del centro hacia los cuatro lados en todos los navegadores. */
+/* Resplandor amarillo que respira detrás de la tarjeta contraída (mismo ritmo que el contorno .siri de las tarjetas de contacto).
+   Fuera de la tarjeta: el recorte la cortaría. */
+.loc::before {
+  content: '';
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 240px;
-  height: 140px;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-  border: 1px solid rgba(var(--loc-line), 0.28);
-  border-radius: 24px;
-  background: linear-gradient(155deg, var(--color-ink) 0%, var(--color-night) 100%);
-  box-shadow: 0 24px 48px -24px rgba(10, 21, 41, 0.75);
-  color: var(--color-white);
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition:
-    width 0.7s var(--loc-spring),
-    height 0.7s var(--loc-spring),
-    border-radius 0.7s var(--loc-spring),
-    transform var(--dur-fast) var(--ease-out);
+  width: var(--loc-w);
+  height: var(--loc-h);
+  border-radius: var(--loc-radius);
+  background: linear-gradient(135deg, #ffd98a, var(--color-gold), #f2a93b);
+  filter: blur(16px);
+  opacity: 0.85;
+  animation: loc-glow 1.6s ease-in-out infinite alternate;
+  transition: opacity var(--dur) var(--ease-out);
 }
 
+.loc[data-expanded]::before {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+.loc__card {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, var(--color-ink) 0%, var(--color-night) 100%);
+  color: var(--color-white);
+  clip-path: inset(
+    max(0px, (100% - var(--loc-h)) / 2) max(0px, (100% - var(--loc-w)) / 2) round var(--loc-radius)
+  );
+  transform: rotateY(calc(var(--loc-sway) * var(--loc-amp)));
+  animation: loc-sway 2s ease-in-out infinite;
+  transition:
+    clip-path var(--loc-open),
+    --loc-amp 0.6s var(--ease-out);
+}
+
+/* Abierta, el vaivén se apaga suave (--loc-amp a 0) y la animación se detiene. */
 .loc[data-expanded] .loc__card {
-  width: 100%;
-  height: 100%;
-  border-radius: 0;
-  border-color: transparent;
-  transform: none;
+  --loc-amp: 0;
+  clip-path: inset(0 round var(--radius-card));
+  animation-play-state: paused;
+}
+
+/* Respiración del resplandor: solo escala (la opacidad la lleva el desvanecido al abrir). */
+@keyframes loc-glow {
+  from {
+    transform: scale(0.97);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+/* Vaivén automático de lado a lado: un ciclo de ~2 s, el mismo tiempo que tarda en abrirse sola. */
+@keyframes loc-sway {
+  0%,
+  100% {
+    --loc-sway: -7deg;
+  }
+
+  50% {
+    --loc-sway: 7deg;
+  }
 }
 
 /* ---------- Cuadrícula tenue (solo contraída) ---------- */
@@ -237,7 +290,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 18px 20px;
+  width: var(--loc-w);
+  height: var(--loc-h);
+  margin: auto;
+  padding: 24px 26px;
+  border: 1px solid rgba(var(--loc-line), 0.28);
+  border-radius: var(--loc-radius);
   opacity: 1;
   transition: opacity var(--dur) var(--ease-out) 0.1s;
   pointer-events: none;
@@ -262,19 +320,15 @@
   transition: filter var(--dur) var(--ease-out);
 }
 
-.loc:hover:not([data-expanded]) .loc__icon {
-  filter: drop-shadow(0 0 9px rgba(var(--loc-line), 0.7));
-}
-
 .loc__tag {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--radius-pill);
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.78);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -312,22 +366,18 @@
 
 .loc__bottom {
   display: grid;
-  gap: 6px;
+  gap: 10px;
 }
 
 .loc__name {
   font-family: var(--font-display);
-  font-size: 0.9375rem;
+  font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   transition: translate var(--dur) var(--ease-out);
 }
 
-.loc:hover:not([data-expanded]) .loc__name {
-  translate: 4px 0;
-}
-
-/* Línea de acento: corta en reposo, se alarga con el cursor. */
+/* Línea de acento: corta. */
 .loc__line {
   display: block;
   width: 30%;
@@ -336,22 +386,24 @@
   transition: width var(--dur-slow) var(--ease-out);
 }
 
-.loc:hover:not([data-expanded]) .loc__line {
-  width: 100%;
-}
-
 /* ---------- Botón que alterna y botón de cierre ---------- */
 .loc__toggle {
   position: absolute;
   inset: 0;
+  width: var(--loc-w);
+  height: var(--loc-h);
+  margin: auto;
   padding: 0;
   border: 0;
-  border-radius: inherit;
+  border-radius: var(--loc-radius);
   background: transparent;
   cursor: pointer;
 }
 
 .loc[data-expanded] .loc__toggle {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
   cursor: zoom-out;
 }
 
@@ -389,7 +441,7 @@
 /* Pista debajo de la tarjeta: con el cursor encima (o siempre en pantallas táctiles). */
 .loc__hint {
   position: absolute;
-  top: calc(50% + 70px + 14px);
+  top: calc(50% + var(--loc-h) / 2 + 14px);
   left: 50%;
   color: var(--color-muted);
   font-size: 0.6875rem;
@@ -404,16 +456,9 @@
   pointer-events: none;
 }
 
-.loc:hover:not([data-expanded]) .loc__hint {
+.loc:not([data-expanded]) .loc__hint {
   opacity: 1;
   translate: -50% 0;
-}
-
-@media (hover: none) {
-  .loc:not([data-expanded]) .loc__hint {
-    opacity: 1;
-    translate: -50% 0;
-  }
 }
 
 .loc[data-expanded] .loc__hint {

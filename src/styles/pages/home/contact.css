@@ -148,9 +148,6 @@ a.contact-item__value:hover {
 .contact__map {
   position: relative;
   min-height: 360px;
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  background: var(--color-tint);
 }
 
 /* Una columna ancha (tableta): más alto, para que el plano recortado conserve el pin y su nombre a la vista. */
@@ -187,7 +184,7 @@ a.contact-item__value:hover {
   }
 }
 
-/* Celular: cerrado, el recuadro se ajusta a la tarjeta (140 px + pista); expandido, recupera la altura del escritorio
+/* Celular: cerrado, el recuadro se ajusta a la tarjeta (200 px + pista); expandido, recupera la altura del escritorio
    para que el plano no quede recortado. */
 @media (width < 600px) {
   .contact__intro .section-title {
@@ -199,8 +196,8 @@ a.contact-item__value:hover {
   }
 
   .contact__map {
-    min-height: 220px;
-    transition: min-height 0.7s cubic-bezier(0.22, 1.1, 0.36, 1);
+    min-height: 280px;
+    transition: min-height 0.8s cubic-bezier(0.32, 0.72, 0, 1); /* mismo ritmo que la tarjeta (--loc-open) */
   }
 
   .contact__map:has(.loc[data-expanded]) {

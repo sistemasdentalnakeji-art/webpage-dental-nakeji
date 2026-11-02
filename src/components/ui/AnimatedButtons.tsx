@@ -4,9 +4,11 @@ import { Icon } from './Icon'
 import { motionOff } from '@/lib/motion'
 
 // Adaptado de dillionverma/interactive-hover-button (21st.dev).
-export function InteractiveHoverContent({ children }: { children: ReactNode }) {
+// `bell`: una campanita que se mece cada 5 s sustituye al punto dorado en reposo (el relleno dorado al pasar el cursor sigue igual).
+export function InteractiveHoverContent({ children, bell }: { children: ReactNode; bell?: boolean }) {
   return <>
     <span className="interactive-hover__dot" aria-hidden="true" />
+    {bell && <span className="interactive-hover__bell" aria-hidden="true"><Icon name="bell" size={18} /></span>}
     <span className="interactive-hover__label">{children}</span>
     <span className="interactive-hover__over" aria-hidden="true">{children}<Icon name="arrowRight" size={18} /></span>
   </>

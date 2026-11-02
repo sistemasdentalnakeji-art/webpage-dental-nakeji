@@ -14,7 +14,6 @@
 .benefit-card__footer,
 .contact-card,
 .legal-card,
-.home-canvas .contact__map,
 .schedule__form {
   border-color: var(--card-blue-border);
   background: var(--card-blue);
@@ -45,13 +44,12 @@
   color: var(--card-blue-text);
 }
 
-.service-card__cta {
-  background: var(--color-white);
-  color: var(--color-ink);
-}
-
+/* Botones principales sobre azul: el azul del formulario de Agendar; al pasar el cursor se llena de dorado (interactive-hover). */
+.service-card__cta,
 .service-card__cta:hover {
-  background: var(--color-sky);
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
 }
 
 /* ---------- /servicios/: catálogo ---------- */
@@ -194,14 +192,12 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* Botón principal (azul marino) sobre la tarjeta azul: pasa a blanco para destacar. */
-.contact-card .btn--primary {
-  background: var(--color-white);
-  color: var(--color-ink);
-}
-
+/* Botón principal sobre la tarjeta azul: el mismo azul del formulario de Agendar. */
+.contact-card .btn--primary,
 .contact-card .btn--primary:hover {
-  background: var(--color-sky);
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
 }
 
 /* ---------- Aviso de privacidad y términos ---------- */

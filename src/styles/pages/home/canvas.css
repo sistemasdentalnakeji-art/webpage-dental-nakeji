@@ -78,11 +78,14 @@
   color: var(--color-brand-light);
 }
 
-/* Botón principal fuera de tarjetas y formulario: blanco para que destaque sobre el azul. */
+/* Botón principal fuera de tarjetas (servicios destacados, convenios, aseguranzas): el mismo azul que el botón del formulario de Agendar. */
 .home-canvas .section-cta .btn--primary,
-.home-canvas .rail__cta {
-  background: var(--color-white);
-  color: var(--color-night);
+.home-canvas .section-cta .btn--primary:hover,
+.home-canvas .rail__cta,
+.home-canvas .rail__cta:hover {
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
 }
 
 /* Mensajes animados (CareStory). */

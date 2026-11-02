@@ -118,14 +118,16 @@
   margin-top: 34px;
 }
 
-.hero__cta {
-  background: var(--color-white);
-  color: var(--color-ink);
+/* Azul del formulario de Agendar; al pasar el cursor se llena de dorado (interactive-hover). */
+.hero__cta,
+.hero__cta:hover {
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
   box-shadow: 0 10px 30px rgba(3, 10, 24, 0.28);
 }
 
 .hero__cta:hover {
-  background: #eaf3fb;
   transform: translateY(-1px);
 }
 
@@ -205,6 +207,13 @@
   animation-delay: calc(var(--i) * 2s);
 }
 
+/* Con el cursor o el foco encima se queda quieta (no se desvanece bajo el clic) y se marca como enlace. */
+.ambient-label:is(:hover, :focus-visible) {
+  animation-play-state: paused;
+  border-color: var(--color-gold);
+  box-shadow: 0 14px 34px rgba(3, 10, 24, 0.3);
+}
+
 .ambient-label svg {
   box-sizing: content-box;
   padding: 4px;
@@ -254,18 +263,21 @@
   0% {
     opacity: 0;
     transform: translateY(10px) scale(0.97);
+    visibility: hidden; /* invisible = sin clic */
   }
 
   10%,
   45% {
     opacity: 1;
     transform: translateY(0) scale(1);
+    visibility: visible;
   }
 
   56%,
   100% {
     opacity: 0;
     transform: translateY(-8px) scale(0.97);
+    visibility: hidden;
   }
 }
 

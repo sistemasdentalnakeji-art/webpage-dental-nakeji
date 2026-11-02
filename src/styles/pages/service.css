@@ -148,14 +148,15 @@
 }
 
 /* Mismos botones que el hero del homepage: claro (principal) y de vidrio (secundario). */
-.service-hero__cta {
-  background: var(--color-white);
-  color: var(--color-ink);
+.service-hero__cta,
+.service-hero__cta:hover {
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
   box-shadow: 0 10px 30px rgba(3, 10, 24, 0.28);
 }
 
 .service-hero__cta:hover {
-  background: var(--color-sky);
   transform: translateY(-1px);
 }
 

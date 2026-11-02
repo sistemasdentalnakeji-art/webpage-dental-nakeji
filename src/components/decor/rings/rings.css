@@ -1,9 +1,9 @@
 /* ==========================================================================
    CÍRCULO CON SILUETAS (components/decor/rings/Rings.tsx)
-   Círculo con anillos concéntricos que respiran, en versión red de prismas (lienzo). En el inicio hay dos, solo en escritorio:
-   Reseñas de Google y Contacto. Va por encima del fondo de la banda y por debajo de su contenido (z-index negativo).
+   Círculo con anillos concéntricos que respiran, en versión red de prismas (lienzo). En el inicio hay uno, solo en escritorio:
+   Reseñas de Google. Va por encima del fondo de la banda y por debajo de su contenido (z-index negativo).
    ========================================================================== */
-/* Círculo con siluetas (Reseñas de Google, Contacto). Se colocan por su centro (--cx, --cy). */
+/* Círculo con siluetas (Reseñas de Google). Se colocan por su centro (--cx, --cy). */
 .decor-rings {
   --rings-scale: 0.5;
   --rings-size: calc(600px * var(--rings-scale));
@@ -15,18 +15,18 @@
   pointer-events: none;
 }
 
-/* Reseñas de Google, escritorio (≥960 px): arriba a la izquierda; los anillos completos, cortados solo por el borde izquierdo */
+/* Reseñas de Google, escritorio (≥960 px): arriba a la izquierda, siempre por debajo de las letras y SIN tocarlas:
+   el centro se calcula desde el borde izquierdo del contenedor (donde empieza la "G"): el anillo más grande
+   (172 + 8 de respiración + nodo ≈ 192) termina 28 px antes. En pantallas medianas el centro queda fuera
+   y solo asoma un arco por el borde izquierdo. */
 .decor-rings--reviews {
   display: none;
-  /* 4 anillos (Rings.tsx): el exterior toca el borde de arriba y pasa a la izquierda de la palabra "Google". */
-  --cx: 30px;
+  --reach: 192px;
+  --text-left: calc((100% - min(100%, var(--container) + 2 * var(--gutter))) / 2 + var(--gutter));
+  --cx: calc(var(--text-left) - 28px - var(--reach));
   --cy: 246px;
   top: calc(var(--cy) - var(--rings-size) / 2);
   left: calc(var(--cx) - var(--rings-size) / 2);
-}
-
-.decor-rings--contact {
-  display: none;
 }
 
 @media (width >= 960px) {
@@ -36,14 +36,5 @@
 
   .decor-rings--reviews {
     display: block;
-  }
-
-  /* Contacto (escritorio): arriba a la derecha; los anillos completos, cortados solo por el borde derecho */
-  .decor-rings--contact {
-    --cx: 72px;
-    --cy: 296px; /* el anillo exterior (con su respiración y nodos) completo, tocando el borde de arriba */
-    display: block;
-    top: calc(var(--cy) - var(--rings-size) / 2);
-    right: calc(var(--cx) - var(--rings-size) / 2);
   }
 }

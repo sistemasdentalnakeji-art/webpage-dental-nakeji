@@ -60,13 +60,11 @@
 }
 
 /* Botones sobre azul noche. */
-.blog-head .btn--primary {
-  background: var(--color-white);
-  color: var(--color-night);
-}
-
+.blog-head .btn--primary,
 .blog-head .btn--primary:hover {
-  background: var(--color-sky);
+  border: 1px solid var(--card-blue-border);
+  background: linear-gradient(135deg, var(--color-brand) 0%, var(--color-ink) 100%);
+  color: var(--color-white);
 }
 
 .blog-head .btn--ghost {
@@ -785,25 +783,6 @@
 }
 
 @media (width < 600px) {
-  /* En celular los temas bajan a varias filas de píldoras (todas visibles), sin barra que se corte de lado. */
-  /* Clase repetida: le gana a la regla del vidrio oscuro (.blog-dark .blog-chips ul) que va más abajo. */
-  .blog-chips.blog-chips ul,
-  .blog-dark .blog-chips.blog-chips ul {
-    flex-wrap: wrap;
-    padding: 0;
-    overflow: visible;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    backdrop-filter: none;
-  }
-
-  .blog-chips a {
-    min-height: 40px;
-    border: var(--border-on-dark);
-    background: rgb(10 21 41 / 0.55);
-  }
-
   /* Tarjeta en celular: todo va sobre la foto. Título arriba a la izquierda, logo abajo a la izquierda y fecha con minutos
      abajo a la derecha; sin extracto ni tema. */
   .blog-card__frame {
@@ -1016,12 +995,38 @@
   background: rgb(255 255 255 / 0.12);
 }
 
-/* Artículo: el texto largo va sobre una hoja clara para leerse con comodidad; el fondo oscuro queda alrededor. */
+/* Los temas bajan a varias filas de píldoras (todas visibles) en cualquier ancho: sin barra que se corte de lado.
+   Clase repetida: le gana a la regla del vidrio oscuro de arriba. */
+.blog-chips.blog-chips ul,
+.blog-dark .blog-chips.blog-chips ul {
+  flex-wrap: wrap;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.blog-chips a {
+  min-height: 40px;
+  border: var(--border-on-dark);
+  background: rgb(10 21 41 / 0.55);
+}
+
+.blog-chips a:hover,
+.blog-dark .blog-chips a:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+/* Artículo (todos): la hoja es el azul de tarjeta de la marca y encima van tarjetas blancas (respuesta, secciones, cierre),
+   que son las que llevan el texto largo. */
 .blog-dark .blog-article__body {
   padding: var(--space-6) clamp(20px, 4vw, var(--space-7));
+  border: 1px solid var(--card-blue-border);
   border-radius: var(--radius-xl);
-  background: var(--color-porcelain);
-  box-shadow: var(--shadow-3);
+  background: var(--card-blue);
+  box-shadow: var(--card-blue-shadow);
 }
 
 .blog-dark .blog-article {
