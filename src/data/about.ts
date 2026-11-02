@@ -209,7 +209,7 @@ export const TEAM: Record<Lang, { title: string; lead: string; areas: TeamArea[]
         title: 'Administration',
         members: [
           person('Lic.', 'Damaris Llamas', 'Laboratory administrator', 'damaris-llamas'),
-          person('Lic.', 'Michelle López', 'Patient coordinator', 'michelle-lopez'),
+          person('Lic.', 'Michelle Stevens', 'Patient coordinator', 'michelle-lopez'),
         ],
       },
       {
@@ -258,7 +258,7 @@ export const TEAM: Record<Lang, { title: string; lead: string; areas: TeamArea[]
         title: 'Administración',
         members: [
           person('Lic.', 'Damaris Llamas', 'Administradora de laboratorio', 'damaris-llamas'),
-          person('Lic.', 'Michelle López', 'Coordinadora de pacientes', 'michelle-lopez'),
+          person('Lic.', 'Michelle Stevens', 'Coordinadora de pacientes', 'michelle-lopez'),
         ],
       },
       // TDP: así lo dio la clínica (técnico del laboratorio dental, no de sistemas).
