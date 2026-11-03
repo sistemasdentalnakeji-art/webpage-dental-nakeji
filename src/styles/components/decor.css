@@ -23,7 +23,7 @@
   color: var(--color-tint);
 }
 
-/* La ola inferior del hero toma el tono de la sección que sigue (CareStory, banda azul clara). */
+/* La ola inferior del hero toma el tono de la sección que sigue (sección diente, banda azul clara). */
 .hero .decor--wave {
   height: clamp(48px, 6vw, 96px);
   color: var(--color-tint);

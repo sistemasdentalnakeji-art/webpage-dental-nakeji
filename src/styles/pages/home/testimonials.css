@@ -1,0 +1,202 @@
+/* Sección "Testimonios" (src/pages/home/sections/Testimonials.tsx): video vertical a la izquierda y hasta 3 tarjetas
+   de cristal azul a la derecha, con borde de prisma (azul → oro) como el logo y los anillos del inicio. */
+.testimonials-intro {
+  margin-bottom: clamp(28px, 4vw, 44px);
+  text-align: center;
+}
+
+.testimonials-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+  gap: clamp(16px, 2.4vw, 28px);
+  align-items: stretch;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.testimonials-layout--cards {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 820px;
+}
+
+/* Borde de prisma: degradado azul claro → oro por detrás de un fondo de cristal. */
+.testimonial,
+.testimonial-video {
+  --prism: conic-gradient(
+    from var(--prism-angle, 210deg),
+    rgba(123, 195, 235, 0.75),
+    rgba(224, 182, 92, 0.85),
+    rgba(58, 112, 176, 0.45),
+    rgba(123, 195, 235, 0.75)
+  );
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(145deg, rgba(24, 49, 84, 0.92), rgba(9, 24, 46, 0.9)) padding-box,
+    var(--prism) border-box;
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+}
+
+/* ── Video ─────────────────────────────────────────────────────────────── */
+.testimonial-video {
+  overflow: hidden;
+  /* El ancho manda (columna) y el alto sale del 9:16; sin esto, el alto de las tarjetas lo ensanchaba encima de ellas. */
+  align-self: center;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+}
+
+.testimonial-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* ── Tarjetas ──────────────────────────────────────────────────────────── */
+.testimonials {
+  display: grid;
+  grid-auto-rows: 1fr;
+  gap: clamp(14px, 1.8vw, 20px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.testimonial {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Brillo de prisma que cruza la tarjeta al pasar el cursor. */
+.testimonial::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 35%, rgba(123, 195, 235, 0.14) 48%, rgba(224, 182, 92, 0.12) 54%, transparent 66%);
+  background-size: 250% 100%;
+  background-position: 100% 0;
+  pointer-events: none;
+  transition: background-position 0.9s ease;
+}
+
+@media (hover: hover) {
+  .testimonial:hover {
+    box-shadow: 0 22px 48px -20px rgba(58, 112, 176, 0.55);
+    transform: translateY(-3px);
+  }
+
+  .testimonial:hover::after {
+    background-position: 0 0;
+  }
+}
+
+.testimonial figure {
+  position: relative;
+  display: grid;
+  height: 100%;
+  align-content: center;
+  gap: 14px;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 32px);
+}
+
+.testimonial__quote-mark {
+  position: absolute;
+  top: -6px;
+  right: 18px;
+  color: var(--color-gold);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: 5.5rem;
+  line-height: 1;
+  opacity: 0.35;
+}
+
+.testimonial blockquote {
+  margin: 0;
+}
+
+.testimonial blockquote p {
+  margin: 0;
+  padding-right: 36px;
+  color: rgb(234 243 251 / 0.95);
+  font-family: 'Zilla Slab', Georgia, serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.testimonial figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-gold), #f3d796);
+  color: var(--color-night);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.testimonial__who {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.testimonial__who strong {
+  color: #fff;
+}
+
+.testimonial__who span {
+  color: var(--color-brand-light);
+  font-size: 0.85rem;
+}
+
+/* Tablet y celular: el video arriba (más bajo) y las tarjetas debajo. */
+@media (max-width: 760px) {
+  .testimonials-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .testimonial-video {
+    width: min(100%, 230px);
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonial,
+  .testimonial::after {
+    transition: none;
+  }
+}
+
+.testimonials-more {
+  margin: clamp(20px, 3vw, 30px) 0 0;
+  text-align: center;
+}
+
+.testimonials-more a {
+  color: var(--color-brand-light);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.testimonials-more a:hover {
+  color: var(--color-gold);
+}

@@ -2,7 +2,7 @@
 // PÁGINA /nuestras-promociones/ — diseño "Carteles": encabezado grande y un carrusel de carteles (contorno azul marino
 // grueso, sombra sólida, numeral, espacio de imagen vacío y la etiqueta "Próximamente") que se controla a mano.
 //
-// • Sin fondo propio (el fondo de las páginas se define después). Sin autoplay: usa el `Carousel` de scroll-snap.
+// • Fondo: plasma de página (PagePlasma), como convenios y aseguranzas. Sin autoplay: usa el `Carousel` de scroll-snap.
 // • Todo es marcador: no hay promociones, precios ni fechas confirmados → src/data/benefitPages.ts.
 // • Estilos → src/styles/pages/promotions.css.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -11,6 +11,7 @@ import { BENEFITS_BACK, PAGE_CTA, PROMOTIONS, PROMOTIONS_INTRO, type PromoPoster
 import { PARTNERS_CTA } from '@/data/partners'
 import { useLang } from '@/app/lang'
 import { routeOf } from '@/config/routes'
+import { PagePlasma } from '@/components/decor/PagePlasma'
 import { Band } from '@/components/decor/Band'
 import { Carousel } from '@/components/ui/Carousel'
 import { ExternalLink } from '@/components/ui/ExternalLink'
@@ -40,7 +41,7 @@ export function PromotionsPage() {
   const lang = useLang()
   const benefits = routeOf('benefits', lang)
   return (
-    <Band tone="white" className="promotions" labelledBy="promociones-titulo">
+    <Band tone="gradient" className="promotions band--clip" decor={<PagePlasma />} labelledBy="promociones-titulo">
       <div className="container">
         <a className="page-back" href={benefits.path}>
           <Icon name="chevronLeft" size={16} />
@@ -48,7 +49,7 @@ export function PromotionsPage() {
         </a>
         <header className="promotions__head">
           <p className="page-eyebrow pill-label">{PROMOTIONS_INTRO[lang].eyebrow}</p>
-          <h1 id="promociones-titulo" className="page-title shiny-text shiny-text--ink">
+          <h1 id="promociones-titulo" className="page-title shiny-text">
             <TextBlurReveal text={PROMOTIONS_INTRO[lang].title} />
           </h1>
           <p className="page-lead">{PROMOTIONS_INTRO[lang].lead}</p>

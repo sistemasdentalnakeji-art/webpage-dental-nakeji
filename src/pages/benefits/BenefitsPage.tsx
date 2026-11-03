@@ -1,17 +1,17 @@
 import { LiquidGlassContent, LiquidMetalArrow } from '@/components/ui/AnimatedButtons'
 // ─────────────────────────────────────────────────────────────────────────────
-// PÁGINA /beneficios/: encabezado con la idea central y un post promocional, tres tarjetas
+// PÁGINA /beneficios/: encabezado con la idea central y su lista, tres tarjetas
 // (promociones, aseguranzas, convenios) y franja de contacto. Estructura parecida a /servicios/, con su propia composición.
 //
 // • Textos, tarjetas y lista de beneficios → src/data/benefits.ts.
-// • Estilos → src/styles/pages/benefits.css. Mismo fondo de plasma que /servicios/.
+// • Estilos → src/styles/pages/benefits.css. Fondo: plasma de página (PagePlasma), como convenios y aseguranzas.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useLang } from '@/app/lang'
 import { BENEFIT_CARDS, BENEFIT_CARDS_CTA, BENEFITS_CTA, BENEFITS_HERO, type BenefitCard } from '@/data/benefits'
 import { PARTNERS_CTA } from '@/data/partners'
 import { Band } from '@/components/decor/Band'
-import { PlasmaBackground } from '@/components/decor/PlasmaBackground'
+import { PagePlasma } from '@/components/decor/PagePlasma'
 import { Icon } from '@/components/ui/Icon'
 import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
@@ -55,23 +55,9 @@ export function BenefitsPage() {
   return (
     <Band
       tone="gradient"
-      className="benefits"
+      className="benefits band--clip"
       labelledBy="beneficios-titulo"
-      decor={
-        <div className="benefits__plasma">
-          <PlasmaBackground
-            className="benefits__plasma-view"
-            color="#7bc3eb"
-            opacity={0.5}
-            scale={0.6}
-            speed={1.4}
-            iterations={45}
-            renderScale={0.4}
-            targetFps={30}
-            maxDpr={1}
-          />
-        </div>
-      }
+      decor={<PagePlasma />}
     >
       <div className="container">
         <header className="benefits-hero">
@@ -92,18 +78,6 @@ export function BenefitsPage() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="benefits-hero__photo">
-            <div className="benefits-hero__frame">
-              <img
-                className="benefits-hero__image"
-                src={lang === 'es' ? '/images/beneficios/beneficios-dental-nakeji.webp' : '/images/beneficios/benefits-dental-nakeji.webp'}
-                width={1536}
-                height={1024}
-                alt={lang === 'es' ? 'Dental Nakeji: promociones, convenios y aseguranzas americanas. Aquí te cuidamos.' : 'Dental Nakeji: promotions, partner agreements and U.S. dental insurance. We care for you.'}
-              />
-            </div>
           </div>
         </header>
 

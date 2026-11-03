@@ -30,8 +30,7 @@
    degradado azul fijo siga mandando. Escritorio sin cambios. */
 @media (width < 768px) {
   .page-plasma,
-  .catalog__plasma,
-  .benefits__plasma {
+  .catalog__plasma {
     opacity: 0.4;
   }
 }

@@ -21,7 +21,7 @@ No hace falta servidor propio ni claves secretas.
 4. En `CONFIG` (arriba de `Code.gs`) ajusta:
    - `CALENDAR_ID`: el ID del paso 1 (vacío = calendario principal).
    - `CLOSED_WEEKDAYS`, `SLOTS`, `DURATION_MINUTES`: **horario real de la clínica**.
-   - `NOTIFY_EMAIL`: correo que recibirá un aviso por cada solicitud (opcional).
+   - `NOTIFY_EMAILS`: lista de correos que reciben un aviso (con diseño, teléfono y origen) por cada solicitud. Vacía = sin aviso.
 
 > Los horarios deben coincidir con `src/config/booking.ts` del sitio.
 

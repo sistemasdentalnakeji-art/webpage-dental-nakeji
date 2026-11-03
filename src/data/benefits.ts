@@ -1,6 +1,6 @@
 // TEXTOS DE LA PÁGINA /beneficios/ (componente: pages/benefits/BenefitsPage.tsx), en inglés (en) y español (es).
 //
-// • Encabezado: BENEFITS_HERO (titular y lista de beneficios). A la derecha va el post promocional.
+// • Encabezado: BENEFITS_HERO (titular y lista de beneficios).
 // • Tarjetas: BENEFIT_CARDS, en el orden en que se muestran. Cada una enlaza a su página (routes.ts).
 //   Promociones aún no tiene contenido: lleva "Próximamente" / "Coming soon".
 // • Estilos → src/styles/pages/benefits.css.

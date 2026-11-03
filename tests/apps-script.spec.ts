@@ -8,6 +8,8 @@ test.skip(({ isMobile }) => isMobile, 'Prueba de servidor: basta con correrla un
 interface Options {
   secret?: string
   mailFails?: boolean
+  /** Correos que aun puede mandar la cuenta hoy (MailApp.getRemainingDailyQuota). */
+  quota?: number
   /** Eventos que ya existen en el calendario. */
   events?: { title: string; description?: string; start: Date; allDay?: boolean }[]
 }
@@ -47,7 +49,7 @@ function at(date: string, time: string) {
   return new Date(y, m - 1, d, h, min, 0)
 }
 
-function loadScript({ secret = 'secreto', mailFails = false, events = [] }: Options = {}) {
+function loadScript({ secret = 'secreto', mailFails = false, events = [], quota = 100 }: Options = {}) {
   const cache = new Map<string, string>()
   const fetches = { count: 0 }
   const created: { title: string; allDay: boolean }[] = []
@@ -81,6 +83,7 @@ function loadScript({ secret = 'secreto', mailFails = false, events = [] }: Opti
       },
     },
     MailApp: {
+      getRemainingDailyQuota: () => quota,
       sendEmail: (mail: unknown) => {
         if (mailFails) throw new Error('cuota agotada')
         mails.push(mail)
@@ -191,13 +194,39 @@ test.describe('Code.gs (Apps Script)', () => {
     expect(send(request({ phone: '6649999999' }))).toMatchObject({ ok: false, error: 'limit' })
   })
 
-  test('solo se manda un correo por hora aunque lleguen varias solicitudes', () => {
+  test('cada solicitud manda su correo a los dos destinatarios, con teléfono y origen', () => {
     const { send, created, mails } = loadScript()
-    send(request({ phone: '6640000001' }))
+    send(request({ phone: '6640000001', source: 'https://nakejidental.com/servicios/implantes' }))
     send(request({ phone: '6640000002' }))
-    send(request({ phone: '6640000003' }))
-    expect(created).toHaveLength(3)
+    expect(created).toHaveLength(2)
+    expect(mails).toHaveLength(2)
+    const mail = mails[0] as { to: string; subject: string; htmlBody: string }
+    expect(mail.to).toBe('nakejidentalclinic@gmail.com,citasnakeji@gmail.com')
+    expect(mail.subject).toContain('Nuevo lead')
+    expect(mail.htmlBody).toContain('6640000001')
+    expect(mail.htmlBody).toContain('/servicios/implantes')
+  })
+
+  test('con correo, el paciente recibe su comprobante sin los datos internos', () => {
+    const { send, mails } = loadScript()
+    expect(send(request({ email: 'ana@example.com', comments: 'dolor de muela' }))).toEqual({ ok: true })
+    expect(mails).toHaveLength(2)
+    const mail = mails[1] as { to: string; replyTo: string; subject: string; htmlBody: string }
+    expect(mail.to).toBe('ana@example.com')
+    expect(mail.replyTo).toBe('citasnakeji@gmail.com')
+    expect(mail.subject).toContain('Recibimos tu solicitud')
+    expect(mail.htmlBody).toContain('Nuestro equipo se comunicará contigo para confirmar tu cita')
+    expect(mail.htmlBody).toContain('📘 Facebook')
+    expect(mail.htmlBody).toContain('aviso-de-privacidad')
+    expect(mail.htmlBody).not.toContain('dolor de muela')
+    expect(mail.htmlBody).not.toContain('6641234567')
+  })
+
+  test('sin cuota para los tres, solo sale el aviso a la clinica', () => {
+    const { send, mails } = loadScript({ quota: 2 })
+    expect(send(request({ email: 'ana@example.com' }))).toEqual({ ok: true })
     expect(mails).toHaveLength(1)
+    expect((mails[0] as { to: string }).to).toContain('citasnakeji@gmail.com')
   })
 
   test('si el correo falla, la cita se crea y queda un aviso visible en el calendario', () => {

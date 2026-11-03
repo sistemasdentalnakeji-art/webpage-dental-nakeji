@@ -5,7 +5,6 @@
 // Los hitos no llevan fecha y los lugares sin persona son marcadores ("Integrante N" / "Team member N").
 // Para poner una persona real: person(...) con la foto en public/images/equipo/archivo.webp (en las dos versiones).
 // En inglés, "Dra."/"Dr." pasan a "Dr."; el resto de títulos abreviados (Lic., Asist., TDP, Ing.) se omiten y el cargo queda en la ficha.
-// PENDIENTE (clínica): "más de 35 años de experiencia" / "more than 35 years of experience" (HISTORY, Inicios/Beginnings).
 // Equivalencias del inglés: gan-harness/glosario-en.md.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -46,7 +45,7 @@ export const HISTORY: Record<Lang, { title: string; milestones: HistoryMilestone
     milestones: [
       {
         label: 'Beginnings',
-        text: 'It all began with the wish to help people smile with confidence and peace of mind by caring for their oral health. With more than 35 years of experience, that dream still guides our commitment to professional, compassionate, high-quality care.',
+        text: 'It all began with the wish to help people smile with confidence and peace of mind by caring for their oral health. That dream still guides our commitment to professional, compassionate, high-quality care.',
       },
       {
         label: 'Growth',
@@ -74,7 +73,7 @@ export const HISTORY: Record<Lang, { title: string; milestones: HistoryMilestone
     milestones: [
       {
         label: 'Inicios',
-        text: 'Todo empezó con el deseo de ayudar a las personas a sonreír con confianza, seguridad y tranquilidad a través del cuidado de su salud bucal. Con más de 35 años de experiencia, ese sueño sigue guiando nuestro compromiso con una atención profesional, humana y de calidad.',
+        text: 'Todo empezó con el deseo de ayudar a las personas a sonreír con confianza, seguridad y tranquilidad a través del cuidado de su salud bucal. Ese sueño sigue guiando nuestro compromiso con una atención profesional, humana y de calidad.',
       },
       {
         label: 'Crecimiento',

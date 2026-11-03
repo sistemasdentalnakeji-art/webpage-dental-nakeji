@@ -26,6 +26,9 @@ export interface FormText {
     service: string
     servicePlaceholder: string
     timePlaceholder: string
+    serviceGroups: { general: string; aesthetic: string; implants: string; specialties: string }
+    morning: string
+    afternoon: string
     date: string
     time: string
     firstVisit: string
@@ -48,6 +51,7 @@ export interface FormText {
     date: string
     time: string
     text: string
+    emailSent: string
   }
   validation: {
     firstName: string
@@ -85,6 +89,9 @@ export const FORM_TEXT: Record<Lang, FormText> = {
       service: 'Service you are interested in',
       servicePlaceholder: 'Select a service',
       timePlaceholder: 'Select a time',
+      serviceGroups: { general: 'General', aesthetic: 'Cosmetic', implants: 'Implants and dentures', specialties: 'Specialties' },
+      morning: 'Morning',
+      afternoon: 'Afternoon',
       date: 'Preferred date',
       time: 'Preferred time',
       firstVisit: 'Is this your first visit?',
@@ -119,6 +126,7 @@ export const FORM_TEXT: Record<Lang, FormText> = {
       date: 'Date',
       time: 'Time',
       text: 'We will contact you by phone or WhatsApp to confirm your appointment.',
+      emailSent: 'We sent a receipt to your email.',
     },
     validation: {
       firstName: 'Enter your first name.',
@@ -154,6 +162,9 @@ export const FORM_TEXT: Record<Lang, FormText> = {
       service: 'Servicio de interés',
       servicePlaceholder: 'Selecciona un servicio',
       timePlaceholder: 'Selecciona un horario',
+      serviceGroups: { general: 'Generales', aesthetic: 'Estética', implants: 'Implantes y prótesis', specialties: 'Especialidades' },
+      morning: 'Mañana',
+      afternoon: 'Tarde',
       date: 'Fecha preferida',
       time: 'Horario preferido',
       firstVisit: '¿Es tu primera visita?',
@@ -183,6 +194,7 @@ export const FORM_TEXT: Record<Lang, FormText> = {
       date: 'Fecha',
       time: 'Hora',
       text: 'Te contactaremos por teléfono o WhatsApp para confirmar tu cita.',
+      emailSent: 'Te enviamos un comprobante a tu correo.',
     },
     validation: {
       firstName: 'Escribe tu nombre.',

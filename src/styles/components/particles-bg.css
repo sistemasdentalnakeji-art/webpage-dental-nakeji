@@ -1,7 +1,7 @@
 /* ==========================================================================
-   Fondo de nodos (components/decor/ParticlesBackground.tsx): CareStory y Servicios destacados del homepage.
+   Fondo de nodos (components/decor/ParticlesBackground.tsx): sección diente y Servicios destacados del homepage.
    Rellena la banda, encima de su fondo y debajo del contenido (la banda lleva isolation). Va primero en el DOM, así que
-   el hilo y el diente de CareStory (también z-index -1) se pintan encima.
+   el hilo y el diente de la sección diente (también z-index -1) se pintan encima.
    ========================================================================== */
 .particles-bg {
   position: absolute;

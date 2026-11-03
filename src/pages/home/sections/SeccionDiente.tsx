@@ -264,7 +264,7 @@ function useScrollScrub(areaRef: RefObject<HTMLDivElement | null>, threadD?: str
   return scrub
 }
 
-export function CareStory() {
+export function SeccionDiente() {
   const story = STORY[useLang()]
   const [areaRef, layout] = useStoryLayout(story)
   // Sin ondular: la forma `b` es igual a la `a` para que los tramos sigan rectos.

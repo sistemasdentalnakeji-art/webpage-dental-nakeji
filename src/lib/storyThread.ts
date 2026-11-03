@@ -1,4 +1,4 @@
-// Trazado del hilo del diente (pages/home/sections/CareStory.tsx), sin pantalla: la prueba está en tests/story-thread.spec.ts.
+// Trazado del hilo del diente (pages/home/sections/SeccionDiente.tsx), sin pantalla: la prueba está en tests/story-thread.spec.ts.
 //
 // El hilo va por tramos horizontales unidos por vueltas en semicírculo (C): arriba del mensaje 1 hacia la derecha, vuelta
 // por la derecha del 1, cruce a la izquierda por el hueco entre el 1 y el 2, vuelta por la izquierda del 2, cruce a la

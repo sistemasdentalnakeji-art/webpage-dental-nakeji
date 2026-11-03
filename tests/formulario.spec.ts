@@ -47,13 +47,20 @@ async function solveCaptcha(page: Page) {
   await page.evaluate((token) => (window as unknown as TurnstileStub).__ts?.callback(token), TOKEN)
 }
 
+/** Lista desplegable propia (Picker): abre con clic y elige la opción n. */
+async function pick(page: Page, name: string, n: number) {
+  await page.locator(`#cita-${name}`).click()
+  await page.getByRole('option').nth(n).click()
+  await expect(page.locator(`input[name="${name}"]`)).not.toHaveValue('')
+}
+
 async function fillForm(page: Page, phone = '6641234567') {
   await page.locator('#cita-firstName').fill('Ana')
   await page.locator('#cita-lastName').fill('Lopez')
   await page.locator('#cita-phone').fill(phone)
-  await page.locator('#cita-service').selectOption({ index: 1 })
+  await pick(page, 'service', 0)
   await page.locator('#cita-date').fill(nextOpenDay())
-  await page.locator('#cita-time').selectOption({ index: 1 })
+  await pick(page, 'time', 0)
   await page.locator('input[name="firstVisit"][value="no"]').check({ force: true })
   await page.locator('#cita-consent').check({ force: true })
 }
@@ -80,7 +87,12 @@ test.describe('Formulario de citas', () => {
 
   test('sábado: la lista de horarios termina a las 4:00 PM; entre semana llega a las 5:30 PM', async ({ page }) => {
     await openForm(page)
-    const times = () => page.locator('#cita-time option:not([disabled])').allTextContents()
+    const times = async () => {
+      await page.locator('#cita-time').click()
+      const list = await page.getByRole('option').allTextContents()
+      await page.keyboard.press('Escape')
+      return list
+    }
     const dateAt = (day: number) => {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Tijuana' }).format(new Date()).split('-').map(Number)
       const date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2] + 1))
@@ -91,6 +103,33 @@ test.describe('Formulario de citas', () => {
     expect((await times()).at(-1)).toBe('4:00 PM')
     await page.locator('#cita-date').fill(dateAt(2))
     expect((await times()).at(-1)).toBe('5:30 PM')
+    expect((await times())[0]).toBe('8:00 AM')
+  })
+
+  test('horario: se abre hacia abajo y se elige con el teclado', async ({ page }) => {
+    await openForm(page)
+    await page.locator('#cita-date').fill(nextOpenDay())
+    const button = page.locator('#cita-time')
+    await button.focus()
+    await page.keyboard.press('Enter')
+    const list = page.getByRole('listbox')
+    await expect(list).toBeFocused()
+    expect((await list.boundingBox())!.y).toBeGreaterThan((await button.boundingBox())!.y)
+    await page.keyboard.press('ArrowRight')
+    await page.keyboard.press('Enter')
+    await expect(page.locator('input[name="time"]')).toHaveValue('08:30')
+    await expect(button).toBeFocused()
+    await expect(button).toHaveText('8:30 AM')
+  })
+
+  test('con correo, la confirmación avisa del comprobante', async ({ page }) => {
+    await mockScript(page, () => ({ ok: true }))
+    await openForm(page)
+    await fillForm(page)
+    await page.locator('#cita-email').fill('ana@example.com')
+    await solveCaptcha(page)
+    await submit(page)
+    await expect(page.locator('.booking-success__text')).toContainText('We sent a receipt to your email.')
   })
 
   test('domingo: al elegirlo el campo se vacía y sale el aviso al instante', async ({ page }) => {

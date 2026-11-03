@@ -1,9 +1,8 @@
 /* ==========================================================================
    Página /beneficios/ (pages/benefits/BenefitsPage.tsx). Estructura parecida a /servicios/: encabezado con lista y
-   espacio de foto, tres tarjetas y una franja de contacto. Fondo de plasma igual que /servicios/.
+   tres tarjetas y una franja de contacto. Fondo: plasma de página (PagePlasma).
    Idea visual: "cuentas claras". Las tarjetas y la franja de cierre son boletos con perforación; al pasar el cursor por
    su botón, el renglón punteado se "recorta" en rojo y se marca la silueta del boleto, como una promoción por recortar.
-   El espacio de la foto de recepción (derecha del encabezado) está vacío y lleva el contorno luminoso .siri.
    ========================================================================== */
 /* Radio de las muescas de los boletos; se anima a 0 al arrancar el talón. */
 @property --notch {
@@ -19,36 +18,8 @@
   padding-bottom: 16px;
 }
 
-.benefits__plasma {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  /* Se desvanece al final para que no quede un borde recto antes del footer. */
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0, #000 620px, #000 calc(100% - 90px), transparent 100%);
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0, #000 620px, #000 calc(100% - 90px), transparent 100%);
-}
-
-.benefits__plasma-view {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100lvh;
-  opacity: 0;
-  transition: opacity var(--dur-slow) var(--ease-out);
-}
-
-.benefits__plasma-view.is-ready {
-  opacity: 1;
-}
-
-/* ---------- Encabezado: texto a la izquierda, espacio de foto a la derecha ---------- */
+/* ---------- Encabezado: titular y, debajo, la lista en renglones a todo el ancho ---------- */
 .benefits-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(28px, 4vw, 56px);
-  align-items: center;
   margin-bottom: clamp(44px, 5vw, 72px);
 }
 
@@ -86,7 +57,7 @@
 }
 
 .benefits-hero__lead {
-  max-width: 34rem;
+  max-width: 44rem;
   margin-top: 24px;
   color: rgba(255, 255, 255, 0.8);
   font-size: var(--text-body-lg);
@@ -97,7 +68,7 @@
 /* Lista como renglones de un recibo: separadores punteados. */
 .benefits-hero__features {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0 var(--space-6);
   margin-top: var(--space-5);
   color: var(--color-white);
@@ -125,31 +96,6 @@
   background: var(--color-white);
   box-shadow: var(--shadow-1);
   color: var(--color-brand);
-}
-
-/* Foto con borde fino y sombra del sistema (sin contorno animado); el marco interior recorta la imagen a la forma redondeada. */
-.benefits-hero__photo {
-  position: relative;
-  /* Misma proporción que la foto (1536×1024): se ve completa, sin recortes. */
-  aspect-ratio: 3 / 2;
-  border: var(--border-on-dark);
-  border-radius: var(--radius-xl);
-  background: var(--color-white);
-  box-shadow: var(--shadow-3);
-}
-
-.benefits-hero__frame {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-}
-
-.benefits-hero__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: left top;
 }
 
 /* ---------- Tarjetas: boletos con perforación ----------
@@ -284,7 +230,12 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transform: rotate(-2.5deg);
-  animation: benefits-shake 3.6s ease-in-out 1s infinite;
+}
+
+/* Se sacude solo al pasar el cursor o el foco por su tarjeta: un bucle infinito repintaba sin parar la tarjeta (sombra + máscara). */
+.benefit-grid__item:hover .benefit-card__badge,
+.benefit-grid__item:focus-within .benefit-card__badge {
+  animation: benefits-shake 1.2s ease-in-out;
 }
 
 @keyframes benefits-shake {
@@ -733,9 +684,9 @@ html[data-motion='paused'] .benefit-card__badge {
   }
 }
 
-@media (width < 960px) {
-  .benefits-hero {
-    grid-template-columns: 1fr;
+@media (width < 1080px) {
+  .benefits-hero__features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

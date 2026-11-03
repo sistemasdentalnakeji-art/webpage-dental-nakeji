@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// TEXTOS DE LA SECCIÓN ANIMADA DEBAJO DEL HERO (componente: pages/home/sections/CareStory.tsx)
+// TEXTOS DE LA SECCIÓN ANIMADA DEBAJO DEL HERO (componente: pages/home/sections/SeccionDiente.tsx)
 //
 // Tres mensajes que se leen al bajar. Cada frase es una lista de líneas, y cada línea una lista de
 // fragmentos; `accent: true` resalta el fragmento con el azul de la marca.
@@ -7,7 +7,7 @@
 //   2. priority → sube desde abajo y queda centrado.
 //   3. decision → entra desde la derecha.
 // Los tres mensajes son generales: no prometen resultados, técnicas ni procesos concretos, ni afirman datos de la clínica
-// (las frases verificables, como "Dentistas certificados" o "Más de 35 años", están en HERO.highlights de data/home.ts).
+// (las frases verificables, como "Dentistas certificados", están en HERO.highlights de data/home.ts).
 // Para que la animación se vea igual conviene mantener el largo parecido: ~8 palabras en los mensajes 1 y 3, ~11 en el 2.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -27,7 +27,7 @@ type StoryMessages = Record<'desire' | 'priority' | 'decision', StoryLines>
 export const STORY: Record<Lang, StoryMessages> = {
   en: {
     desire: [
-      [{ text: '35 years caring for our patients' }],
+      [{ text: 'Caring for our patients with dedication and warmth' }],
       [{ text: 'A story dedicated to oral care.', accent: true }],
     ],
     priority: [
@@ -42,7 +42,7 @@ export const STORY: Record<Lang, StoryMessages> = {
   es: {
     // Sin puntos finales: las frases se leen como un hilo, no como oraciones sueltas.
     desire: [
-      [{ text: '35 años acompañando a nuestros pacientes' }],
+      [{ text: 'Acompañando a nuestros pacientes con dedicación y calidez' }],
       [{ text: 'Una historia dedicada a la atención bucal.', accent: true }],
     ],
     priority: [

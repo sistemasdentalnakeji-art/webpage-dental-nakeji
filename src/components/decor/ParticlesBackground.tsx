@@ -1,11 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// FONDO DE PARTÍCULAS (estilo particles.js): CareStory, Servicios destacados y Agendar (menos partículas) del homepage.
+// FONDO DE PARTÍCULAS (estilo particles.js): sección diente, Servicios destacados y Agendar (menos partículas) del homepage.
 // • Unas 140 partículas por cada 800×800 px que flotan al azar, rebotan en los bordes, titilan y cambian de tamaño; las
 //   cercanas (160 px) se unen con líneas.
 // • Prisma: el color corre por la paleta de la marca (oro → blanco → azul claro → azul) a lo ancho de la banda, y al acercar
 //   el mouse las partículas se conectan con el cursor en un abanico oro → blanco → azul según el ángulo.
 // • Un clic agrega 4 partículas donde se hizo.
-// • `avoid`: selector de un elemento (el diente de CareStory) alrededor del cual las partículas y líneas se desvanecen.
+// • `avoid`: selector de un elemento (el diente de la sección diente) alrededor del cual las partículas y líneas se desvanecen.
 // Sin librería ni CDN (la CSP de vercel.json no permite scripts externos). Se pasa como `decor` de una Band: queda encima
 // del fondo y debajo del contenido (particles-bg.css, que también lo oculta en celular y tableta). Respeta "Pausar
 // animaciones" / "reducir movimiento" (queda quieto) y se detiene fuera de pantalla.

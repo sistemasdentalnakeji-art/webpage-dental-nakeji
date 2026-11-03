@@ -1,7 +1,7 @@
 /* ==========================================================================
    /nuestras-promociones/ — "Carteles" (PromotionsPage.tsx)
    Carrusel de scroll-snap (components/carousel.css) con carteles: contorno azul marino grueso y sombra sólida.
-   No son enlaces: sin efecto hover. Sin fondo propio.
+   No son enlaces: sin efecto hover. Fondo: plasma de página (PagePlasma).
    ========================================================================== */
 .promotions__head {
   max-width: 760px;

@@ -52,21 +52,21 @@
   margin-top: clamp(28px, 4vw, 44px);
 }
 
-/* Aseguranzas y Convenios van sobre el degradado fijo con plasma (Band tone="gradient" + PagePlasma), como Contacto:
+/* Aseguranzas, Convenios y Promociones van sobre el degradado fijo con plasma (Band tone="gradient" + PagePlasma), como Contacto:
    encabezado en claro; el brillo del título lo da .shiny-text. Las tarjetas conservan su fondo claro. */
-:is(.insurance, .agreements) .page-back {
+:is(.insurance, .agreements, .promotions) .page-back {
   color: var(--color-brand-light);
 }
 
-:is(.insurance, .agreements) .page-back:hover {
+:is(.insurance, .agreements, .promotions) .page-back:hover {
   color: var(--color-white);
 }
 
-:is(.insurance, .agreements) .page-eyebrow:not(.pill-label) {
+:is(.insurance, .agreements, .promotions) .page-eyebrow:not(.pill-label) {
   color: var(--color-brand-light);
 }
 
-:is(.insurance, .agreements) .page-lead,
+:is(.insurance, .agreements, .promotions) .page-lead,
 .insurance .insurers__count {
   color: rgb(255 255 255 / 0.85);
 }

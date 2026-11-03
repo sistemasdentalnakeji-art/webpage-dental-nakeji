@@ -39,8 +39,8 @@ export const HERO: Record<
     lead: 'From your first evaluation to your custom-designed restorations, our doctors work hand in hand with our in-house dental lab to keep every case on track and speed up your treatment. Every service we offer gets the same care, because each one is a priority at Dental Nakeji.',
     primaryCta: 'Schedule a visit',
     secondaryCta: 'Message us on WhatsApp',
-    // PENDIENTE (clínica): confirmar "Certified dentists" y "Over 35 years" antes de publicar (ver gan-harness/glosario-en.md).
-    highlights: ['Certified dentists', 'Over 35 years caring for your oral health', 'We accept US insurance plans', 'Our own dental laboratory'],
+    // PENDIENTE (clínica): confirmar "Certified dentists" antes de publicar (ver gan-harness/glosario-en.md).
+    highlights: ['Certified dentists', 'We accept US insurance plans', 'Our own dental laboratory'],
     ambientLabels: ['Dental implants', 'Dental crowns', 'Veneers', 'Teeth whitening', 'Dental cleaning', 'Orthodontics'],
   },
   es: {
@@ -51,7 +51,7 @@ export const HERO: Record<
     primaryCta: 'Agendar visita',
     secondaryCta: 'Escríbenos por WhatsApp',
     // Frases publicadas en el sitio oficial. Confírmalas con la clínica antes de publicar.
-    highlights: ['Dentistas certificados', 'Más de 35 años cuidando tu salud bucal', 'Aceptamos aseguranzas americanas', 'Laboratorio propio'],
+    highlights: ['Dentistas certificados', 'Aceptamos aseguranzas americanas', 'Laboratorio propio'],
     // Etiquetas decorativas que aparecen y desaparecen sobre la aurora (solo escritorio).
     ambientLabels: ['Implantes dentales', 'Coronas', 'Carillas dentales', 'Blanqueamiento dental', 'Limpieza dental', 'Ortodoncia'],
   },

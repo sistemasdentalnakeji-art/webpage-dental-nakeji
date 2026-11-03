@@ -52,12 +52,11 @@ test.describe('Inicio en español: héroe y sección del diente', () => {
     await expect(page.locator('h1')).toHaveText('Dentistas comprometidos por tu salud.')
     await expect(page.locator('.hero__note li')).toHaveText([
       'Dentistas certificados',
-      'Más de 35 años cuidando tu salud bucal',
       'Aceptamos aseguranzas americanas',
       'Laboratorio propio',
     ])
     const story = page.locator('.story')
-    await expect(story.locator('.story__item--left')).toContainText('35 años acompañando a nuestros pacientes')
+    await expect(story.locator('.story__item--left')).toContainText('Acompañando a nuestros pacientes con dedicación y calidez')
     await expect(story.locator('h2')).toContainText('Todas las especialidades dentales y laboratorio dental')
     await expect(story.locator('.story__item--right')).toContainText('Atención dental en Tijuana para pacientes de todo el mundo')
     // El hilo del diente sigue azul (el de .decor) y el subrayado de las frases resaltadas es amarillo (#ffc928).

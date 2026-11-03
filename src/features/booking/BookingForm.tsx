@@ -11,7 +11,7 @@ import { InteractiveHoverContent } from '@/components/ui/AnimatedButtons'
 
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent, type ReactNode } from 'react'
 import { flushSync } from 'react-dom'
-import { BOOKING, isBookingConfigured } from '@/config/booking'
+import { BOOKING, SERVICE_GROUPS, isBookingConfigured } from '@/config/booking'
 import { useLang } from '@/app/lang'
 import { routeOf } from '@/config/routes'
 import { SITE } from '@/config/site'
@@ -32,6 +32,7 @@ import { FORM_TEXT, serviceLabel } from '@/features/booking/bookingText'
 import { cx } from '@/lib/cx'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon, type IconName } from '@/components/ui/Icon'
+import { Picker } from '@/features/booking/Picker'
 
 type ErrorCode = 'busy' | 'invalid' | 'limit' | 'network' | 'captcha'
 
@@ -40,6 +41,8 @@ interface Summary {
   service: string
   date: string
   time: string
+  /** Si dejó correo, el Apps Script le manda un comprobante. */
+  emailed: boolean
 }
 
 /** Estado del envío: cada caso lleva solo los datos que necesita. */
@@ -157,6 +160,15 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
     'aria-describedby': errors[name] ? `cita-${name}-error` : undefined,
   })
 
+  // Servicio y horario: botón propio (Picker); no dispara el change del formulario, por eso limpia su error al elegir.
+  const pickerProps = (name: 'service' | 'time') => ({
+    id: `cita-${name}`,
+    name,
+    invalid: Boolean(errors[name]),
+    describedBy: errors[name] ? `cita-${name}-error` : undefined,
+    onPick: () => clearError(name),
+  })
+
   const clearError = (name: string) => {
     if (!isFieldName(name)) return
     setErrors((current) => {
@@ -184,7 +196,8 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
     })
 
     if (firstInvalid) {
-      form.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus()
+      // Por id: servicio y horario son botones (Picker) y su valor va en un campo oculto.
+      form.querySelector<HTMLElement>(`#cita-${firstInvalid}`)?.focus()
       return
     }
 
@@ -208,7 +221,7 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
     const showSuccess = () => {
       setState({
         status: 'success',
-        summary: { name: payload.firstName, service: payload.service, date: payload.date, time: payload.time },
+        summary: { name: payload.firstName, service: payload.service, date: payload.date, time: payload.time, emailed: Boolean(payload.email) },
       })
       form.reset()
       setDate('')
@@ -280,7 +293,10 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
             </div>
           ))}
         </dl>
-        <p className="booking-success__text">{t.success.text}</p>
+        <p className="booking-success__text">
+          {t.success.text}
+          {summary.emailed && ` ${t.success.emailSent}`}
+        </p>
       </div>
     )
   }
@@ -350,17 +366,17 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
 
       <Group step={2} title={t.groups.appointment}>
         <Field name="service" label={t.labels.service} icon="tooth" required error={errors.service}>
-          <select {...fieldProps('service')} defaultValue={defaultService} required>
-            <option value="" disabled>
-              {t.labels.servicePlaceholder}
-            </option>
-            {/* El valor enviado es el nombre en español (lo valida Code.gs); solo la etiqueta cambia con el idioma. */}
-            {BOOKING.services.map((service) => (
-              <option key={service} value={service}>
-                {serviceLabel(service, lang)}
-              </option>
-            ))}
-          </select>
+          <Picker
+            {...pickerProps('service')}
+            placeholder={t.labels.servicePlaceholder}
+            defaultValue={defaultService}
+            groups={SERVICE_GROUPS.map((group) => ({
+              label: t.labels.serviceGroups[group.id],
+              icon: group.icon,
+              // El valor enviado es el nombre en español (lo valida Code.gs); solo la etiqueta cambia con el idioma.
+              options: group.services.map((service) => ({ value: service, label: serviceLabel(service, lang) })),
+            }))}
+          />
         </Field>
 
         <Field name="date" label={t.labels.date} required error={errors.date}>
@@ -380,18 +396,18 @@ export function BookingForm({ defaultService = '' }: BookingFormProps) {
             }} />
         </Field>
 
-        {/* Horario: lista desplegable con los horarios de la fecha elegida (BOOKING.slots, recortados los sábados). La key la reinicia al cambiar la lista. */}
+        {/* Horario: cuadrícula Mañana/Tarde con los horarios de la fecha elegida (BOOKING.slots, recortados los sábados). La key la reinicia al cambiar la lista. */}
         <Field name="time" label={t.labels.time} icon="clock" required error={errors.time}>
-          <select key={slots.length} {...fieldProps('time')} defaultValue="" required>
-            <option value="" disabled>
-              {t.labels.timePlaceholder}
-            </option>
-            {slots.map((slot) => (
-              <option key={slot} value={slot}>
-                {formatTime(slot, lang)}
-              </option>
-            ))}
-          </select>
+          <Picker
+            key={slots.length}
+            {...pickerProps('time')}
+            grid
+            placeholder={t.labels.timePlaceholder}
+            groups={[
+              { label: t.labels.morning, slots: slots.filter((slot) => slot < '12:00') },
+              { label: t.labels.afternoon, slots: slots.filter((slot) => slot >= '12:00') },
+            ].map((group) => ({ label: group.label, options: group.slots.map((slot) => ({ value: slot, label: formatTime(slot, lang) })) }))}
+          />
         </Field>
 
         <fieldset

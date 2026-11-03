@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Sección animada debajo del hero (CareStory) — "un hilo de sonrisa"
+   Sección animada debajo del hero (sección diente) — "un hilo de sonrisa"
    Todo va ligado al scroll con animaciones CSS (animation-timeline: view()), sin JavaScript:
    • las palabras aparecen una tras otra de borrosas a nítidas (--i es el número de la palabra dentro del mensaje);
    • las frases en azul se subrayan con un trazo de marcador que se dibuja;
@@ -118,7 +118,7 @@
   mask-composite: intersect;
 }
 
-/* Hilo detrás de los mensajes (se estira al alto de la sección): tramos rectos con vueltas de 90° (CareStory.tsx), con las
+/* Hilo detrás de los mensajes (se estira al alto de la sección): tramos rectos con vueltas de 90° (SeccionDiente.tsx), con las
    clases de las líneas de Agendar (.decor, .decor-line y .decor-line__light de components/decor.css: las recorre una luz). */
 .story__thread {
   position: absolute;
@@ -130,7 +130,7 @@
   pointer-events: none;
 }
 
-/* Punta del hilo (CareStory.tsx → ThreadTip): caja que se centra sobre la curva (`offset-path`, en píxeles, lo pone el
+/* Punta del hilo (SeccionDiente.tsx → ThreadTip): caja que se centra sobre la curva (`offset-path`, en píxeles, lo pone el
    componente) y queda derecha (`offset-rotate: 0deg`). Sin scroll animado se queda al final del hilo. Lleva los destellos. */
 .story__tip {
   position: absolute;
@@ -156,7 +156,7 @@
   visibility: visible;
 }
 
-/* Diente de caricatura con volumen (CareStory.tsx → Tooth): capas SVG apiladas en Z. La sombra va en el contenedor porque un
+/* Diente de caricatura con volumen (SeccionDiente.tsx → Tooth): capas SVG apiladas en Z. La sombra va en el contenedor porque un
    `filter` sobre el elemento con `preserve-3d` aplanaría las capas. */
 .story__tooth {
   position: absolute;
@@ -413,7 +413,7 @@ path.story__tooth-gloss {
   }
 }
 
-/* Respaldo para navegadores sin `animation-timeline` (Safari anterior a 26): CareStory.tsx mide el scroll y deja el avance
+/* Respaldo para navegadores sin `animation-timeline` (Safari anterior a 26): SeccionDiente.tsx mide el scroll y deja el avance
    (0 a 1) en `--story-p`. Una animación pausada con retraso negativo se "arrastra" a ese punto: -1s × avance de una de 1s.
    Mismas animaciones que arriba (hilo, punta y mecer del diente); sin soporte y sin JS (prerender) todo queda en su estado final. */
 @media (prefers-reduced-motion: no-preference) {
@@ -429,7 +429,7 @@ path.story__tooth-gloss {
     animation-delay: calc(var(--story-p, 0) * -1s);
   }
 
-  /* La punta no usa offset-path aquí: CareStory.tsx coloca el centro del diente sobre la curva (--tip-x/--tip-y, en px) y
+  /* La punta no usa offset-path aquí: SeccionDiente.tsx coloca el centro del diente sobre la curva (--tip-x/--tip-y, en px) y
      calcula su opacidad (--tip-o: oculto hasta que arranca el recorrido). */
   .story--scrub .story__tip {
     animation: none;

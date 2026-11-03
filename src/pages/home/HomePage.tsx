@@ -7,8 +7,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { Hero } from '@/pages/home/sections/Hero'
-import { CareStory } from '@/pages/home/sections/CareStory'
+import { SeccionDiente } from '@/pages/home/sections/SeccionDiente'
 import { Schedule } from '@/pages/home/sections/Schedule'
+import { Testimonials } from '@/pages/home/sections/Testimonials'
 import { FeaturedServices } from '@/pages/home/sections/FeaturedServices'
 import { Partners } from '@/pages/home/sections/Partners'
 import { Reviews } from '@/pages/home/sections/Reviews'
@@ -22,9 +23,11 @@ export function HomePage() {
       {/* Primera pantalla, con las fibras de luz */}
       <Hero />
       {/* Tres mensajes animados con el scroll */}
-      <CareStory />
+      <SeccionDiente />
       {/* Agenda tu visita + formulario (id="agendar") */}
       <Schedule />
+      {/* Testimonios de pacientes (solo si hay en src/data/testimonials.ts) */}
+      <Testimonials />
       {/* Servicios destacados */}
       <FeaturedServices />
       {/* Aseguranzas y convenios */}
