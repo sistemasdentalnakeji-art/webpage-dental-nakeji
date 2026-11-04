@@ -1,6 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// SECCIÓN "TESTIMONIOS" (debajo del formulario): video vertical a la izquierda y hasta 3 tarjetas de cristal a la derecha.
+// SECCIÓN "TESTIMONIOS" (debajo del formulario): video vertical a la izquierda y hasta 3 tarjetas de cristal a la derecha,
+// cada una con una foto de archivo (≈34 % de la tarjeta).
 // A propósito no se parece a "Reseñas de Google" (carrusel).
+// Fondo: las partículas de prisma de Servicios destacados, en las orillas y en la franja de abajo, donde se unen con las de
+// esa sección (máscaras en testimonials.css y services.css).
 //
 // • Testimonios, video y textos → src/data/testimonials.ts. Sin testimonios, la sección no se muestra.
 // • Estilos → src/styles/pages/home/testimonials.css.
@@ -11,22 +14,14 @@ import { useLang } from '@/app/lang'
 import {
   TESTIMONIAL_VIDEO,
   TESTIMONIALS,
-  TESTIMONIALS_GOOGLE_URL,
   TESTIMONIALS_SECTION,
   type Testimonial,
 } from '@/data/testimonials'
 import { Band } from '@/components/decor/Band'
+import { ParticlesBackground } from '@/components/decor/ParticlesBackground'
+import { BrandOrb } from '@/components/ui/BrandOrb'
 import { SectionIntro } from '@/components/ui/SectionIntro'
 import { Stars } from '@/components/ui/Stars'
-
-/** Dos iniciales del nombre para el avatar. */
-const initials = (name: string) =>
-  name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
-    .join('')
 
 const items = TESTIMONIALS.slice(0, 3)
 
@@ -37,7 +32,7 @@ export function Testimonials() {
   const showVideo = Boolean(TESTIMONIAL_VIDEO.src)
 
   const card = (t: Testimonial) => (
-    <li className="testimonial" key={t.name + t.quote.es}>
+    <li className={t.photo ? 'testimonial testimonial--photo' : 'testimonial'} key={t.name + t.quote.es}>
       <figure>
         <span className="testimonial__quote-mark" aria-hidden="true">
           “
@@ -46,21 +41,28 @@ export function Testimonials() {
           <p>{t.quote[lang]}</p>
         </blockquote>
         <figcaption>
-          <span className="testimonial__avatar" aria-hidden="true">
-            {initials(t.name)}
+          <span className="testimonial__logo">
+            <BrandOrb lazy />
           </span>
           <span className="testimonial__who">
             <strong>{t.name}</strong>
-            <span>{[t.source === 'google' && section.googleReview, t.treatment?.[lang]].filter(Boolean).join(' · ')}</span>
+            <span className="testimonial__meta">
+              {t.rating !== null && <Stars rating={t.rating} size={16} />}
+              {t.treatment && <span>{t.treatment[lang]}</span>}
+            </span>
           </span>
-          {t.rating !== null && <Stars rating={t.rating} size={15} />}
         </figcaption>
       </figure>
+      {t.photo && (
+        <div className="testimonial__photo">
+          <img src={t.photo.src} alt={t.photo.alt[lang]} width={560} height={700} loading="lazy" decoding="async" />
+        </div>
+      )}
     </li>
   )
 
   return (
-    <Band tone="white" className="testimonials-band" labelledBy="testimonios-titulo">
+    <Band tone="white" className="testimonials-band" labelledBy="testimonios-titulo" decor={<ParticlesBackground density={200} max={280} />}>
       <div className="container">
         <div className="testimonials-intro">
           <SectionIntro icon="message" id="testimonios-titulo" title={section.title} text={section.text} />
@@ -75,11 +77,6 @@ export function Testimonials() {
             {items.map(card)}
           </ul>
         </div>
-        <p className="testimonials-more">
-          <a href={TESTIMONIALS_GOOGLE_URL} target="_blank" rel="noopener noreferrer">
-            {section.seeAll}
-          </a>
-        </p>
       </div>
     </Band>
   )

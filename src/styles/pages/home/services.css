@@ -161,16 +161,21 @@
   transform: translateY(-2px);
 }
 
-/* Fondo de partículas (ParticlesBackground): solo en las orillas izquierda y derecha, fuera del contenido (título y
-   tarjetas). Se desvanecen al acercarse a él; en pantallas sin orillas libres no se ven. */
+/* Fondo de partículas (ParticlesBackground): en las orillas izquierda y derecha, fuera del contenido (título y tarjetas),
+   y arriba, a todo lo ancho, hasta el título: ahí se une con la franja de abajo de Testimonios (testimonials.css). Se
+   desvanecen al acercarse al contenido; en pantallas sin orillas libres solo se ve la franja de arriba. */
 .band--services .particles-bg {
   --edge: calc(50% - var(--container) / 2);
+  /* Alto del relleno de arriba de la banda (--band-padding + el extra de .band--wave-top): llega hasta el título. */
+  --top: calc(var(--band-padding) + clamp(12px, 2.5vw, 36px));
 
-  mask-image: linear-gradient(
-    to right,
-    #000 calc(var(--edge) - 120px),
-    transparent calc(var(--edge) + 10px),
-    transparent calc(100% - var(--edge) - 10px),
-    #000 calc(100% - var(--edge) + 120px)
-  );
+  mask-image:
+    linear-gradient(
+      to right,
+      #000 calc(var(--edge) - 120px),
+      transparent calc(var(--edge) + 10px),
+      transparent calc(100% - var(--edge) - 10px),
+      #000 calc(100% - var(--edge) + 120px)
+    ),
+    linear-gradient(to bottom, #000 calc(var(--top) - 70px), transparent calc(var(--top) + 10px));
 }

@@ -7,7 +7,7 @@
 
 .testimonials-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+  grid-template-columns: minmax(220px, 400px) minmax(0, 1fr);
   gap: clamp(16px, 2.4vw, 28px);
   align-items: stretch;
   max-width: 1080px;
@@ -41,8 +41,9 @@
 /* ── Video ─────────────────────────────────────────────────────────────── */
 .testimonial-video {
   overflow: hidden;
-  /* El ancho manda (columna) y el alto sale del 9:16; sin esto, el alto de las tarjetas lo ensanchaba encima de ellas. */
-  align-self: center;
+  /* El ancho manda (columna) y el 9:16 fija el alto mínimo; si las tres tarjetas son más altas, el video se estira
+     a su altura (object-fit: cover recorta un poco los lados) en vez de quedar más bajo que ellas. */
+  align-self: stretch;
   width: 100%;
   aspect-ratio: 9 / 16;
 }
@@ -57,6 +58,8 @@
 
 /* ── Tarjetas ──────────────────────────────────────────────────────────── */
 .testimonials {
+  /* Las tarjetas se adaptan al ancho de esta columna (no al de la pantalla): ver @container más abajo. */
+  container-type: inline-size;
   display: grid;
   grid-auto-rows: 1fr;
   gap: clamp(14px, 1.8vw, 20px);
@@ -103,7 +106,7 @@
   gap: 14px;
   min-width: 0;
   margin: 0;
-  padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.8vw, 32px);
+  padding: clamp(18px, 2.2vw, 24px) clamp(18px, 2.4vw, 28px);
 }
 
 .testimonial__quote-mark {
@@ -123,10 +126,10 @@
 
 .testimonial blockquote p {
   margin: 0;
-  padding-right: 36px;
+  padding-right: 28px;
   color: rgb(234 243 251 / 0.95);
   font-family: 'Zilla Slab', Georgia, serif;
-  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  font-size: clamp(1rem, 1.25vw, 1.1rem);
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -138,21 +141,33 @@
   gap: 12px;
 }
 
-.testimonial__avatar {
+/* Logo de Nakeji en su orbe con el contorno luminoso Siri (BrandOrb, el del hero), en lugar de las iniciales. */
+.testimonial__logo {
   display: grid;
   flex: none;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-gold), #f3d796);
-  color: var(--color-night);
-  font-size: 0.85rem;
-  font-weight: 800;
+  isolation: isolate;
+}
+
+.testimonial__logo .brand-orb {
+  --siri-width: 2.5px;
+  --siri-blur: 7px;
+  width: 48px;
+  height: 48px;
+}
+
+.testimonial__logo .brand-orb__halo {
+  inset: -10px;
+}
+
+.testimonial__logo .brand-orb__mark {
+  width: 27px;
+  height: 27px;
+  filter: drop-shadow(0 0 6px rgba(123, 195, 235, 0.55));
 }
 
 .testimonial__who {
   display: grid;
+  gap: 2px;
   flex: 1;
   min-width: 0;
 }
@@ -161,13 +176,77 @@
   color: #fff;
 }
 
-.testimonial__who span {
+/* Cinco estrellas bajo el nombre (y el tratamiento, si lo hay). */
+.testimonial__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
   color: var(--color-brand-light);
   font-size: 0.85rem;
 }
 
+/* ── Foto de archivo: ≈36 % de la tarjeta, a la derecha, con un degradado que la funde con el cristal ── */
+.testimonial--photo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34%;
+}
+
+.testimonial__photo {
+  position: relative;
+  min-height: 100%;
+  border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+  overflow: hidden;
+}
+
+.testimonial__photo img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+}
+
+.testimonial__photo::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 1;
+  width: 40%;
+  background: linear-gradient(90deg, rgba(14, 32, 58, 0.97), transparent);
+  pointer-events: none;
+}
+
+/* Columna angosta: la foto pasa arriba de la tarjeta, como banner (≈35 % de su alto). */
+@container (max-width: 520px) {
+  .testimonial--photo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .testimonial__photo {
+    order: -1;
+    height: 170px;
+    min-height: 0;
+    border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
+  }
+
+  /* En banner ancho solo cabe una franja de la foto: centrada en ojos y sonrisa. */
+  .testimonial__photo img {
+    object-position: 50% 46%;
+  }
+
+  .testimonial__photo::before {
+    inset: auto 0 0 0;
+    width: auto;
+    height: 50%;
+    background: linear-gradient(0deg, rgba(14, 32, 58, 0.97), transparent);
+  }
+}
+
 /* Tablet y celular: el video arriba (más bajo) y las tarjetas debajo. */
-@media (max-width: 760px) {
+@media (max-width: 1060px) {
   .testimonials-layout {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -185,18 +264,20 @@
   }
 }
 
-.testimonials-more {
-  margin: clamp(20px, 3vw, 30px) 0 0;
-  text-align: center;
-}
+/* Fondo de partículas de prisma (ParticlesBackground): en las orillas, fuera del contenido (como en Servicios destacados) y,
+   abajo, la franja a todo lo ancho que queda hasta el título de esa sección; ahí se une con sus partículas (ver services.css).
+   Dos capas de máscara se suman: ve donde cualquiera de las dos es visible. Con menos de 960 px no hay partículas. */
+.testimonials-band .particles-bg {
+  /* Borde del contenido de esta sección (video + tarjetas, 1080 px de ancho). */
+  --edge: calc(50% - 540px);
 
-.testimonials-more a {
-  color: var(--color-brand-light);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.testimonials-more a:hover {
-  color: var(--color-gold);
+  mask-image:
+    linear-gradient(
+      to right,
+      #000 calc(var(--edge) - 120px),
+      transparent calc(var(--edge) + 10px),
+      transparent calc(100% - var(--edge) - 10px),
+      #000 calc(100% - var(--edge) + 120px)
+    ),
+    linear-gradient(to top, #000 var(--band-padding), transparent calc(var(--band-padding) + 70px));
 }

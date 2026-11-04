@@ -78,6 +78,8 @@ export function ParticlesBackground({ density = DENSITY, max = MAX, avoid }: Par
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height)
+      // Oculto (celular y tableta): el lienzo mide 0 y tint() dividiría entre 0.
+      if (!width) return
       // Opacidad de cada partícula según su distancia al elemento que se evita (1 = sin hueco).
       const box = avoid ? document.querySelector(avoid)?.getBoundingClientRect() : undefined
       const origin = canvas.getBoundingClientRect()
