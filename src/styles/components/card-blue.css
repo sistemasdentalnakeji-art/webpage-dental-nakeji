@@ -123,14 +123,15 @@
   }
 }
 
-/* Pantallas grandes: cartas apiladas (cada categoría es una carta, opaca para tapar la de atrás). */
-@media (width >= 1600px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
-  .catalog-split .catalog-group {
+/* Escritorio: cartas apiladas (cada categoría es una carta, opaca para tapar la de atrás). Mismo rango que las cartas
+   (services-index.css, desde 960 px): con 1600 px aquí, entre 960 y 1599 px la carta quedaba blanca con el título blanco. */
+@media (width >= 960px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  .catalog-group {
     border-color: var(--card-blue-border);
     background: linear-gradient(145deg, rgb(24, 49, 84), rgb(9, 24, 46));
   }
 
-  .catalog-split .catalog-card {
+  .catalog-group .catalog-card {
     background: rgba(255, 255, 255, 0.05);
   }
 }

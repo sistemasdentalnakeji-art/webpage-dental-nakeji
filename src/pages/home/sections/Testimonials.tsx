@@ -12,14 +12,16 @@
 import '@/styles/pages/home/testimonials.css'
 import { useLang } from '@/app/lang'
 import {
-  TESTIMONIAL_VIDEO,
+  TESTIMONIAL_VIDEOS,
   TESTIMONIALS,
   TESTIMONIALS_SECTION,
   type Testimonial,
 } from '@/data/testimonials'
 import { Band } from '@/components/decor/Band'
 import { ParticlesBackground } from '@/components/decor/ParticlesBackground'
+import type { SyntheticEvent } from 'react'
 import { BrandOrb } from '@/components/ui/BrandOrb'
+import { Carousel } from '@/components/ui/Carousel'
 import { SectionIntro } from '@/components/ui/SectionIntro'
 import { Stars } from '@/components/ui/Stars'
 
@@ -29,7 +31,13 @@ export function Testimonials() {
   const lang = useLang()
   if (items.length === 0) return null
   const section = TESTIMONIALS_SECTION[lang]
-  const showVideo = Boolean(TESTIMONIAL_VIDEO.src)
+  const showVideo = TESTIMONIAL_VIDEOS.length > 0
+  // Al reproducir uno, se pausan los demás (el carrusel deja varios montados a la vez).
+  const pauseOthers = (e: SyntheticEvent<HTMLVideoElement>) =>
+    e.currentTarget
+      .closest('.testimonial-videos')
+      ?.querySelectorAll('video')
+      .forEach((v) => v !== e.currentTarget && v.pause())
 
   const card = (t: Testimonial) => (
     <li className={t.photo ? 'testimonial testimonial--photo' : 'testimonial'} key={t.name + t.quote.es}>
@@ -69,9 +77,23 @@ export function Testimonials() {
         </div>
         <div className={showVideo ? 'testimonials-layout' : 'testimonials-layout testimonials-layout--cards'}>
           {showVideo && (
-            <div className="testimonial-video">
-              <video controls playsInline preload="metadata" aria-label={section.video} src={TESTIMONIAL_VIDEO.src} />
-            </div>
+            <Carousel
+              className="testimonial-videos"
+              label={section.video}
+              items={TESTIMONIAL_VIDEOS.map((v) => (
+                <div className="testimonial-video">
+                  {/* #t=0.1: el navegador muestra un cuadro del video como portada. */}
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label={v.label[lang]}
+                    src={`${v.src}#t=0.1`}
+                    onPlay={pauseOthers}
+                  />
+                </div>
+              ))}
+            />
           )}
           <ul className="testimonials" aria-label={section.list}>
             {items.map(card)}

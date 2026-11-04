@@ -26,7 +26,7 @@ export function ServicePage({ route, content }: ServicePageProps) {
       {/* 1. Hero con la foto del servicio */}
       <ServiceHero label={route.label} content={content} />
       {/* 2. Acerca del tratamiento */}
-      <ServiceAbout content={content} />
+      <ServiceAbout content={content} serviceKey={route.key} />
       {/* 3. Agenda (el botón "Reservar cita" baja hasta aquí) */}
       {/* El formulario guarda el nombre en español (valor fijo que valida Code.gs), sea cual sea el idioma de la página. */}
       <Schedule service={routeOf(route.key, 'es').label} flow={false} />

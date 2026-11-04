@@ -47,7 +47,7 @@ if (!template.includes(HEAD_SLOT) || !template.includes(APP_SLOT) || !LANG_ATTR.
 // Precarga de las fuentes latinas (titulares y texto) para evitar saltos tipográficos.
 const assets = await fs.readdir(path.join(dist, 'assets'))
 const fontPreloads = assets
-  .filter((file) => /^(manrope|inter)-latin-wght-normal-.+\.woff2$/.test(file))
+  .filter((file) => /^(inter-latin-wght-normal|zilla-slab-latin-600-normal)-.+\.woff2$/.test(file))
   .map((file) => `<link rel="preload" href="/assets/${file}" as="font" type="font/woff2" crossorigin />`)
 if (fontPreloads.length === 0) {
   console.warn('AVISO: no se encontraron las fuentes latinas para precargar (¿cambió el nombre de los archivos de @fontsource?).')

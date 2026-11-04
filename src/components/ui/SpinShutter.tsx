@@ -239,6 +239,14 @@ export function SpinShutter({ photos, label, speed = 2.2, tilt = 30, roll = 26 }
     setExpandedPhoto(photo)
   }
 
+  /** Dentro del visor: pasa a la foto anterior/siguiente. Al cerrar, vuelve a la tarjeta de la foto que quedó abierta. */
+  const stepPhoto = (delta: number) => {
+    if (!expandedPhoto) return
+    const k = (((photos.indexOf(expandedPhoto) + delta) % count) + count) % count
+    openerRef.current = cardRefs.current[k] ?? openerRef.current
+    setExpandedPhoto(photos[k])
+  }
+
   const finishPhotoClose = () => {
     if (previewRef.current?.contains(document.activeElement)) {
       const opener = openerRef.current
@@ -328,9 +336,13 @@ export function SpinShutter({ photos, label, speed = 2.2, tilt = 30, roll = 26 }
       onFocus={(event) => (focusWithin.current = event.target.matches(':focus-visible'))}
       onBlur={() => (focusWithin.current = false)}
       onKeyDown={(event) => {
-        if (event.key === 'Escape' && expandedPhoto) {
+        if (!expandedPhoto) return
+        if (event.key === 'Escape') {
           event.preventDefault()
           closePhoto()
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+          event.preventDefault()
+          stepPhoto(event.key === 'ArrowLeft' ? -1 : 1)
         }
       }}
     >
@@ -398,7 +410,16 @@ export function SpinShutter({ photos, label, speed = 2.2, tilt = 30, roll = 26 }
           if (event.propertyName === 'width' || event.propertyName === 'height') finishPhotoClose()
         }}
       >
-        {expandedPhoto && <img className="spin-shutter__expanded-image" src={expandedPhoto.src} alt={expandedPhoto.alt} />}
+        {expandedPhoto && (
+          <img key={expandedPhoto.src} className="spin-shutter__expanded-image" src={expandedPhoto.src} alt={expandedPhoto.alt} />
+        )}
+        {/* Flechas del visor: solo existen con la foto abierta; se ven al pasar el cursor (en táctil, siempre). */}
+        <button type="button" className="spin-shutter__step spin-shutter__step--prev" aria-label={ui.prev} onClick={() => stepPhoto(-1)}>
+          <Icon name="chevronLeft" size={26} />
+        </button>
+        <button type="button" className="spin-shutter__step spin-shutter__step--next" aria-label={ui.next} onClick={() => stepPhoto(1)}>
+          <Icon name="chevronRight" size={26} />
+        </button>
         <button ref={closeRef} type="button" className="spin-shutter__close" aria-label={ui.close} onClick={closePhoto}>
           <Icon name="close" size={26} />
         </button>

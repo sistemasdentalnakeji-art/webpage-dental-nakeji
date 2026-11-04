@@ -7,7 +7,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useLang } from '@/app/lang'
-import { routeOf } from '@/config/routes'
+import { routeOf, type RouteKey } from '@/config/routes'
+import { BEFORE_AFTER } from '@/data/beforeAfter'
+import { BeforeAfter } from '@/components/ui/BeforeAfter'
 import { UI } from '@/data/ui'
 import type { ServiceContent } from '@/data/services'
 import { Band } from '@/components/decor/Band'
@@ -15,15 +17,18 @@ import { InteractiveHoverContent } from '@/components/ui/AnimatedButtons'
 
 interface ServiceAboutProps {
   content: ServiceContent
+  serviceKey: RouteKey
 }
 
-export function ServiceAbout({ content }: ServiceAboutProps) {
+export function ServiceAbout({ content, serviceKey }: ServiceAboutProps) {
   const lang = useLang()
+  const photo = BEFORE_AFTER[serviceKey]
   const ui = UI[lang].service
   return (
     <Band tone="tint" labelledBy="servicio-info-titulo" className="service-about-band">
       <div className="container">
-        <div className="service-about">
+        <div className={photo ? 'service-about service-about--compare' : 'service-about'}>
+          <div className="service-about__text">
           <p className="service-about__eyebrow pill-label">{ui.aboutEyebrow}</p>
           <h2 id="servicio-info-titulo" className="section-title">
             {content.about.title}
@@ -32,6 +37,8 @@ export function ServiceAbout({ content }: ServiceAboutProps) {
           <a className="btn btn--primary service-about__cta interactive-hover" href={routeOf('blog', lang).path}>
             <InteractiveHoverContent>{ui.blogCta}</InteractiveHoverContent>
           </a>
+          </div>
+          {photo && <BeforeAfter photo={photo} />}
         </div>
       </div>
     </Band>

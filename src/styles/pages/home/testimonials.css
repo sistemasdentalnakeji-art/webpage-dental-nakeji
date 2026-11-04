@@ -41,9 +41,8 @@
 /* ── Video ─────────────────────────────────────────────────────────────── */
 .testimonial-video {
   overflow: hidden;
-  /* El ancho manda (columna) y el 9:16 fija el alto mínimo; si las tres tarjetas son más altas, el video se estira
-     a su altura (object-fit: cover recorta un poco los lados) en vez de quedar más bajo que ellas. */
-  align-self: stretch;
+  /* Proporción original 9:16 (sin estirar), centrado en vertical respecto a las tres tarjetas. */
+  align-self: center;
   width: 100%;
   aspect-ratio: 9 / 16;
 }
@@ -227,20 +226,25 @@
 
   .testimonial__photo {
     order: -1;
-    height: 170px;
+    height: 220px;
     min-height: 0;
     border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
   }
 
-  /* En banner ancho solo cabe una franja de la foto: centrada en ojos y sonrisa. */
+  /* En banner ancho solo cabe una franja de la foto: subida para que entren ojos y sonrisa. */
   .testimonial__photo img {
-    object-position: 50% 46%;
+    object-position: 50% 42%;
+  }
+
+  /* Jesús Villa: su cara queda más arriba en la foto; se baja para que entre la cabeza completa. */
+  .testimonial__photo img[src*='sonrisa-angel'] {
+    object-position: 50% 15%;
   }
 
   .testimonial__photo::before {
     inset: auto 0 0 0;
     width: auto;
-    height: 50%;
+    height: 28%;
     background: linear-gradient(0deg, rgba(14, 32, 58, 0.97), transparent);
   }
 }
@@ -280,4 +284,52 @@
       #000 calc(100% - var(--edge) + 120px)
     ),
     linear-gradient(to top, #000 var(--band-padding), transparent calc(var(--band-padding) + 70px));
+}
+
+/* Carrusel de videos (columna izquierda): un video a la vez, mismo tamaño 9:16 que antes; flechas debajo. */
+.testimonial-videos {
+  align-self: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.testimonial-videos .carousel__track {
+  --per-view: 1;
+}
+
+.testimonial-videos .testimonial-video {
+  align-self: auto;
+}
+
+@media (max-width: 1060px) {
+  .testimonial-videos {
+    width: min(100%, 260px);
+    margin-inline: auto;
+  }
+
+  .testimonial-videos .testimonial-video {
+    width: 100%;
+  }
+}
+
+/* Celular: las tres tarjetas en una fila que se desliza (como el carrusel de videos), para que la sección no sea tan larga. */
+@media (max-width: 700px) {
+  .testimonials {
+    grid-auto-flow: column;
+    grid-auto-columns: 86%;
+    grid-auto-rows: auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .testimonials::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial {
+    scroll-snap-align: center;
+  }
 }

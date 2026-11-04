@@ -247,3 +247,126 @@
   font-size: 1.0625rem;
 }
 
+
+/* ── Comparador antes/después (components/ui/BeforeAfter.tsx), a la derecha de "Sobre el tratamiento" ── */
+.service-about--compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 506px);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+.before-after {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-card);
+  /* Borde de prisma azul → oro, como las tarjetas de testimonios. */
+  background:
+    linear-gradient(#0a1529, #0a1529) padding-box,
+    conic-gradient(from 210deg, rgba(123, 195, 235, 0.8), rgba(224, 182, 92, 0.9), rgba(58, 112, 176, 0.5), rgba(123, 195, 235, 0.8)) border-box;
+  box-shadow: 0 24px 48px -28px rgba(10, 21, 41, 0.65);
+  touch-action: pan-y;
+}
+
+.before-after img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.before-after__after {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 var(--pos));
+}
+
+/* Línea dorada con su perilla de cristal. */
+.before-after__handle {
+  position: absolute;
+  inset-block: 0;
+  left: var(--pos);
+  width: 2px;
+  translate: -1px 0;
+  background: var(--color-gold);
+  box-shadow: 0 0 12px rgba(224, 182, 92, 0.7);
+  pointer-events: none;
+}
+
+.before-after__handle::after {
+  content: '‹ ›';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  translate: -50% -50%;
+  border: 2px solid var(--color-gold);
+  border-radius: 50%;
+  background: rgba(10, 21, 41, 0.55);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.before-after__tag {
+  position: absolute;
+  bottom: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(10, 21, 41, 0.6);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.before-after__tag--before { left: 12px; }
+
+.before-after__tag--after {
+  right: 12px;
+  color: var(--color-gold);
+}
+
+/* El range invisible cubre toda la foto: arrastrar en cualquier punto mueve la línea; flechas del teclado también. */
+.before-after input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+}
+
+.before-after:has(input:focus-visible) {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (width < 900px) {
+  .service-about--compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .before-after-wrap {
+    max-width: 506px;
+  }
+}
+
+.before-after-wrap {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}

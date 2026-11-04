@@ -106,8 +106,24 @@
 }
 
 .hero__lead .text-blur-reveal {
+  /* Siempre inline-block (el párrafo no lleva .shiny-text): no cambia de caja al terminar y el texto no se recorre. */
+  display: inline-block;
   animation-duration: 1.1s;
   animation-delay: calc(var(--word) * 29ms + 1.7s);
+}
+
+/* Celular: ~50 palabras con blur(10px) a la vez traban el cuadro; aquí solo fundido y subida (mucho más ligero). */
+@media (width < 768px) {
+  .hero__lead .text-blur-reveal {
+    animation-name: text-fade-up;
+  }
+}
+
+@keyframes text-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
 }
 
 .hero__actions {

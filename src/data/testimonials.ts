@@ -31,12 +31,19 @@ export const TESTIMONIALS_SECTION: Record<
 }
 
 /**
- * Video vertical (9:16, 720×1280) de la columna izquierda: public/videos/testimonio-dental-nakeji.mp4.
- * Sin `src`, la sección muestra solo las tarjetas.
+ * Videos verticales (9:16) del carrusel de la columna izquierda, en este orden. Lista vacía: solo se muestran las tarjetas.
+ * Los de public/videos/testimonios/ son reels de @dentalnakeji (Instagram): DdxDNxfSXhu, DdUs65KSiPe, DdZy3A0Shzm, DdsI7U7oosh.
  */
-export const TESTIMONIAL_VIDEO: { src: string } = {
-  src: '/videos/testimonio-dental-nakeji.mp4',
-}
+export const TESTIMONIAL_VIDEOS: { src: string; label: Record<Lang, string> }[] = [
+  {
+    src: '/videos/testimonios/paciente-san-diego.mp4',
+    label: { es: 'Paciente de San Diego con implantes dentales', en: 'San Diego patient with dental implants' },
+  },
+  { src: '/videos/testimonios/casey-missouri.mp4', label: { es: 'Casey, paciente de Missouri', en: 'Casey, a patient from Missouri' } },
+  { src: '/videos/testimonio-dental-nakeji.mp4', label: { es: 'Testimonio de un paciente', en: 'Patient testimonial' } },
+  { src: '/videos/testimonios/precision.mp4', label: { es: 'Precisión en cada tratamiento', en: 'Precision in every treatment' } },
+  { src: '/videos/testimonios/equipo.mp4', label: { es: 'Nuestro equipo en consulta', en: 'Our team at work' } },
+]
 
 // Tres reseñas reales de Google (perfil Dental Nakeji, 3 nov 2026), copiadas tal cual; en inglés, traducción.
 // Máximo 3 (se muestran las 3 primeras). Para cambiarlas, edita esta lista.
@@ -45,7 +52,7 @@ export const TESTIMONIAL_VIDEO: { src: string } = {
 // Fotos de archivo (public/images/testimonios): no son de quienes escribieron las reseñas. Para usar la foto de un
 // paciente real, cambia el archivo de `photo.src` (con su permiso por escrito).
 //   Greg      → Unsplash, Nathan Dumlao (@nate_dumlao)  https://unsplash.com/photos/26rK1-bH9Ls  (licencia Unsplash)
-//   Angel     → Unsplash, Elizeu Dias (@elishavision)   https://unsplash.com/photos/2EGNqazbAMk  (licencia Unsplash)
+//   Jesús     → Unsplash, Elizeu Dias (@elishavision)   https://unsplash.com/photos/2EGNqazbAMk  (licencia Unsplash)
 //   Carolina  → foto que envió el dueño del sitio (sonrisa-carolina-sueter.webp): origen y licencia por confirmar.
 export const TESTIMONIALS: Testimonial[] = [
   {
@@ -71,20 +78,20 @@ export const TESTIMONIALS: Testimonial[] = [
       },
     },
     quote: {
-      es: 'Mi experiencia con la extracción fue excelente, la verdad iba muy nerviosa, tenía dolor, de emergencia me ayudaron a sacarla y la verdad que fueron muy profesionales […] fue rápido, en menos de 10 minutos ya estaba sin la muela del juicio. Sí lo recomiendo.',
-      en: 'My experience with the extraction was excellent. I was very nervous and in pain, they helped me as an emergency and they were truly very professional […] it was quick, in under 10 minutes my wisdom tooth was out. I do recommend it.',
+      es: 'Mi experiencia con la extracción fue excelente, la verdad iba muy nerviosa, tenía dolor, de emergencia me ayudaron a sacarla y la verdad que fueron muy profesionales. Fue rápido, en menos de 10 minutos ya estaba sin la muela del juicio. Sí lo recomiendo.',
+      en: 'My experience with the extraction was excellent. I was very nervous and in pain, they helped me as an emergency and they were truly very professional. It was quick, in under 10 minutes my wisdom tooth was out. I do recommend it.',
     },
     rating: 5,
   },
   {
-    name: 'Angel Beltran',
+    name: 'Jesús Villa',
     photo: {
       src: '/images/testimonios/sonrisa-angel.webp',
       alt: { es: 'Imagen ilustrativa: hombre sonriendo', en: 'Illustrative image: man smiling' },
     },
     quote: {
-      es: 'Muy profesionales, pacientes mas que nada, y muy buenas personas que ven lo mejor para ti. Gracias a todo el equipo.',
-      en: 'Very professional, patient above all, and very good people who look out for what is best for you. Thank you to the whole team.',
+      es: 'Recomendado ampliamente. Excelente servicio del personal. Las instalaciones están muy limpias y en buen estado. Sin duda, seguiré mi tratamiento y revisiones de rutina con ellos.',
+      en: 'Highly recommended. Excellent service from the staff. The facilities are very clean and well kept. I will definitely continue my treatment and routine check-ups with them.',
     },
     rating: 5,
   },

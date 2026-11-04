@@ -1,5 +1,4 @@
-/* Zilla Slab para titulares; Inter y Montserrat permanecen autoalojadas. */
-@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&display=swap');
+/* Zilla Slab (titulares), Inter y Montserrat: autoalojadas en global/fonts.css (sin Google Fonts: llegaba tarde y el título del hero saltaba de línea). */
 @import './global/fonts.css';
 
 /* ==========================================================================

@@ -1022,3 +1022,21 @@
   }
 }
 
+
+/* Cartas apiladas en pantallas de 960 a 1279 px: la columna del título y el relleno de escritorio no dejaban espacio a las dos
+   columnas de servicios (se cortaban a la derecha). */
+@media (960px <= width < 1280px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  .catalog-group {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 28px;
+    padding: 36px 32px;
+  }
+
+  .catalog-group__title {
+    font-size: 2rem;
+  }
+
+  .catalog-card {
+    padding: 24px;
+  }
+}

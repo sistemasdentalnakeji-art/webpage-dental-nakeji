@@ -248,3 +248,48 @@ html[data-motion='paused'] .spin-shutter,
 html[data-motion='paused'] .spin-shutter__preview {
   transition: none !important;
 }
+
+/* Flechas dentro del visor (foto abierta): a los lados, ocultas hasta pasar el cursor o enfocarlas; en táctil, visibles. */
+.spin-shutter__step {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(10, 21, 41, 0.45);
+  backdrop-filter: blur(6px);
+  color: var(--color-white);
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 -50%;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.spin-shutter__step--prev {
+  left: 16px;
+}
+
+.spin-shutter__step--next {
+  right: 16px;
+}
+
+.spin-shutter__preview:hover .spin-shutter__step,
+.spin-shutter__step:focus-visible {
+  opacity: 1;
+}
+
+.spin-shutter__step:hover {
+  background: rgba(10, 21, 41, 0.7);
+}
+
+@media (hover: none) {
+  .spin-shutter__step {
+    opacity: 1;
+  }
+}
