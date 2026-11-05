@@ -59,7 +59,15 @@ function Row({ slides, label, variant }: { slides: Slide[]; label: string; varia
 
   // La tarjeta abierta queda a la vista (en celular, centrada en la fila deslizable).
   useEffect(() => {
-    headRefs.current[open]?.closest('li')?.scrollIntoView({ inline: mobile ? 'center' : 'nearest', block: 'nearest', behavior: motionOff() ? 'auto' : 'smooth' })
+    // Solo desplaza la fila (scrollIntoView movía también la página: al cargar saltaba a Testimoniales).
+    const li = headRefs.current[open]?.closest('li')
+    const track = trackRef.current
+    if (!li || !track || track.scrollWidth <= track.clientWidth) return
+    const x = li.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft
+    const left = mobile
+      ? x - (track.clientWidth - li.offsetWidth) / 2
+      : Math.min(x, Math.max(track.scrollLeft, x + li.offsetWidth - track.clientWidth))
+    track.scrollTo({ left, behavior: motionOff() ? 'auto' : 'smooth' })
     // eslint-disable-next-line react-hooks/exhaustive-deps -- solo al cambiar la tarjeta abierta; `mobile` no debe mover el scroll
   }, [open])
 
@@ -205,7 +213,7 @@ export function Testimonials() {
   if (VIDEOS.length + REVIEWS.length === 0) return null
 
   return (
-    <Band tone="white" className="testimonials-band" labelledBy="testimonios-titulo" decor={<ParticlesBackground density={200} max={280} />}>
+    <Band tone="white" className="testimonials-band" labelledBy="testimonios-titulo" decor={<ParticlesBackground density={150} max={180} />}>
       <div className="container">
         <div className="testimonials-intro">
           <SectionIntro icon="message" id="testimonios-titulo" title={section.title} text={section.text} />

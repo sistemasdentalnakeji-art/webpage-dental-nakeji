@@ -52,35 +52,11 @@
     animation-range: entry 0% entry 80%;
   }
 
-  /* 4) Flotación: 3px arriba/abajo, ciclos 7-11 s desfasados. La entrada va después, así que gana mientras dura. */
-  @media (hover: hover) and (width >= 1100px) {
-    .service-card {
-      animation-name: pm-float, pm-in;
-      animation-duration: var(--pm-dur, 9s), auto;
-      animation-delay: var(--pm-delay, 0s), 0s;
-      animation-timing-function: ease-in-out, linear;
-      animation-iteration-count: infinite, 1;
-      animation-direction: alternate, normal;
-      animation-fill-mode: none, backwards;
-      animation-timeline: auto, view();
-      animation-range: normal, entry 0% entry 80%;
-    }
-
-    /* /servicios/ tiene su propia pila pegajosa: ahí solo flota, sin entrada. */
-    .catalog-card {
-      animation: pm-float var(--pm-dur, 9s) ease-in-out var(--pm-delay, 0s) infinite alternate;
-    }
-
-    :is(.service-card, .catalog-card):nth-child(3n + 1) { --pm-dur: 8s; --pm-delay: -1s; }
-    :is(.service-card, .catalog-card):nth-child(3n + 2) { --pm-dur: 10s; --pm-delay: -4s; }
-    :is(.service-card, .catalog-card):nth-child(3n) { --pm-dur: 11s; --pm-delay: -7s; }
-    :is(.service-card, .catalog-card):nth-child(5n) { --pm-dur: 7s; --pm-delay: -2.5s; }
-  }
 }
 
 @keyframes pm-in {
-  from { opacity: 0; translate: 0 24px; filter: blur(6px); }
-  to { opacity: 1; translate: 0 0; filter: none; }
+  from { opacity: 0; translate: 0 24px; }
+  to { opacity: 1; translate: 0 0; }
 }
 
 @keyframes pm-weight {
@@ -88,10 +64,6 @@
   to { font-weight: 400; }
 }
 
-@keyframes pm-float {
-  from { translate: 0 -1.5px; }
-  to { translate: 0 1.5px; }
-}
 
 /* 5) Divisor de luz bajo la intro de Testimonios: raya dorada (estilo de las tarjetas del equipo) */
 .testimonials-intro::after {
@@ -122,17 +94,12 @@ html[data-motion='paused'] :is(.tcard, .catalog-card, .service-card, .card, .ben
 }
 
 /* Tarjetas dentro de un carrusel horizontal (Servicios destacados): view() se mediría contra el scroll del carrusel y las
-   que quedan fuera de él nunca terminarían de aparecer. Ahí no hay entrada con scroll; con pantalla ancha solo flotan. */
+   que quedan fuera de él nunca terminarían de aparecer. Ahí no hay entrada con scroll; quedan quietas (la flotación infinita re-difuminaba el vidrio). */
 @supports (animation-timeline: view()) {
   .carousel :is(.service-card, .card) {
     animation: none;
   }
 
-  @media (hover: hover) and (width >= 1100px) {
-    .carousel .service-card {
-      animation: pm-float var(--pm-dur, 9s) ease-in-out var(--pm-delay, 0s) infinite alternate;
-    }
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

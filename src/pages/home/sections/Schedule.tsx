@@ -37,7 +37,7 @@ export function Schedule({ service, flow = true }: ScheduleProps) {
       className="band--schedule"
       labelledBy="agendar-titulo"
       waveTop="plain"
-      decor={flow && <ParticlesBackground density={130} max={360} avoid=".story__tip" />}
+      decor={flow && <ParticlesBackground density={110} max={200} avoid=".story__tip" />}
     >
       <div className="container">
         <div className="schedule">

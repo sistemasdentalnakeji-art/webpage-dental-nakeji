@@ -26,10 +26,10 @@ const MAX = 200
 const PUSH = 4
 /** Menos partículas en todo el sitio (-30 %): el prisma acompaña, no protagoniza. */
 const AMOUNT = 0.7
-/** Brillo según la posición: pleno en los costados y tenue en el centro (donde está el texto que se lee). */
-const CENTER_ALPHA = 0.15
+/** Brillo según la posición: pleno en los costados y nada en el centro (el texto queda limpio y se dibuja menos). */
+const CLEAR = 0.4 // franja central vacía: 40 % del ancho
 const side = (x: number, width: number) =>
-  CENTER_ALPHA + (1 - CENTER_ALPHA) * Math.min(1, Math.abs((2 * x) / width - 1) / 0.8) ** 1.6
+  Math.min(1, Math.max(0, (Math.abs((2 * x) / width - 1) - CLEAR) / (0.85 - CLEAR))) ** 1.2
 
 interface Particle {
   x: number
@@ -99,6 +99,7 @@ export function ParticlesBackground({ density = DENSITY, max = MAX, avoid }: Par
       const link = LINK * scale()
       ctx.lineWidth = 1.2
       for (let i = 0; i < particles.length; i++) {
+        if (!fade[i]) continue // en el centro no hay líneas: se salta la mitad del cálculo
         const a = particles[i]
         for (let j = i + 1; j < particles.length; j++) {
           const b = particles[j]
@@ -160,7 +161,7 @@ export function ParticlesBackground({ density = DENSITY, max = MAX, avoid }: Par
     }
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5) // puntos de 1-2 px: 1.5 se ve igual y pinta ~44% menos
       width = canvas.clientWidth
       height = canvas.clientHeight
       canvas.width = width * dpr

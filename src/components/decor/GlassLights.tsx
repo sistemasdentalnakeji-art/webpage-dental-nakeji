@@ -11,9 +11,10 @@ export function GlassLights({ gold = 'blob', sides = true }: { gold?: 'blob' | '
     const el = ref.current
     if (!el) return
     let raf = 0
+    let footer: Element | null = null
     const draw = () => {
       raf = 0
-      const footer = document.querySelector('.site-footer')
+      footer ??= document.querySelector('.site-footer')
       const clip = footer ? Math.max(0, innerHeight - footer.getBoundingClientRect().top) : 0
       el.style.setProperty('--gl-clip', `${clip}px`)
     }

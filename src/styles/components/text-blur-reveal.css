@@ -12,7 +12,7 @@
 @keyframes text-blur-reveal {
   from {
     display: inline-block;
-    opacity: 0;
+    opacity: 0.01; /* 0.01 y no 0: a la vista es igual, pero Google cuenta el texto como pintado desde el inicio (LCP) */
     filter: blur(10px);
     transform: translateY(0.35em);
     -webkit-text-fill-color: var(--shiny-base, currentColor);
