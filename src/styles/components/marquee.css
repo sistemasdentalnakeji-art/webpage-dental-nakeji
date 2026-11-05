@@ -1,31 +1,29 @@
 /* ==========================================================================
-   Marquee (components/ui/Marquee.tsx): fila de tarjetas que corre sin parar.
-   Movimiento continuo y lineal; el bucle cierra en -50% porque hay dos grupos idénticos (cada uno con su separación final).
+   Marquee (components/ui/Marquee.tsx): fila de tarjetas que corre sola y se desliza con el dedo.
+   El movimiento lo hace Marquee.tsx con scrollLeft; el bucle salta media pista porque hay dos grupos idénticos.
    Sin blur ni filtros dentro de las tarjetas: son lo que más entrecorta una fila en movimiento.
    ========================================================================== */
 .marquee {
   --marquee-gap: 20px;
   /* Aire arriba y abajo para que el brillo del borde de las tarjetas no se recorte. */
   padding-block: 12px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  /* El dedo la desliza sin bloquear el scroll vertical de la página. */
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee::-webkit-scrollbar {
+  display: none;
 }
 
 .marquee__track {
   display: flex;
   width: max-content;
-  animation: marquee-slide var(--marquee-duration, 90s) linear infinite;
-  will-change: transform;
-}
-
-.marquee--ltr .marquee__track {
-  animation-direction: reverse;
-}
-
-.marquee:hover .marquee__track,
-.marquee:focus-within .marquee__track {
-  animation-play-state: paused;
 }
 
 .marquee__group {
@@ -40,32 +38,8 @@
   flex: none;
 }
 
-@keyframes marquee-slide {
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
 @media (width >= 960px) {
   .marquee {
     --marquee-gap: 28px;
-  }
-}
-
-/* Movimiento reducido: sin correr; la fila se desliza con el dedo, el teclado o la rueda, con una sola copia. */
-@media (prefers-reduced-motion: reduce) {
-  .marquee {
-    overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-
-  .marquee__track {
-    animation: none !important;
-    will-change: auto;
-  }
-
-  .marquee__item[aria-hidden='true'] {
-    display: none;
   }
 }

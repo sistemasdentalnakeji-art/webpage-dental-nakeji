@@ -128,6 +128,8 @@ a.contact-item__value:hover {
   align-items: center;
   gap: 12px;
   margin-top: 24px;
+  padding: clamp(16px, 2vw, 20px);
+  border-radius: var(--radius-card);
 }
 
 .contact__social > .contact-item__label {

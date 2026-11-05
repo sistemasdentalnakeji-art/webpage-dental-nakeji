@@ -25,7 +25,7 @@ export function ServiceAbout({ content, serviceKey }: ServiceAboutProps) {
   const photo = BEFORE_AFTER[serviceKey]
   const ui = UI[lang].service
   return (
-    <Band tone="tint" labelledBy="servicio-info-titulo" className="service-about-band">
+    <Band tone="gradient" labelledBy="servicio-info-titulo" className="service-about-band">
       <div className="container">
         <div className={photo ? 'service-about service-about--compare' : 'service-about'}>
           <div className="service-about__text">

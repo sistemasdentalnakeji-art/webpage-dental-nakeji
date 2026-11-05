@@ -688,7 +688,19 @@
 }
 
 .booking-ticket > div + div {
-  border-top: 1.5px dashed var(--color-sky-strong);
+  position: relative;
+}
+
+.booking-ticket > div + div::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  width: var(--gold-rule-w);
+  height: var(--gold-rule-h);
+  border-radius: var(--gold-rule-radius);
+  background: var(--gold-rule-bg);
 }
 
 .booking-ticket dt {

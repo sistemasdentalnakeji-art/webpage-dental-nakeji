@@ -6,6 +6,7 @@
 // Estilos de las secciones: src/styles/pages/home/. Fondo compartido de toda la página: home/canvas.css.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { GlassLights } from '@/components/decor/GlassLights'
 import { Hero } from '@/pages/home/sections/Hero'
 import { SeccionDiente } from '@/pages/home/sections/SeccionDiente'
 import { Schedule } from '@/pages/home/sections/Schedule'
@@ -20,6 +21,7 @@ export function HomePage() {
     // Un solo fondo para toda la página (el degradado azul del hero, en App.tsx), fijo detrás de las secciones. Las
     // fibras de luz animadas van solo en el hero.
     <div className="home-canvas">
+      <GlassLights gold="none" />
       {/* Primera pantalla, con las fibras de luz */}
       <Hero />
       {/* Tres mensajes animados con el scroll */}

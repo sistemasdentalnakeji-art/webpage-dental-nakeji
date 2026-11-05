@@ -26,6 +26,14 @@
   --color-success: #11795a;
   --color-success-soft: #e2f5ec;
   --color-star: #c48300; /* estrellas de calificación (contraste 3:1) */
+  /* Raya dorada (la de las tarjetas del equipo en /nosotros/): una sola receta para todas las líneas doradas del sitio. */
+  --gold-rule-w: 34px;
+  --gold-rule-h: 2px;
+  --gold-rule-radius: var(--radius-pill);
+  --gold-rule-bg: var(--color-gold);
+  /* Hilo de luz dorada (Nosotros: divisores del equipo y raya de las tarjetas): centro casi blanco, puntas que se desvanecen. */
+  --gold-glow-line: linear-gradient(90deg, transparent, rgba(224, 182, 92, 0.85) 30%, #fff1c9 50%, rgba(224, 182, 92, 0.85) 70%, transparent);
+  --gold-glow-shadow: 0 0 8px rgba(224, 182, 92, 0.55);
   --color-gold: #e0b65c; /* oro suave para títulos del footer: sobre --color-night da 9.6:1, sin chillar */
 
   /* Tarjeta azul (vidrio azul de Nosotros): la tarjeta de contenido de todo el sitio, salvo los artículos del blog y las
@@ -36,6 +44,23 @@
   --card-blue-title: #ffffff;
   --card-blue-text: rgba(239, 247, 255, 0.8);
   --card-blue-line: rgba(255, 255, 255, 0.16);
+
+  /* Vidrio realista (components/card-blue.css). --mx/--my/--glow los escribe el JS al pasar el cursor por la tarjeta. */
+  --glass-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --glass-tint: linear-gradient(145deg, rgba(30, 62, 108, 0.58), rgba(9, 24, 46, 0.64));
+  --glass-sheen: linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 32%, transparent 55%);
+  --glass-cursor: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, calc(0.1 * var(--glow, 0))), transparent 40%);
+  --glass-edge: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(123, 195, 235, 0.18) 45%, rgba(123, 195, 235, 0.1) 70%, rgba(224, 182, 92, 0.35));
+  --glass-layers:
+    var(--glass-cursor) padding-box, var(--glass-sheen) padding-box, var(--glass-grain) padding-box,
+    var(--glass-tint) padding-box, var(--glass-edge) border-box;
+  /* Variante opaca (misma receta): para cartas apiladas que deben tapar a la de atrás y para filas con contorno .siri detrás. */
+  --glass-tint-solid: linear-gradient(145deg, rgb(30, 62, 108), rgb(9, 24, 46));
+  --glass-layers-solid:
+    var(--glass-cursor) padding-box, var(--glass-sheen) padding-box, var(--glass-grain) padding-box,
+    var(--glass-tint-solid) padding-box, var(--glass-edge) border-box;
+  --glass-blur: blur(18px) saturate(1.4);
+  --glass-shadow: 0 22px 50px -26px rgba(10, 40, 90, 0.7), 0 2px 10px -4px rgba(58, 112, 176, 0.25), inset 0 1px rgba(255, 255, 255, 0.12);
 
   /* Tipografía */
   --font-display: 'Zilla Slab', Georgia, serif;

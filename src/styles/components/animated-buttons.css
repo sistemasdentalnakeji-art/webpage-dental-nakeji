@@ -150,3 +150,47 @@ html[data-motion='paused'] .interactive-hover .interactive-hover__dot { clip-pat
   .interactive-hover__over { color: ButtonText; }
   .liquid-glass.liquid-glass, .liquid-metal.liquid-metal { border: 1px solid ButtonText; }
 }
+
+/* Indicador en reposo: en lugar del punto dorado de 6 px, un rombo pequeño de esquinas redondeadas ("gordito"), en el mismo
+   lugar. El círculo del relleno queda en 0 en reposo y crece desde ahí al pasar el cursor (la animación de relleno no cambia). */
+.interactive-hover:not(:has(.interactive-hover__bell)) .interactive-hover__dot {
+  clip-path: circle(0 at 15px 50%);
+}
+
+.interactive-hover:not(:has(.interactive-hover__bell))::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 12.5px;
+  z-index: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 1.6px;
+  background: linear-gradient(135deg, #f3d68f, var(--color-gold));
+  box-shadow: 0 0 6px rgba(224, 182, 92, 0.55);
+  translate: 0 -50%;
+  rotate: 45deg;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), scale 0.25s var(--ease);
+}
+
+.interactive-hover:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true'])::after {
+  opacity: 0;
+  scale: 0.4;
+}
+
+html[data-motion='paused'] .interactive-hover:not(:has(.interactive-hover__bell)) .interactive-hover__dot {
+  clip-path: circle(0 at 15px 50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-hover:not(:has(.interactive-hover__bell)) .interactive-hover__dot {
+    clip-path: circle(0 at 15px 50%) !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .interactive-hover::after {
+    display: none;
+  }
+}

@@ -4,9 +4,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { PlasmaBackground } from '@/components/decor/PlasmaBackground'
+import { GlassLights } from '@/components/decor/GlassLights'
 
+// Capas: degradado azul fijo (PageGradient) → lava (este plasma) → la luz dorada encima (GlassLights solo dorada, va después).
 export function PagePlasma() {
   return (
+    <>
     <div className="page-plasma">
       <PlasmaBackground
         className="page-plasma__view"
@@ -20,5 +23,7 @@ export function PagePlasma() {
         maxDpr={1}
       />
     </div>
+    <GlassLights sides={false} />
+    </>
   )
 }

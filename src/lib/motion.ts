@@ -5,6 +5,14 @@ export const motionOff = () =>
   (reduceQuery ??= window.matchMedia('(prefers-reduced-motion: reduce)')).matches ||
   document.documentElement.dataset.motion === 'paused'
 
+// Pausa/reanuda todo el movimiento: lo usan el botón del footer (MotionToggle) y el flotante (FloatingContact).
+export function setMotionPaused(paused: boolean) {
+  const root = document.documentElement
+  if (paused) root.dataset.motion = 'paused'
+  else delete root.dataset.motion
+  window.dispatchEvent(new Event('motionchange'))
+}
+
 // Contornos luminosos (.siri) y texto con brillo (.shiny-text): sus animaciones repintan en cada cuadro aunque estén lejos
 // de la vista. Un solo observador les pone data-offscreen fuera de pantalla y el CSS (preferences.css) las pausa.
 // Las demás animaciones infinitas (marquesinas, reseñas, plano…) reciben data-offscreen-loop. Los boletos de /beneficios/ se

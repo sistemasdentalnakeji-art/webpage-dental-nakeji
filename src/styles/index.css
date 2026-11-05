@@ -57,5 +57,9 @@
 @import './pages/empty.css';
 @import './components/animated-buttons.css';
 @import './components/card-blue.css';
+/* Vidrio: luces de fondo; efectos pasivos (brillo dorado, entradas con scroll, flotación) y activos (cursor, barra). */
+@import './components/glass-lights.css';
+@import './components/motion-passive.css';
+@import './components/motion-active.css';
 @import './global/typography.css';
 @import './global/preferences.css';

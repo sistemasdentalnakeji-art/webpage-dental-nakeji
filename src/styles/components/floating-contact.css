@@ -1,0 +1,229 @@
+/* Botones flotantes (components/ui/FloatingContact.tsx): orbe de Nakeji con progreso de lectura y WhatsApp, abajo a la derecha. */
+.float-contact {
+  position: fixed;
+  right: clamp(14px, 2vw, 26px);
+  bottom: clamp(14px, 2vw, 26px);
+  z-index: 9000;
+  display: grid;
+  justify-items: end;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.float-contact > * {
+  pointer-events: auto;
+}
+
+/* ── Pausa/reanudar animaciones: vidrio líquido de la mitad del orbe (centro de mando) ── */
+.float-contact__pause {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 13px; /* centrado sobre el orbe (52 px) */
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(123, 195, 235, 0.14) 55%, rgba(30, 60, 110, 0.3));
+  backdrop-filter: blur(10px) saturate(1.7);
+  -webkit-backdrop-filter: blur(10px) saturate(1.7);
+  box-shadow:
+    0 6px 16px -6px rgba(0, 8, 24, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    inset 0 -3px 6px rgba(123, 195, 235, 0.35);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: scale 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+
+/* Reflejo: media luna de luz en la parte alta. */
+.float-contact__pause::before {
+  content: '';
+  position: absolute;
+  inset: 1px 3px auto;
+  height: 45%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.float-contact__pause svg {
+  position: relative;
+  filter: drop-shadow(0 1px 2px rgba(0, 8, 24, 0.7));
+}
+
+.float-contact__pause:hover {
+  scale: 1.12;
+}
+
+.float-contact__pause[aria-pressed='true'] {
+  border-color: rgba(224, 182, 92, 0.9);
+  color: var(--color-gold);
+}
+
+.float-contact__pause:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ── Orbe con aro de progreso (el aro azul→oro se llena al bajar) ── */
+.float-contact__top {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #18305a, #070f1e 72%);
+  box-shadow: 0 10px 24px -10px rgba(0, 8, 24, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: scale 0.25s var(--ease);
+}
+
+.float-contact__top:hover {
+  scale: 1.06;
+}
+
+.float-contact__ring {
+  position: absolute;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  rotate: -90deg; /* el llenado empieza arriba */
+}
+
+.float-contact__track {
+  fill: none;
+  stroke: rgba(123, 195, 235, 0.18);
+  stroke-width: 3;
+}
+
+.float-contact__fill {
+  fill: none;
+  stroke: url(#float-progress);
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(224, 182, 92, 0.6));
+  transition: stroke-dashoffset 0.12s linear;
+}
+
+.float-contact__logo {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px rgba(123, 195, 235, 0.55));
+}
+
+/* ── WhatsApp ── */
+.float-contact__wa-wrap {
+  position: relative;
+  display: grid;
+  justify-items: end;
+}
+
+.float-contact__wa {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #3ee07a, #12b24c);
+  box-shadow: 0 14px 30px -12px rgba(18, 178, 76, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  color: #fff;
+  transition: scale 0.25s var(--ease);
+}
+
+.float-contact__wa:hover {
+  scale: 1.07;
+}
+
+/* Pulso suave alrededor del botón (llama la atención sin moverse de su lugar). */
+.float-contact__wa::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: wa-pulse 2.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes wa-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+  70%, 100% { box-shadow: 0 0 0 16px rgba(37, 211, 102, 0); }
+}
+
+.float-contact__wa:focus-visible,
+.float-contact__top:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* Globito: cristal azul con borde de prisma, a la izquierda del botón. */
+.float-contact__bubble {
+  position: absolute;
+  right: 64px;
+  bottom: 6px;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 110px));
+  padding: 12px 34px 12px 16px;
+  border: 1px solid transparent;
+  border-radius: 18px 18px 4px 18px;
+  background:
+    linear-gradient(145deg, rgba(24, 49, 84, 0.96), rgba(9, 24, 46, 0.96)) padding-box,
+    conic-gradient(from 210deg, rgba(123, 195, 235, 0.75), rgba(224, 182, 92, 0.85), rgba(58, 112, 176, 0.45), rgba(123, 195, 235, 0.75)) border-box;
+  box-shadow: 0 18px 40px -18px rgba(0, 8, 24, 0.85);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  animation: bubble-in 0.45s var(--ease) both;
+}
+
+.float-contact__bubble strong {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+@keyframes bubble-in {
+  from { opacity: 0; translate: 10px 6px; scale: 0.92; }
+}
+
+.float-contact__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+@media (width < 600px) {
+  .float-contact__top { width: 46px; height: 46px; }
+  .float-contact__pause { margin-right: 10px; }
+  .float-contact__wa { width: 46px; height: 46px; }
+  .float-contact__wa svg { width: 23px; height: 23px; }
+  .float-contact__bubble { right: 58px; font-size: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-contact__wa::after,
+  .float-contact__bubble { animation: none; }
+}
+
+html[data-motion='paused'] .float-contact__wa::after,
+html[data-motion='paused'] .float-contact__bubble {
+  animation: none;
+}

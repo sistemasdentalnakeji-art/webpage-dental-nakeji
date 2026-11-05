@@ -1,0 +1,124 @@
+/* Cursor de aros (components/decor/RingCursor.tsx): punto dorado en el puntero y 4 aros que lo siguen con retraso.
+   La clase ring-cursor-on (en <html>) la pone el componente solo con mouse y con movimiento permitido. */
+html.ring-cursor-on,
+html.ring-cursor-on * {
+  cursor: none !important;
+}
+
+/* En campos de texto, el cursor del sistema (para escribir) y los aros se ocultan. */
+html.ring-cursor-on :is(input:not([type='checkbox'], [type='radio'], [type='submit'], [type='button'], [type='range']), textarea, [contenteditable]) {
+  cursor: text !important;
+}
+
+.ring-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+
+html[data-ring-cursor='shown'] .ring-cursor {
+  opacity: 1;
+}
+
+html[data-ring-cursor-state='text'] .ring-cursor {
+  opacity: 0;
+}
+
+.ring-cursor__dot,
+.ring-cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  will-change: translate;
+}
+
+/* Cada elemento se centra en su punto con margin negativo (translate lo escribe el JS). */
+.ring-cursor__dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: radial-gradient(circle at 35% 35%, #fff3cf, var(--color-gold) 60%);
+  box-shadow: 0 0 10px rgba(224, 182, 92, 0.85);
+  transition: scale 0.2s var(--ease);
+}
+
+.ring-cursor__ring {
+  --size: 22px;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border: 1.5px solid;
+  transition:
+    width 0.35s var(--ease),
+    height 0.35s var(--ease),
+    margin 0.35s var(--ease),
+    background-color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    opacity 0.35s var(--ease);
+}
+
+/* Del más cercano (oro claro) al más lejano (azul marca): el eco va del dorado al azul. */
+.ring-cursor__ring--1 { --size: 20px; border-color: rgba(243, 214, 143, 0.9); }
+.ring-cursor__ring--2 { --size: 32px; border-color: rgba(224, 182, 92, 0.6); }
+.ring-cursor__ring--3 { --size: 46px; border-color: rgba(123, 195, 235, 0.42); }
+.ring-cursor__ring--4 {
+  --size: 62px;
+  border-color: rgba(58, 112, 176, 0.38);
+  background: radial-gradient(circle, rgba(123, 195, 235, 0.08), transparent 70%);
+}
+
+/* Clic: todo se contrae un instante. */
+html[data-ring-cursor-press] .ring-cursor__ring--4 {
+  --size: 30px;
+}
+
+html[data-ring-cursor-press] .ring-cursor__dot {
+  scale: 1.6;
+}
+
+@media (forced-colors: active) {
+  .ring-cursor {
+    display: none;
+  }
+
+  html.ring-cursor-on,
+  html.ring-cursor-on * {
+    cursor: auto !important;
+  }
+}
+
+/* ── Figura en reposo (mouse quieto ~0.7 s) y en los menús: los aros se juntan en una "diana" concéntrica, ordenada y
+   quieta, que no estorba la lectura: aro fino, aro de trazos dorados y un aro exterior azul tenue. ── */
+html:is([data-ring-cursor-rest], [data-ring-cursor-state='menu']) .ring-cursor__ring--1 {
+  --size: 14px;
+  border-color: rgba(243, 214, 143, 0.95);
+}
+
+html:is([data-ring-cursor-rest], [data-ring-cursor-state='menu']) .ring-cursor__ring--2 {
+  --size: 22px;
+  border-style: dashed;
+  border-color: rgba(224, 182, 92, 0.75);
+}
+
+html:is([data-ring-cursor-rest], [data-ring-cursor-state='menu']) .ring-cursor__ring--3 {
+  --size: 30px;
+  border-color: rgba(123, 195, 235, 0.5);
+}
+
+html:is([data-ring-cursor-rest], [data-ring-cursor-state='menu']) .ring-cursor__ring--4 {
+  --size: 38px;
+  border-color: rgba(58, 112, 176, 0.45);
+  background: radial-gradient(circle, rgba(224, 182, 92, 0.1), transparent 70%);
+}
+
+/* En los menús la figura es más chica y tenue: acompaña sin tapar los textos del header y del footer. */
+html[data-ring-cursor-state='menu'] .ring-cursor__ring {
+  opacity: 0.7;
+  scale: 0.8;
+}

@@ -1,0 +1,189 @@
+/* Movimiento pasivo (sin interacción): brillo lento en títulos dorados, entradas ligadas al scroll, letra viva,
+   flotación mínima y divisor de luz. Solo transform/translate/opacity/filter/background-position.
+   `translate` lo usan la entrada y la flotación; los hovers existentes usan `transform`, así que no chocan. */
+
+/* 1) Títulos dorados: brillo que recorre el texto cada ~9 s */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .home-canvas .section-title,
+  .service-canvas .section-title,
+  .home-canvas .schedule__alt-title {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-gold) 0 38%,
+      #f3d68f 50%,
+      var(--color-gold) 62% 100%
+    );
+    background-size: 280% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pm-gold-shine 9s ease-in-out infinite;
+  }
+}
+
+@keyframes pm-gold-shine {
+  0% { background-position: 100% 0; }
+  45%, 100% { background-position: 0% 0; }
+}
+
+/* 2) Entradas con el scroll (solo CSS). Sin .contact-item ni nada con contorno .siri: el filter crea un contexto de
+   apilamiento y su brillo (z-index -1, detrás) se pintaría DENTRO de la tarjeta en vez de solo en el borde. */
+@supports (animation-timeline: view()) {
+  :is(
+    .tcard,
+    .service-card,
+    .card,
+    .benefit-card__top,
+    .schedule__form,
+    .section-intro,
+    .before-after-wrap,
+    .testimonials-intro
+  ) {
+    animation: pm-in linear backwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+
+  /* 3) Letra viva: el peso de Inter sube a su valor final al entrar (eje variable 100-900) */
+  :is(.home-canvas, .service-canvas) .section-text {
+    animation: pm-weight linear backwards;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+  }
+
+  /* 4) Flotación: 3px arriba/abajo, ciclos 7-11 s desfasados. La entrada va después, así que gana mientras dura. */
+  @media (hover: hover) and (width >= 1100px) {
+    .service-card {
+      animation-name: pm-float, pm-in;
+      animation-duration: var(--pm-dur, 9s), auto;
+      animation-delay: var(--pm-delay, 0s), 0s;
+      animation-timing-function: ease-in-out, linear;
+      animation-iteration-count: infinite, 1;
+      animation-direction: alternate, normal;
+      animation-fill-mode: none, backwards;
+      animation-timeline: auto, view();
+      animation-range: normal, entry 0% entry 80%;
+    }
+
+    /* /servicios/ tiene su propia pila pegajosa: ahí solo flota, sin entrada. */
+    .catalog-card {
+      animation: pm-float var(--pm-dur, 9s) ease-in-out var(--pm-delay, 0s) infinite alternate;
+    }
+
+    :is(.service-card, .catalog-card):nth-child(3n + 1) { --pm-dur: 8s; --pm-delay: -1s; }
+    :is(.service-card, .catalog-card):nth-child(3n + 2) { --pm-dur: 10s; --pm-delay: -4s; }
+    :is(.service-card, .catalog-card):nth-child(3n) { --pm-dur: 11s; --pm-delay: -7s; }
+    :is(.service-card, .catalog-card):nth-child(5n) { --pm-dur: 7s; --pm-delay: -2.5s; }
+  }
+}
+
+@keyframes pm-in {
+  from { opacity: 0; translate: 0 24px; filter: blur(6px); }
+  to { opacity: 1; translate: 0 0; filter: none; }
+}
+
+@keyframes pm-weight {
+  from { font-weight: 340; }
+  to { font-weight: 400; }
+}
+
+@keyframes pm-float {
+  from { translate: 0 -1.5px; }
+  to { translate: 0 1.5px; }
+}
+
+/* 5) Divisor de luz bajo la intro de Testimonios: raya dorada (estilo de las tarjetas del equipo) */
+.testimonials-intro::after {
+  content: '';
+  display: block;
+  margin: clamp(20px, 3vw, 28px) auto 0;
+  width: var(--gold-rule-w);
+  height: var(--gold-rule-h);
+  border-radius: var(--gold-rule-radius);
+  background: var(--gold-rule-bg);
+}
+
+/* Reposo: todo quieto y visible */
+@media (prefers-reduced-motion: reduce) {
+  :is(.tcard, .catalog-card, .service-card, .card, .benefit-card__top, .contact-item, .schedule__form, .section-intro, .before-after-wrap, .testimonials-intro, .section-text, .section-title, .schedule__alt-title) {
+    animation: none !important;
+    opacity: 1;
+    filter: none;
+    translate: none;
+  }
+}
+
+html[data-motion='paused'] :is(.tcard, .catalog-card, .service-card, .card, .benefit-card__top, .contact-item, .schedule__form, .section-intro, .before-after-wrap, .testimonials-intro, .section-text, .section-title, .schedule__alt-title) {
+  animation: none !important;
+  opacity: 1;
+  filter: none;
+  translate: none;
+}
+
+/* Tarjetas dentro de un carrusel horizontal (Servicios destacados): view() se mediría contra el scroll del carrusel y las
+   que quedan fuera de él nunca terminarían de aparecer. Ahí no hay entrada con scroll; con pantalla ancha solo flotan. */
+@supports (animation-timeline: view()) {
+  .carousel :is(.service-card, .card) {
+    animation: none;
+  }
+
+  @media (hover: hover) and (width >= 1100px) {
+    .carousel .service-card {
+      animation: pm-float var(--pm-dur, 9s) ease-in-out var(--pm-delay, 0s) infinite alternate;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel :is(.service-card, .card) {
+    animation: none;
+  }
+}
+
+html[data-motion='paused'] .carousel :is(.service-card, .card) {
+  animation: none;
+}
+
+/* ── Raya dorada (la de las tarjetas del equipo, tokens --gold-rule-* en tokens.css) en el resto del sitio ──
+   Homepage: debajo del párrafo de Servicios destacados, Aseguranzas y Contacto; en Agendar sustituye a la línea blanca.
+   Footer: una bajo cada título de columna (Servicios, Beneficios, Clínica, Contacto). */
+.home-canvas :is(.band--services, .partners-band, .contact__intro) .section-text::after,
+.home-canvas .schedule__alt::before,
+.footer-title::after {
+  content: '';
+  display: block;
+  width: var(--gold-rule-w);
+  height: var(--gold-rule-h);
+  border-radius: var(--gold-rule-radius);
+  background: var(--gold-rule-bg);
+}
+
+/* Centradas bajo el párrafo (Servicios destacados, Aseguranzas). */
+.home-canvas :is(.band--services, .partners-band) .section-text::after {
+  margin: clamp(20px, 3vw, 28px) auto 0;
+}
+
+/* Alineadas a la izquierda, como su texto (Contacto, Agendar, footer). */
+.home-canvas .contact__intro .section-text::after {
+  margin-top: clamp(18px, 2.6vw, 24px);
+}
+
+.home-canvas .schedule__alt {
+  border-top: 0;
+}
+
+.home-canvas .schedule__alt::before {
+  margin: -24px 0 24px;
+}
+
+.footer-title::after {
+  margin-top: 10px;
+}
+
+/* Celular: Agendar va centrado; la raya también. */
+@media (width < 960px) {
+  .home-canvas .schedule__alt::before {
+    margin-inline: auto;
+  }
+}

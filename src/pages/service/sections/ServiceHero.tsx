@@ -15,7 +15,6 @@ import { SITE } from '@/config/site'
 import type { ServiceContent } from '@/data/services'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { Icon } from '@/components/ui/Icon'
-import { SectionDecor } from '@/components/decor/SectionDecor'
 import { TextBlurReveal } from '@/components/ui/TextBlurReveal'
 
 interface ServiceHeroProps {
@@ -50,7 +49,6 @@ export function ServiceHero({ label, content }: ServiceHeroProps) {
         />
       )}
       <div className="service-hero__scrim" aria-hidden="true" />
-      <SectionDecor variant="wave" position="bottom" />
 
       <div className="container">
         <div className="service-hero__content">

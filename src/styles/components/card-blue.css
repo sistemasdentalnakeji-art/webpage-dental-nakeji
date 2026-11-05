@@ -14,11 +14,37 @@
 .benefit-card__footer,
 .contact-card,
 .legal-card,
-.schedule__form {
-  border-color: var(--card-blue-border);
-  background: var(--card-blue);
-  box-shadow: var(--card-blue-shadow);
+.schedule__form,
+.rail,
+.promo {
+  border-color: transparent;
+  background: var(--glass-layers);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
   color: var(--card-blue-text);
+}
+
+/* Paneles que antes tenían otro fondo: borde de 1 px (la luz del borde lo pinta --glass-edge) y trazo continuo. */
+.rail,
+.promo {
+  border: 1px solid transparent;
+}
+
+/* Filas de contacto de la home: vidrio sin blur y con el tinte opaco, porque el contorno .siri (z-index -1) va detrás. */
+.home-canvas .contact-item {
+  border: 1px solid transparent;
+  background: var(--glass-layers-solid);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: var(--glass-shadow);
+}
+
+/* Celular: menos blur (rendimiento). */
+@media (width < 768px) {
+  :root {
+    --glass-blur: blur(10px) saturate(1.3);
+  }
 }
 
 /* Iconos en pastilla blanca → vidrio claro (como los valores de /nosotros/). */
@@ -75,11 +101,6 @@
   color: var(--card-blue-text);
 }
 
-/* El degradado claro del hover, más tenue: sobre la tarjeta azul el texto claro debe seguir leyéndose. */
-.catalog-card:hover .catalog-card__glow,
-.catalog-card:focus-within .catalog-card__glow {
-  opacity: 0.35;
-}
 
 @media (width < 960px) {
   /* Los 4 beneficios del hero (tarjetas chicas 2x2 en celular; en escritorio son pastillas y siguen blancas). */
@@ -97,9 +118,11 @@
 
   /* Acordeón de categorías: el contenedor blanco también pasa a azul. */
   .catalog-groups {
-    border-color: var(--card-blue-border);
-    background: var(--card-blue);
-    box-shadow: var(--card-blue-shadow);
+    border-color: transparent;
+    background: var(--glass-layers);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
   }
 
   .catalog-group + .catalog-group {
@@ -127,8 +150,9 @@
    (services-index.css, desde 960 px): con 1600 px aquí, entre 960 y 1599 px la carta quedaba blanca con el título blanco. */
 @media (width >= 960px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
   .catalog-group {
-    border-color: var(--card-blue-border);
-    background: linear-gradient(145deg, rgb(24, 49, 84), rgb(9, 24, 46));
+    border-color: transparent;
+    background: var(--glass-layers-solid);
+    box-shadow: var(--glass-shadow);
   }
 
   .catalog-group .catalog-card {

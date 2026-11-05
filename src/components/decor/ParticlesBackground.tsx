@@ -24,6 +24,12 @@ const GRAB = 220
 const DENSITY = 140
 const MAX = 200
 const PUSH = 4
+/** Menos partículas en todo el sitio (-30 %): el prisma acompaña, no protagoniza. */
+const AMOUNT = 0.7
+/** Brillo según la posición: pleno en los costados y tenue en el centro (donde está el texto que se lee). */
+const CENTER_ALPHA = 0.15
+const side = (x: number, width: number) =>
+  CENTER_ALPHA + (1 - CENTER_ALPHA) * Math.min(1, Math.abs((2 * x) / width - 1) / 0.8) ** 1.6
 
 interface Particle {
   x: number
@@ -84,10 +90,11 @@ export function ParticlesBackground({ density = DENSITY, max = MAX, avoid }: Par
       const box = avoid ? document.querySelector(avoid)?.getBoundingClientRect() : undefined
       const origin = canvas.getBoundingClientRect()
       const fade = particles.map((p) => {
-        if (!box?.width) return 1
+        const s = side(p.x, width)
+        if (!box?.width) return s
         const d = Math.hypot(p.x + origin.left - (box.left + box.width / 2), p.y + origin.top - (box.top + box.height / 2))
         const inner = (Math.max(box.width, box.height) / 2) * HOLE
-        return Math.min(1, Math.max(0, (d - inner) / FADE))
+        return s * Math.min(1, Math.max(0, (d - inner) / FADE))
       })
       const link = LINK * scale()
       ctx.lineWidth = 1.2
@@ -159,7 +166,7 @@ export function ParticlesBackground({ density = DENSITY, max = MAX, avoid }: Par
       canvas.width = width * dpr
       canvas.height = height * dpr
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const count = Math.min(max, Math.round((density * width * height) / (800 * 800)))
+      const count = Math.min(max, Math.round((AMOUNT * density * width * height) / (800 * 800)))
       particles = Array.from({ length: count }, () => spawn(Math.random() * width, Math.random() * height))
       draw()
       play()

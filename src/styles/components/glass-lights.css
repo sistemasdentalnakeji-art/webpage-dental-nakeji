@@ -1,0 +1,80 @@
+/* Degradado radial en vez de filter: blur (mucho más barato). Luces de fondo del vidrio (components/decor/GlassLights.tsx). Solo transform/opacity animados. */
+.glass-lights {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Lo dorado (mancha o línea) se recorta donde empieza el footer (--gl-clip la calcula GlassLights.tsx). */
+.glass-lights__gold {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 var(--gl-clip, 0px) 0);
+}
+
+.glass-lights__blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  will-change: transform, opacity;
+  animation: glass-drift 32s ease-in-out infinite alternate;
+}
+
+.glass-lights__blob--sky {
+  top: 8%;
+  left: -6%;
+  width: 46vmax;
+  height: 46vmax;
+  background: radial-gradient(closest-side, #7bc3eb, transparent);
+}
+
+.glass-lights__blob--brand {
+  right: -10%;
+  bottom: 0;
+  width: 52vmax;
+  height: 52vmax;
+  background: radial-gradient(closest-side, #3a70b0, transparent);
+  opacity: 0.55;
+  animation-duration: 38s;
+  animation-delay: -12s;
+}
+
+.glass-lights__blob--gold {
+  top: 45%;
+  left: 38%;
+  width: 24vmax;
+  height: 24vmax;
+  background: radial-gradient(closest-side, #e0b65c, transparent);
+  opacity: 0.4;
+  animation-duration: 26s;
+  animation-delay: -6s;
+}
+
+@keyframes glass-drift {
+  from {
+    transform: translate3d(-4vw, -3vh, 0) scale(0.95);
+  }
+
+  to {
+    transform: translate3d(6vw, 5vh, 0) scale(1.1);
+    opacity: 0.32;
+  }
+}
+
+@media (width < 768px) {
+  .glass-lights__blob--gold {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-lights__blob {
+    animation: none;
+  }
+}
+
+html[data-motion='paused'] .glass-lights__blob {
+  animation: none;
+}

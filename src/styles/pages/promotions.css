@@ -28,10 +28,9 @@
   height: 100%;
   box-sizing: border-box;
   padding: 20px;
-  border: 2px solid var(--color-ink);
   border-radius: 28px;
-  background: var(--color-white);
-  box-shadow: 6px 6px 0 var(--color-sky-strong);
+  /* Fondo: vidrio azul de components/card-blue.css. */
+  color: var(--card-blue-text);
 }
 
 .promo__top {
@@ -48,7 +47,7 @@
   font-size: 2.75rem;
   font-weight: 800;
   line-height: 1;
-  -webkit-text-stroke: 1.5px var(--color-ink);
+  -webkit-text-stroke: 1.5px var(--color-gold);
 }
 
 .promo__badge {
@@ -65,18 +64,18 @@
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
-  border: 2px dashed var(--color-brand-light);
+  border: 2px dashed rgba(224, 182, 92, 0.6);
   border-radius: 18px;
-  color: var(--color-brand);
+  color: var(--color-gold);
 }
 
 .promo__title {
-  color: var(--color-ink);
+  color: var(--card-blue-title);
   font-size: var(--text-card-title);
 }
 
 .promo__period {
   margin: -8px 0 0;
-  color: var(--color-muted);
+  color: var(--card-blue-text);
   font-size: var(--text-small);
 }

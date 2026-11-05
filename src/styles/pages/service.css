@@ -4,6 +4,20 @@
    Usa los colores, fuentes y botones del homepage.
    ========================================================================== */
 
+/* Fondo común (hero + acerca): banda sin color propio sobre el degradado fijo, con PagePlasma; título y texto claros (los botones conservan sus colores).
+   Móvil: se conserva el plasma (página corta; PagePlasma ya lo atenúa a 40 %, dibuja a 30 fps y a 0.4 de resolución y se pausa fuera de pantalla). */
+.service-canvas {
+  margin: 0;
+}
+
+.service-canvas .service-about .section-title {
+  color: var(--color-white);
+}
+
+.service-canvas .service-about .section-text {
+  color: rgb(213 232 246 / 0.9);
+}
+
 /* --- 1. Hero ------------------------------------------------------------- */
 .service-hero {
   position: relative;
@@ -13,9 +27,9 @@
   align-items: flex-end;
   min-height: clamp(560px, calc(100svh - var(--header-height) - 24px), 760px);
   margin: var(--band-gap) var(--band-gap) 0;
-  padding-block: clamp(48px, 7vw, 88px) clamp(88px, 9vw, 132px);
+  padding-block: clamp(48px, 7vw, 88px);
   overflow: hidden;
-  border-radius: var(--band-radius) var(--band-radius) 0 0;
+  border-radius: var(--band-radius);
   /* Fondo sin foto (o mientras carga): azul de marca, más intenso a la derecha. En escritorio, este azul es lo que se ve a la izquierda de la foto. */
   background: linear-gradient(95deg, #0f2a57 0%, #1d4c95 32%, #2f63ad 62%, var(--color-brand) 100%);
   color: var(--color-white);
@@ -41,11 +55,6 @@
   inset: 0;
   z-index: -2;
   pointer-events: none;
-}
-
-.service-hero .decor--wave {
-  height: clamp(48px, 6vw, 96px);
-  color: var(--color-tint); /* une con la sección 2 (banda azul clara) */
 }
 
 .service-hero__content {
@@ -369,4 +378,68 @@
   display: grid;
   gap: 8px;
   width: 100%;
+}
+
+/* ── Fondo continuo (como el homepage): el hero ya no lleva su azul propio; la foto se funde abajo con el degradado fijo ── */
+.service-canvas .service-hero {
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.service-canvas .service-hero__image {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+}
+
+@media (width >= 768px) {
+  .service-canvas .service-hero__image {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  .service-canvas .service-hero__image--flip {
+    -webkit-mask-image: linear-gradient(270deg, transparent 0%, #000 22%), linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+    mask-image: linear-gradient(270deg, transparent 0%, #000 22%), linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
+
+.service-canvas .service-hero__scrim {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 180px), transparent);
+}
+
+/* ── Escritorio: la foto del hero es un PANEL enmarcado a la derecha (no un fondo difuminado): nítida, esquinas redondeadas,
+   un filo de luz oro/azul y sombra suave; el texto queda a la izquierda sobre el fondo fijo, sin velo. ── */
+@media (width >= 768px) {
+  .service-canvas .service-hero {
+    --frame-gap: clamp(20px, 3vw, 44px);
+  }
+
+  .service-canvas .service-hero__image,
+  .service-canvas .service-hero__image--flip {
+    top: var(--frame-gap);
+    left: 52%;
+    width: calc(48% - var(--frame-gap));
+    height: calc(100% - 2 * var(--frame-gap));
+    border-radius: 28px;
+    -webkit-mask-image: none;
+    mask-image: none;
+    /* Solo el filo de luz: sin sombra ni halo (nada debe quedar encima del degradado y la lava del fondo). */
+    box-shadow: 0 0 0 1px rgba(224, 182, 92, 0.38);
+  }
+
+  /* El texto ya no queda sobre la foto: sin velo, y su columna termina antes del panel. */
+  .service-canvas .service-hero__scrim {
+    display: none;
+  }
+
+  .service-canvas .service-hero__content {
+    /* Hasta 40 px antes del panel (que empieza al 52 % del ancho), desde donde arranca el contenedor centrado. */
+    max-width: calc(52vw - max(0px, (100vw - var(--container) - 2 * var(--gutter)) / 2) - var(--gutter) - 40px);
+  }
 }

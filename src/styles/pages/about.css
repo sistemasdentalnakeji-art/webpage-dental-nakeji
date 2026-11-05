@@ -510,7 +510,8 @@
   min-height: 80px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--line-on-dark);
+  /* Divisor: hilo de luz dorada (antes línea gris). */
+  background: var(--gold-glow-line) bottom / 100% 1.5px no-repeat;
 }
 
 .team-area__icon {
@@ -677,11 +678,13 @@
 
 .member__text::before {
   content: '';
-  width: 34px;
-  height: 2px;
+  width: 64px;
+  height: 1.5px;
   margin-bottom: 2px;
   border-radius: var(--radius-pill);
-  background: var(--color-gold);
+  /* Mismo hilo de luz dorada que los divisores; arranca brillante a la izquierda (como el texto) y se desvanece. */
+  background: linear-gradient(90deg, #fff1c9, rgba(224, 182, 92, 0.85) 35%, transparent);
+  filter: drop-shadow(var(--gold-glow-shadow));
 }
 
 /* Título abreviado ("Dra.", "Lic."…), en la misma línea que el nombre y en el azul de marca. */

@@ -1,182 +1,347 @@
-/* Sección "Testimonios" (src/pages/home/sections/Testimonials.tsx): video vertical a la izquierda y hasta 3 tarjetas
-   de cristal azul a la derecha, con borde de prisma (azul → oro) como el logo y los anillos del inicio. */
+/* Sección "Testimonios" (src/pages/home/sections/Testimonials.tsx): un solo panel tipo acordeón horizontal. Reseñas y videos
+   de pacientes en una fila de tarjetas de cristal azul con borde de prisma (azul → oro); una abierta, las demás como tiras. */
 .testimonials-intro {
   margin-bottom: clamp(28px, 4vw, 44px);
   text-align: center;
 }
 
-.testimonials-layout {
-  display: grid;
-  grid-template-columns: minmax(220px, 400px) minmax(0, 1fr);
-  gap: clamp(16px, 2.4vw, 28px);
-  align-items: stretch;
-  max-width: 1080px;
-  margin-inline: auto;
+/* Ícono de arriba del título: el mismo de Agendar (azul de marca con degradado e ícono dorado), no el recuadro blanco. */
+.testimonials-intro .icon-badge {
+  background: linear-gradient(135deg, var(--color-brand), var(--color-ink));
+  color: var(--color-gold);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 12px 24px -12px rgba(42, 66, 105, 0.7);
 }
 
-.testimonials-layout--cards {
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 820px;
+/* ── Panel y fila ─────────────────────────────────────────────────────── */
+.tpanel {
+  --t-h: clamp(440px, 62vh, 540px); /* alto de la fila: el video abierto mide este alto × 9/16 */
+  --t-strip: 88px; /* ancho de una tarjeta cerrada */
+  --t-gap: 14px;
+  position: relative;
+  min-width: 0;
 }
 
-/* Borde de prisma: degradado azul claro → oro por detrás de un fondo de cristal. */
-.testimonial,
-.testimonial-video {
+.tpanel__track {
+  display: flex;
+  justify-content: center;
+  gap: var(--t-gap);
+  height: var(--t-h);
+  margin: 0;
+  padding: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.tpanel__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Tarjeta (cerrada) ────────────────────────────────────────────────── */
+.tcard {
   --prism: conic-gradient(
-    from var(--prism-angle, 210deg),
+    from 210deg,
     rgba(123, 195, 235, 0.75),
     rgba(224, 182, 92, 0.85),
     rgba(58, 112, 176, 0.45),
     rgba(123, 195, 235, 0.75)
   );
   position: relative;
+  flex: 0 0 var(--t-strip);
+  min-width: 0;
+  overflow: hidden;
   border: 1px solid transparent;
   border-radius: var(--radius-card);
   background:
-    linear-gradient(145deg, rgba(24, 49, 84, 0.92), rgba(9, 24, 46, 0.9)) padding-box,
-    var(--prism) border-box;
-  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.7);
+    var(--glass-cursor) padding-box, var(--glass-sheen) padding-box, var(--glass-grain) padding-box,
+    var(--glass-tint) padding-box, var(--prism) border-box;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 18px 40px -22px rgba(10, 40, 90, 0.75), inset 0 1px rgba(255, 255, 255, 0.12);
+  scroll-snap-align: center;
+  transition:
+    flex-basis 0.3s var(--ease),
+    flex-grow 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
 }
 
-/* ── Video ─────────────────────────────────────────────────────────────── */
-.testimonial-video {
-  overflow: hidden;
-  /* Proporción original 9:16 (sin estirar), centrado en vertical respecto a las tres tarjetas. */
-  align-self: center;
-  width: 100%;
-  aspect-ratio: 9 / 16;
+/* Portada: foto de la reseña o el propio video. */
+.tcard__cover {
+  position: absolute;
+  inset: 0;
+  transition: inset 0.3s var(--ease);
 }
 
-.testimonial-video video {
+.tcard__cover img,
+.tcard__cover video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: inherit;
+  object-position: 50% 28%;
 }
 
-/* ── Tarjetas ──────────────────────────────────────────────────────────── */
-.testimonials {
-  /* Las tarjetas se adaptan al ancho de esta columna (no al de la pantalla): ver @container más abajo. */
-  container-type: inline-size;
-  display: grid;
-  grid-auto-rows: 1fr;
-  gap: clamp(14px, 1.8vw, 20px);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.tcard__cover img[src*='sonrisa-angel'] {
+  object-position: 50% 15%;
 }
 
-.testimonial {
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-}
-
-/* Brillo de prisma que cruza la tarjeta al pasar el cursor. */
-.testimonial::after {
+/* Velo sólido abajo: el nombre de la tira se lee sobre cualquier foto. */
+.tcard:not(.is-open) .tcard__cover::after {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(115deg, transparent 35%, rgba(123, 195, 235, 0.14) 48%, rgba(224, 182, 92, 0.12) 54%, transparent 66%);
-  background-size: 250% 100%;
-  background-position: 100% 0;
+  background: linear-gradient(0deg, rgba(9, 24, 46, 0.94) 8%, rgba(9, 24, 46, 0.35) 55%, rgba(9, 24, 46, 0.15));
+}
+
+.tcard:not(.is-open) .tcard__cover video {
   pointer-events: none;
-  transition: background-position 0.9s ease;
+}
+
+.tcard__head {
+  margin: 0;
+}
+
+/* Cerrada: el botón cubre toda la tarjeta (objetivo táctil grande); "+" arriba y el nombre en vertical abajo. */
+.tcard__toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 0 18px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.tcard__toggle:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: -4px;
+  box-shadow: inset 0 0 0 6px rgba(9, 24, 46, 0.9);
+}
+
+.tcard__plus {
+  position: relative;
+  order: -1;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--card-blue-border);
+  border-radius: 50%;
+  background: rgba(9, 24, 46, 0.7);
+  transition: transform 0.3s var(--ease);
+}
+
+/* "+" dibujado con dos barras; abierta gira a "×" (el estado no va solo en color). */
+.tcard__plus::before,
+.tcard__plus::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-gold);
+  translate: -50% -50%;
+}
+
+.tcard__plus::after {
+  rotate: 90deg;
+}
+
+/* Tira de video: un "play" dorado en el círculo en lugar del "+"; abierta vuelve a la "×". */
+.tcard__plus svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--color-gold);
+  translate: -45% -50%;
+}
+
+.tcard--video:not(.is-open) .tcard__plus::before,
+.tcard--video:not(.is-open) .tcard__plus::after,
+.tcard.is-open .tcard__plus svg {
+  display: none;
+}
+
+.tcard__name {
+  flex: 1 1 0;
+  min-height: 0;
+  max-width: 100%;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
 }
 
 @media (hover: hover) {
-  .testimonial:hover {
-    box-shadow: 0 22px 48px -20px rgba(58, 112, 176, 0.55);
-    transform: translateY(-3px);
+  .tcard:not(.is-open):hover {
+    box-shadow: 0 22px 48px -20px rgba(58, 112, 176, 0.7);
   }
 
-  .testimonial:hover::after {
-    background-position: 0 0;
+  .tcard:not(.is-open):hover .tcard__plus {
+    transform: scale(1.08);
   }
 }
 
-.testimonial figure {
+/* ── Abierta ──────────────────────────────────────────────────────────── */
+.tcard.is-open {
+  flex: 1 1 0;
+  box-shadow: 0 26px 60px -26px rgba(58, 112, 176, 0.75);
+}
+
+/* Video abierto: su proporción original 9:16 al alto de la fila. */
+.tcard--video.is-open {
+  flex: 0 0 calc(var(--t-h) * 9 / 16);
+}
+
+/* Abierta, el botón queda como un "×" pequeño en la esquina (no tapa la cita ni los controles del video). */
+.tcard.is-open .tcard__toggle {
+  inset: 14px auto auto 14px;
+  width: auto;
+  height: auto;
+  padding: 0;
+  cursor: pointer;
+}
+
+.tcard.is-open .tcard__plus {
+  transform: rotate(45deg);
+}
+
+.tcard.is-open .tcard__name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Reseña abierta: foto a la izquierda (40 %) fundida con el cristal; la cita a la derecha. */
+.tcard--review.is-open .tcard__cover {
+  inset: 0 60% 0 0;
+}
+
+.tcard--review.is-open .tcard__cover::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 45%;
+  background: linear-gradient(270deg, rgba(14, 32, 58, 0.97), transparent);
+}
+
+.tcard__panel {
+  position: absolute;
+  inset: 0 0 0 40%;
+  display: grid;
+  align-content: center;
+  padding: clamp(24px, 3vw, 40px) clamp(22px, 3vw, 44px);
+  animation: tcard-in 0.35s var(--ease) 0.12s backwards;
+}
+
+.tcard__panel[hidden] {
+  display: none;
+}
+
+@keyframes tcard-in {
+  from {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+
+.tcard__review {
   position: relative;
   display: grid;
-  height: 100%;
-  align-content: center;
-  gap: 14px;
-  min-width: 0;
+  gap: 18px;
   margin: 0;
-  padding: clamp(18px, 2.2vw, 24px) clamp(18px, 2.4vw, 28px);
 }
 
-.testimonial__quote-mark {
+.tcard__quote-mark {
   position: absolute;
-  top: -6px;
-  right: 18px;
+  top: -30px;
+  right: -6px;
   color: var(--color-gold);
   font-family: 'Zilla Slab', Georgia, serif;
-  font-size: 5.5rem;
+  font-size: 6rem;
   line-height: 1;
   opacity: 0.35;
 }
 
-.testimonial blockquote {
+.tcard__review blockquote {
   margin: 0;
 }
 
-.testimonial blockquote p {
+.tcard__review blockquote p {
   margin: 0;
-  padding-right: 28px;
   color: rgb(234 243 251 / 0.95);
   font-family: 'Zilla Slab', Georgia, serif;
-  font-size: clamp(1rem, 1.25vw, 1.1rem);
-  line-height: 1.5;
+  font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.3rem);
+  line-height: 1.55;
   overflow-wrap: anywhere;
 }
 
-.testimonial figcaption {
+.tcard__review figcaption {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-blue-line);
 }
 
-/* Logo de Nakeji en su orbe con el contorno luminoso Siri (BrandOrb, el del hero), en lugar de las iniciales. */
-.testimonial__logo {
+/* Logo de Nakeji en su orbe con el contorno luminoso Siri (BrandOrb, el del hero), en lugar de iniciales. */
+.tcard__logo {
   display: grid;
   flex: none;
   isolation: isolate;
 }
 
-.testimonial__logo .brand-orb {
+.tcard__logo .brand-orb {
   --siri-width: 2.5px;
   --siri-blur: 7px;
   width: 48px;
   height: 48px;
 }
 
-.testimonial__logo .brand-orb__halo {
+.tcard__logo .brand-orb__halo {
   inset: -10px;
 }
 
-.testimonial__logo .brand-orb__mark {
+.tcard__logo .brand-orb__mark {
   width: 27px;
   height: 27px;
   filter: drop-shadow(0 0 6px rgba(123, 195, 235, 0.55));
 }
 
-.testimonial__who {
+.tcard__who {
   display: grid;
   gap: 2px;
-  flex: 1;
   min-width: 0;
 }
 
-.testimonial__who strong {
+.tcard__who strong {
   color: #fff;
 }
 
-/* Cinco estrellas bajo el nombre (y el tratamiento, si lo hay). */
-.testimonial__meta {
+.tcard__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -185,86 +350,188 @@
   font-size: 0.85rem;
 }
 
-/* ── Foto de archivo: ≈36 % de la tarjeta, a la derecha, con un degradado que la funde con el cristal ── */
-.testimonial--photo {
+/* ── Tablet ───────────────────────────────────────────────────────────── */
+@media (width < 1060px) {
+  .tpanel {
+    --t-strip: 72px;
+    --t-gap: 10px;
+  }
+
+  .tcard--review.is-open .tcard__cover {
+    inset: 0 62% 0 0;
+  }
+
+  .tcard__panel {
+    inset: 0 0 0 38%;
+  }
+}
+
+/* ── Celular: una tarjeta por pantalla, deslizable (scroll-snap); los chips de abajo navegan ── */
+@media (width < 700px) {
+  .tpanel {
+    --t-v: min(70vh, 600px); /* alto del video */
+    --t-vw: min(calc(100vw - 56px), calc(var(--t-v) * 9 / 16));
+  }
+
+  .tpanel__track {
+    height: auto;
+    gap: 12px;
+    padding: 4px 0;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0;
+  }
+
+  .tpanel--videos .tpanel__track {
+    height: calc(var(--t-v) + 8px);
+    padding-inline: calc(50% - var(--t-vw) / 2);
+  }
+
+  .tcard,
+  .tcard.is-open {
+    flex: 0 0 100%;
+    scroll-snap-stop: always;
+  }
+
+  .tcard--video.is-open {
+    flex-basis: var(--t-vw);
+  }
+
+  .tcard__head {
+    display: none; /* en celular el control accesible son los chips */
+  }
+
+  /* Reseña: foto arriba, cita abajo, en flujo normal. */
+  .tcard--review.is-open .tcard__cover {
+    position: relative;
+    inset: auto;
+    height: 240px;
+  }
+
+  .tcard--review.is-open .tcard__cover::after {
+    inset: auto 0 0 0;
+    width: auto;
+    height: 50%;
+    background: linear-gradient(0deg, rgba(14, 32, 58, 0.97), transparent);
+  }
+
+  .tcard__panel {
+    position: static;
+    padding: 4px 20px 22px;
+    animation: none;
+  }
+
+  .tcard__quote-mark {
+    top: -34px;
+    font-size: 4.5rem;
+  }
+
+  .tcard__review {
+    gap: 14px;
+  }
+
+  .tcard__review blockquote p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+}
+
+/* Chips de navegación (solo se renderizan en celular). */
+.tchips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 6px;
+  margin-top: 14px;
+}
+
+.tchip {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 34%;
+  justify-items: center;
+  gap: 5px;
+  width: 62px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--color-white);
+  cursor: pointer;
 }
 
-.testimonial__photo {
-  position: relative;
-  min-height: 100%;
-  border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+.tchip__thumb {
+  display: block;
+  width: 44px;
+  height: 44px;
   overflow: hidden;
+  border-radius: 50%;
+  background: var(--color-ink);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.2s var(--ease);
 }
 
-.testimonial__photo img {
-  position: absolute;
-  inset: 0;
+.tchip__thumb img,
+.tchip__thumb video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 28%;
-}
-
-.testimonial__photo::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  z-index: 1;
-  width: 40%;
-  background: linear-gradient(90deg, rgba(14, 32, 58, 0.97), transparent);
+  object-position: 50% 25%;
   pointer-events: none;
 }
 
-/* Columna angosta: la foto pasa arriba de la tarjeta, como banner (≈35 % de su alto). */
-@container (max-width: 520px) {
-  .testimonial--photo {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .testimonial__photo {
-    order: -1;
-    height: 220px;
-    min-height: 0;
-    border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
-  }
-
-  /* En banner ancho solo cabe una franja de la foto: subida para que entren ojos y sonrisa. */
-  .testimonial__photo img {
-    object-position: 50% 42%;
-  }
-
-  /* Jesús Villa: su cara queda más arriba en la foto; se baja para que entre la cabeza completa. */
-  .testimonial__photo img[src*='sonrisa-angel'] {
-    object-position: 50% 15%;
-  }
-
-  .testimonial__photo::before {
-    inset: auto 0 0 0;
-    width: auto;
-    height: 28%;
-    background: linear-gradient(0deg, rgba(14, 32, 58, 0.97), transparent);
-  }
+.tchip__name {
+  max-width: 100%;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Tablet y celular: el video arriba (más bajo) y las tarjetas debajo. */
-@media (max-width: 1060px) {
-  .testimonials-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .testimonial-video {
-    width: min(100%, 230px);
-    margin-inline: auto;
-  }
+.tchip[aria-pressed='true'] .tchip__thumb {
+  outline-color: var(--color-gold);
 }
 
+.tchip[aria-pressed='true'] .tchip__name {
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-underline-offset: 3px;
+}
+
+.tchip:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Sin movimiento: abre y cierra sin animar. */
 @media (prefers-reduced-motion: reduce) {
-  .testimonial,
-  .testimonial::after {
+  .tcard,
+  .tcard__cover,
+  .tcard__plus {
     transition: none;
+  }
+
+  .tcard__panel {
+    animation: none;
+  }
+}
+
+html[data-motion='paused'] .tcard,
+html[data-motion='paused'] .tcard__cover,
+html[data-motion='paused'] .tcard__plus {
+  transition: none;
+}
+
+html[data-motion='paused'] .tcard__panel {
+  animation: none;
+}
+
+/* Alto contraste: bordes reales en lugar del prisma. */
+@media (forced-colors: active) {
+  .tcard {
+    border-color: CanvasText;
   }
 }
 
@@ -272,8 +539,8 @@
    abajo, la franja a todo lo ancho que queda hasta el título de esa sección; ahí se une con sus partículas (ver services.css).
    Dos capas de máscara se suman: ve donde cualquiera de las dos es visible. Con menos de 960 px no hay partículas. */
 .testimonials-band .particles-bg {
-  /* Borde del contenido de esta sección (video + tarjetas, 1080 px de ancho). */
-  --edge: calc(50% - 540px);
+  /* Borde del contenido de esta sección (los dos paneles, 1320 px de ancho). */
+  --edge: calc(50% - 660px);
 
   mask-image:
     linear-gradient(
@@ -286,50 +553,288 @@
     linear-gradient(to top, #000 var(--band-padding), transparent calc(var(--band-padding) + 70px));
 }
 
-/* Carrusel de videos (columna izquierda): un video a la vez, mismo tamaño 9:16 que antes; flechas debajo. */
-.testimonial-videos {
-  align-self: center;
+/* ── Dos paneles: videos a la izquierda (su ancho justo) y reseñas a la derecha (el resto) ── */
+.tpanels {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(18px, 2vw, 28px);
+  align-items: start;
+  max-width: 1320px;
+  margin-inline: auto;
+}
+
+.tpanels .tpanel {
+  --t-strip: 64px;
+  --t-gap: 10px;
+}
+
+/* El panel de videos mide lo que sus tarjetas: el abierto en 9:16 + las tiras. */
+.tpanel--videos .tpanel__track {
+  justify-content: flex-start;
+}
+
+/* El panel de reseñas llena su columna: la abierta toma el espacio libre. */
+.tpanel--reviews .tpanel__track {
+  justify-content: stretch;
+}
+
+/* Pantallas medianas y celular: un panel debajo del otro, cada uno a todo el ancho. */
+@media (width < 1100px) {
+  .tpanels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tpanel--videos .tpanel__track {
+    justify-content: center;
+  }
+}
+
+/* Dulce: foto vertical, la cara en el tercio superior. */
+.tcard__cover img[src*='sonrisa-senora'] {
+  object-position: 50% 30%;
+}
+
+/* Escritorio: el panel de reseñas es angosto (3 tiras al lado); foto más chica y cita más compacta para que no se corte. */
+@media (width >= 1100px) {
+  .tcard--review.is-open .tcard__cover {
+    inset: 0 66% 0 0;
+  }
+
+  .tcard__panel {
+    inset: 0 0 0 34%;
+    padding: 24px 20px;
+  }
+
+  .tcard__review blockquote p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+
+/* ── Reseña abierta (todas las tarjetas, web y celular): nombre y estrellas arriba, línea, cita centrada, línea y el logo
+   iluminado solo abajo. La comilla dorada queda arriba a la derecha de la cita. ── */
+.tcard__review {
+  display: grid;
+  grid-template-rows: auto auto auto;
+  justify-items: center;
+  gap: 0;
+  height: 100%;
+  align-content: space-between;
+  text-align: center;
+}
+
+.tcard__review .tcard__who {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
   width: 100%;
-  min-width: 0;
+  padding: 0 0 16px;
+  border: 0;
+  border-bottom: 1px solid var(--card-blue-line);
 }
 
-.testimonial-videos .carousel__track {
-  --per-view: 1;
+.tcard__review .tcard__who strong {
+  font-family: var(--font-ui);
+  font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
+  letter-spacing: 0.01em;
 }
 
-.testimonial-videos .testimonial-video {
-  align-self: auto;
+.tcard__review .tcard__meta {
+  justify-content: center;
 }
 
-@media (max-width: 1060px) {
-  .testimonial-videos {
-    width: min(100%, 260px);
-    margin-inline: auto;
+.tcard__review blockquote {
+  position: relative;
+  display: grid;
+  align-content: center;
+  width: 100%;
+  padding: 20px 4px;
+}
+
+.tcard__review blockquote p {
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.tcard__review .tcard__quote-mark {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  font-size: 4.5rem;
+}
+
+.tcard__review .tcard__logo {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding-top: 18px;
+  border-top: 1px solid var(--card-blue-line);
+}
+
+/* Celular: la reseña se reparte en el alto de la tarjeta (sin hueco vacío abajo). */
+@media (width < 700px) {
+  .tcard__review {
+    align-content: space-evenly;
+  }
+}
+
+@media (width < 700px) {
+  .tcard--review.is-open {
+    display: flex;
+    flex-direction: column;
   }
 
-  .testimonial-videos .testimonial-video {
+  .tcard--review.is-open .tcard__panel {
+    flex: 1 1 auto;
+    display: grid;
+  }
+
+  .tcard--review.is-open .tcard__review {
+    height: 100%;
+  }
+}
+
+/* ── Botón × (escritorio): cerrar la abierta; con todas cerradas, las tiras de ese panel se reparten su área ── */
+.tpanel.is-collapsed .tcard {
+  flex: 1 1 0;
+}
+
+.tcard.is-open .tcard__toggle:hover .tcard__plus {
+  background: rgba(224, 182, 92, 0.22);
+}
+
+/* ── Tarjetas cerradas: nombre en dorado y brillo dorado al pasar el cursor (como las tarjetas anteriores) ── */
+.tcard:not(.is-open) .tcard__name {
+  color: var(--color-gold);
+  text-shadow: 0 1px 8px rgba(9, 24, 46, 0.9);
+}
+
+.tcard:not(.is-open)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(160deg, transparent 30%, rgba(224, 182, 92, 0.22) 50%, rgba(123, 195, 235, 0.12) 58%, transparent 72%);
+  background-size: 100% 260%;
+  background-position: 0 100%;
+  pointer-events: none;
+  transition: background-position 0.9s var(--ease);
+}
+
+@media (hover: hover) {
+  .tcard:not(.is-open):hover {
+    box-shadow:
+      0 0 0 1px rgba(224, 182, 92, 0.55),
+      0 22px 48px -18px rgba(224, 182, 92, 0.45);
+  }
+
+  .tcard:not(.is-open):hover::after {
+    background-position: 0 0;
+  }
+
+  .tcard:not(.is-open):hover .tcard__name {
+    color: #f3d68f;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tcard::after {
+    transition: none;
+  }
+}
+
+/* ── Reseña abierta: el nombre arriba del todo, en UNA sola línea (el tamaño baja si es largo), y las estrellas abajo ── */
+.tcard__review {
+  align-content: start;
+  grid-template-rows: auto 1fr auto;
+}
+
+.tcard__panel {
+  container-type: inline-size;
+}
+
+.tcard__review .tcard__who strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: clamp(0.95rem, 7.2cqi, 1.3rem);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tcard.is-open .tcard__panel {
+  padding-top: clamp(18px, 2.2vw, 26px);
+}
+
+/* Videos cerrados: su columna mide lo que sus tarjetas; se fija el ancho que tiene con uno abierto para que no se encoja. */
+.tpanel--videos.is-collapsed .tpanel__track {
+  width: calc(var(--t-h) * 9 / 16 + (var(--slides, 5) - 1) * (var(--t-strip) + var(--t-gap)) + 8px);
+}
+
+/* Celular: cada video ocupa el ancho completo de la pista (sin asomar el siguiente): así tocar un chip siempre lleva a su
+   tarjeta y deslizar no se confunde entre vecinas. El video 9:16 queda centrado dentro de su espacio. */
+@media (width < 700px) {
+  .tpanel--videos .tpanel__track {
+    padding-inline: 0;
+    gap: 0;
+  }
+
+  .tpanel--videos .tcard,
+  .tpanel--videos .tcard.is-open,
+  .tcard--video.is-open {
+    flex: 0 0 100%;
     width: 100%;
+    overflow: visible;
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .tpanel--videos .tcard__cover {
+    position: relative;
+    inset: auto;
+    width: var(--t-vw);
+    height: var(--t-v);
+    margin-inline: auto;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: var(--radius-card);
+    background:
+      linear-gradient(145deg, rgba(24, 49, 84, 0.96), rgba(9, 24, 46, 0.96)) padding-box,
+      var(--prism) border-box;
+    box-shadow: var(--card-blue-shadow);
   }
 }
 
-/* Celular: las tres tarjetas en una fila que se desliza (como el carrusel de videos), para que la sección no sea tan larga. */
-@media (max-width: 700px) {
-  .testimonials {
-    grid-auto-flow: column;
-    grid-auto-columns: 86%;
-    grid-auto-rows: auto;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    padding-bottom: 4px;
+/* Celular: la pista de videos arranca por la izquierda (con "center" los primeros videos quedaban en posiciones negativas,
+   fuera del alcance del scroll, y sus chips no llevaban a ningún lado). */
+@media (width < 1100px) {
+  .tpanel--videos .tpanel__track {
+    justify-content: flex-start;
   }
+}
 
-  .testimonials::-webkit-scrollbar {
-    display: none;
-  }
+/* ── Reseña abierta: nombre y estrellas pegados a la izquierda (a la altura del inicio de la línea), la cita centrada y el
+   logo iluminado abajo a la derecha (al final de la línea). Web y celular. ── */
+.tcard__review {
+  justify-items: stretch;
+}
 
-  .testimonial {
-    scroll-snap-align: center;
-  }
+.tcard__review .tcard__who {
+  justify-items: start;
+  text-align: left;
+}
+
+.tcard__review .tcard__meta {
+  justify-content: flex-start;
+}
+
+.tcard__review .tcard__who strong {
+  text-align: left;
+}
+
+.tcard__review .tcard__logo {
+  justify-items: end;
+  place-items: center end;
 }

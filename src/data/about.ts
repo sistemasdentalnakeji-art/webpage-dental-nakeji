@@ -59,12 +59,13 @@ export const HISTORY: Record<Lang, { title: string; milestones: HistoryMilestone
       {
         label: 'Technology',
         text: 'This team of specialists is joined by a dental laboratory equipped with state-of-the-art technology that supports their work and the quality of our clinic. They combine these tools with their experience to look after every detail and offer quality care.',
+        topPhoto: photo('clinica-hoy-consultorio.jpg', 'Dental Nakeji office with dental equipment and a view of Tijuana'),
+        photo: photo('clinica-hoy-vista-general.jpg', 'Dental Nakeji clinical area with a panoramic view of Tijuana'),
       },
       {
         label: 'Today',
         text: 'Today, that whole journey is reflected in a dental clinic in Tijuana that brings together experience, specialists and technology to care for patients from Mexico and the United States. From preventive care to specialized treatments, we want every person to receive quality care and feel heard and at ease.',
-        topPhoto: photo('clinica-hoy-consultorio.jpg', 'Dental Nakeji office with dental equipment and a view of Tijuana'),
-        photo: photo('clinica-hoy-vista-general.jpg', 'Dental Nakeji clinical area with a panoramic view of Tijuana'),
+        photo: photo('clinica-hoy-recepcion.jpg', 'Dental Nakeji reception with its blue desk, waiting area and gold details'),
       },
     ],
   },
@@ -87,12 +88,13 @@ export const HISTORY: Record<Lang, { title: string; milestones: HistoryMilestone
       {
         label: 'Tecnología',
         text: 'A este equipo de especialistas se le suma un laboratorio dental equipado con tecnología de vanguardia que respalda su trabajo y la calidad de nuestra clínica. Ellos combinan estas herramientas con su experiencia para cuidar cada detalle y ofrecer una atención de calidad.',
+        topPhoto: photo('clinica-hoy-consultorio.jpg', 'Consultorio de Dental Nakeji con equipo dental y vista de Tijuana'),
+        photo: photo('clinica-hoy-vista-general.jpg', 'Área clínica de Dental Nakeji con vista panorámica de Tijuana'),
       },
       {
         label: 'Hoy',
         text: 'Hoy, todo ese camino se refleja en una clínica dental en Tijuana que reúne experiencia, especialistas y tecnología para atender a pacientes de México y Estados Unidos. Desde el cuidado preventivo hasta los tratamientos especializados, buscamos que cada persona reciba atención de calidad y se sienta escuchada y en confianza.',
-        topPhoto: photo('clinica-hoy-consultorio.jpg', 'Consultorio de Dental Nakeji con equipo dental y vista de Tijuana'),
-        photo: photo('clinica-hoy-vista-general.jpg', 'Área clínica de Dental Nakeji con vista panorámica de Tijuana'),
+        photo: photo('clinica-hoy-recepcion.jpg', 'Recepción de Dental Nakeji con su mostrador azul, sala de espera y detalles dorados'),
       },
     ],
   },

@@ -82,8 +82,20 @@
   gap: var(--space-3);
   min-height: var(--tap-min);
   padding: var(--space-3) 0;
-  border-bottom: 1.5px dashed rgb(213 232 246 / 0.28);
+  position: relative;
   text-wrap: pretty;
+}
+
+.benefits-hero__features li::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--gold-rule-w);
+  height: var(--gold-rule-h);
+  border-radius: var(--gold-rule-radius);
+  background: var(--gold-rule-bg);
 }
 
 .benefits-hero__feature-icon {
@@ -317,13 +329,8 @@ html[data-motion='paused'] .benefit-card__badge {
   top: 0;
   right: 20px;
   left: 20px;
-  border-top: 2px dashed var(--color-fog);
-  transition: border-color 0.3s var(--ease);
-}
-
-.benefit-grid__item:hover .benefit-card__footer::before,
-.benefit-grid__item:focus-within .benefit-card__footer::before {
-  border-color: var(--color-brand-light);
+  border-top: var(--gold-rule-h) solid;
+  border-color: var(--gold-rule-bg);
 }
 
 /* Renglón rojo (el borde de arriba del talón): se "recorta" de derecha a izquierda sobre el gris al pasar el cursor por el
@@ -568,7 +575,8 @@ html[data-motion='paused'] .benefit-card__badge {
   top: 0;
   right: 22px;
   left: 22px;
-  border-top: 2px dashed rgba(255, 255, 255, 0.32);
+  border-top: var(--gold-rule-h) solid;
+  border-color: var(--gold-rule-bg);
 }
 
 .benefits-cta:has(.benefits-cta__btn:hover, .benefits-cta__btn:focus-visible) .benefits-cta__stub {
@@ -669,7 +677,8 @@ html[data-motion='paused'] .benefit-card__badge {
   .benefits-cta__stub::before {
     inset: 22px auto 22px 0;
     border-top: 0;
-    border-left: 2px dashed rgba(255, 255, 255, 0.32);
+    border-left: var(--gold-rule-h) solid;
+    border-color: var(--gold-rule-bg);
   }
 
   /* Bisagra abajo a la izquierda: se abre un poco por arriba y a la derecha, sin separarse del todo. */

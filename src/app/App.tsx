@@ -18,7 +18,10 @@
 // • Ruta desconocida → EmptyPage con el mensaje de "página no encontrada".
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
+import { initPointerGlow } from '@/lib/pointerGlow'
+import { FloatingContact } from '@/components/ui/FloatingContact'
+import { RingCursor } from '@/components/decor/RingCursor'
 import { LangContext } from '@/app/lang'
 import { UI } from '@/data/ui'
 import { findRoute, type RouteKey, type ServiceKey } from '@/config/routes'
@@ -89,10 +92,13 @@ export function lazySourceOf(path: string): string | null {
 export function App({ path }: AppProps) {
   const route = findRoute(path)
   const Page = PAGES[route.key]
+  useEffect(initPointerGlow, [])
   const service = route.template === 'service' ? SERVICE_PAGES[route.lang][route.key as ServiceKey] : undefined
 
   return (
     <LangContext value={route.lang}>
+      <FloatingContact />
+      <RingCursor />
       <a className="skip-link" href="#contenido">
         {UI[route.lang].skipLink}
       </a>

@@ -119,17 +119,7 @@
 }
 
 /* ---------- Paneles de vidrio (como las tarjetas de /nosotros/) ---------- */
-.home-canvas .rail,
-.home-canvas .rail--convenios,
-.home-canvas .contact-item {
-  border: 1px solid var(--home-glass-border);
-  background: var(--home-glass);
-  backdrop-filter: blur(16px) saturate(0.8);
-}
-
-.home-canvas .rail--convenios {
-  border-style: dashed;
-}
+/* .rail y .contact-item: vidrio compartido en components/card-blue.css. */
 
 /* Logos sueltos (aseguranzas): sobre azul se perderían los oscuros, así que van en una tarjeta blanca. */
 .home-canvas .plate--logo {
@@ -145,15 +135,18 @@
   object-fit: contain;
 }
 
-/* Las filas de contacto llevan el contorno luminoso (.siri) detrás con z-index -1: sin backdrop-filter (crearía un contexto
-   de apilamiento y el brillo taparía el panel) y con fondo opaco para que el brillo quede solo en el borde. */
-.home-canvas .contact-item {
-  background: linear-gradient(145deg, rgb(24, 49, 84), rgb(9, 24, 46));
+/* "Síguenos": sin tarjeta, solo el texto y los íconos. */
+.home-canvas .contact__social {
+  border: 0;
+  background: none;
+  box-shadow: none;
   backdrop-filter: none;
 }
 
 .home-canvas .contact-item__label {
-  color: var(--color-brand-light);
+  color: var(--color-gold);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .home-canvas .contact-item__value,

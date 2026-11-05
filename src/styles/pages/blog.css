@@ -585,7 +585,8 @@
 }
 
 .blog-article__section[data-open] .blog-article__head {
-  border-bottom: 1px dashed var(--color-fog);
+  border-bottom: var(--gold-rule-h) solid;
+  border-color: var(--gold-rule-bg);
 }
 
 /* Flecha: gira al abrir. */
